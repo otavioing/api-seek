@@ -1,0 +1,37 @@
+### Teste de obtenção de perfil padrão
+### GET Perfil Padrão
+GET http://localhost:4500/padrao
+
+#### Teste de obtenção de perfil padrão por ID
+### Descrição: Obtém os detalhes do perfil padrão do usuário com ID 1
+GET http://localhost:4500/padrao/3
+
+### Teste de criação de perfil padrão
+### Descrição: Cria um novo perfil padrão para o usuário com ID 1
+
+POST http://localhost:4500/padrao/9
+Content-Type: application/json
+
+{
+  "profissao": "Desenvolvedor",
+  "nome_de_usuario": "dev_user",
+  "descricao": "Desenvolvedor de software",
+  "certificados": "Certificado de Desenvolvimento Web"
+}
+
+### Teste de atualização de perfil padrão
+### Descrição: Atualiza o perfil padrão do usuário com ID 1
+PUT http://localhost:4500/padrao/9
+Content-Type: application/json
+
+{
+  "profissao": "Engenheiro de Software",
+  "nome_de_usuario": "eng_user",
+  "descricao": "Engenheiro de software com experiência em backend",
+  "certificados": "Certificado de Engenharia de Software"
+}
+
+
+### Teste de exclusão de perfil padrão
+### Descrição: Exclui o perfil padrão do usuário com ID 1
+DELETE http://localhost:4500/padrao/9

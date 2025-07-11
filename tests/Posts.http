@@ -1,0 +1,19 @@
+### Teste de obtenção de posts
+### Descrição: Obtém os posts do usuário com ID 5
+
+GET http://localhost:4500/posts
+
+### Teste de obtenção de posts por usuário
+### Descrição: Obtém os posts do usuário com ID 8
+GET http://localhost:4500/posts/usuario/9
+
+### Teste de criação de post
+### Descrição: Cria um novo post com o título "Meu Post" e o conteúdo "Conteúdo do meu post"
+POST http://localhost:4500/posts
+Content-Type: application/json
+
+{
+  "userId": 5,
+  "imagem": "url_da_imagem",
+  "legenda": "Legenda do meu post"
+}

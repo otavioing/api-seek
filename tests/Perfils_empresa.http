@@ -1,0 +1,45 @@
+### Teste de obtenção de perfil de empresa
+### Descrição: Obtém os detalhes do perfil de empresa do usuário com ID 1
+GET http://localhost:4500/empresa
+
+### Teste de obtenção de perfil de empresa por ID
+### Descrição: Obtém os detalhes do perfil de empresa do usuário com ID 1
+GET http://localhost:4500/empresa/1
+
+### Teste de criação de perfil de empresa
+### Descrição: Cria um novo perfil de empresa para o usuário com ID 1
+POST http://localhost:4500/empresa/3
+Content-Type: application/json
+
+{
+  "usuario_id": 1,
+  "razao_social": "Empresa Exemplo",
+  "nome_fantasia": "Exemplo",
+  "cnpj": "12.345.678/0001-9",
+  "telefone_comercial": "(11) 1234-5678",
+  "categoria_negocio": "Tecnologia",
+  "numero_funcionarios": 50,
+  "endereco_completo": "Rua Exemplo, 123",
+  "descricao": "Descrição da empresa exemplo"
+}
+
+
+### Teste de atualização de perfil de empresa
+### Descrição: Atualiza o perfil de empresa do usuário com ID 1
+PUT http://localhost:4500/empresa/7
+Content-Type: application/json
+
+{
+  "razao_social": "Empresa Exemplo Atualizadaw",
+  "nome_fantasia": "Exemplo Atualizadow",
+  "cnpj": "12.345.678/0001-908",
+  "telefone_comercial": "(11) 1234-56788",
+  "categoria_negocio": "Tecnologiaw",
+  "numero_funcionarios": 508,
+  "endereco_completo": "Rua Exemplo, 123w",
+  "descricao": "Descrição da empresa exemplow"
+}
+
+### Teste de exclusão de perfil de empresa
+### Descrição: Exclui o perfil de empresa do usuário com ID 1
+DELETE http://localhost:4500/empresa/3
