@@ -14,9 +14,9 @@ POST http://localhost:4500/usuarios
 Content-Type: application/json
 
 {
-  "nome": "João Silva",
-  "email": "fewfwfw@hbrhbv",
-  "senha": "senha123"
+  "nome": "João Silvad",
+  "email": "fewfwfw@hbrhbv4",
+  "senha": "senha1234"
 }
 
 ### Teste de atualização de usuário
@@ -32,15 +32,15 @@ Content-Type: application/json
 
 ### Teste de exclusão de usuário
 ### Descrição: Exclui o usuário com ID 5
-DELETE http://localhost:4500/usuarios/8
+DELETE http://localhost:4500/usuarios/15
 
 ###virificar se a caixa de completar cadastro está funcionando
 ### Descrição: Verifica se a caixa de completar cadastro está funcionando para o usuário com ID 5
-GET http://localhost:4500/usuarios/verificarcaixa/5
+GET http://localhost:4500/usuarios/verificarcaixa/7
 
 ### verificar tipo de usuario
 ### Descrição: Verifica o tipo de usuário do usuário com ID 5
-GET http://localhost:4500/usuarios/verificartipo/5
+GET http://localhost:4500/usuarios/verificartipo/7
 
 ### Teste de update de foto de perfil
 ### Descrição: Atualiza a foto de perfil do usuário com ID 5

@@ -7,15 +7,15 @@ const uploadfotobanner = require('../config/upload_foto_banner');
 
 const rota = Router()
 
-rota.get("/", myController.GetAll);
+rota.get("/", myController.GetAll); 
 rota.get("/:id", myController.GetById);
-rota.get("/verificarcaixa/:id", Getbyidvarificarcaixa);
-rota.get("/verificartipo/:id", verificartipo);
+rota.get("/verificarcaixa/:id", myController.Getbyidvarificarcaixa);
+rota.get("/verificartipo/:id", myController.verificartipo);
+rota.delete("/:id", myController.Erase);
+rota.post("/", myController.Create);
 rota.post("/", uploadfotoperfil.single("foto"), Create); 
-rota.post("/", Create);
 rota.put("/:id", Update)
 rota.post("/completar-cadastro-padrao", updatecompletarcadastropadrao);
-rota.delete("/:id", Erase);
 rota.post("/login", Login)
 rota.post("/recuperar-senha", RecuperarSenha);
 rota.post("/atualizar-senha", AtualizarSenha);
