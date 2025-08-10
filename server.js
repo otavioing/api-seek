@@ -7,6 +7,7 @@ const rotasUsuarios = require("./src/routers/usuariosRouters")
 const rotasPosts = require("./src/routers/postsRouters");
 const rotasperfilspadrao = require ("./src/routers/perfils_padraoRouters")
 const rotasperfilsempresa = require ("./src/routers/perfils_empresaRouters")
+const rotasapiopenia = require("./src/routers/apiOpeniaRouters")
 const dotenv = require("dotenv");
 dotenv.config();
 const Port = process.env.APP_PORT;
@@ -26,11 +27,15 @@ app.use("/usuarios", rotasUsuarios);
 app.use("/posts", rotasPosts);
 app.use("/padrao", rotasperfilspadrao)
 app.use("/empresa", rotasperfilsempresa)
+app.use("/openai", rotasapiopenia)
 
 
 app.listen(Port, () => {
     console.log(`Servidor rodando na porta: ${Port}`)
 });
+
+
+
 
 
 
