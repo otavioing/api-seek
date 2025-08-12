@@ -24,6 +24,7 @@ const pergunta = async (req, res) => {
     });
 
     res.json({ resposta: resposta.choices[0].message.content });
+    // console.log(resposta.choices[0].message.content);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao conversar com a IA" });
