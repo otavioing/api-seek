@@ -1,13 +1,16 @@
 const {Router} = require('express');
 const {GetAll, GetById, Erase, Create, Update, Login, RecuperarSenha, AtualizarSenha, SolicitarCriacao, Solicitarexclusao, Atualizartema, Atualizaracessibilidade, updatecompletarcadastropadrao, Getbyidvarificarcaixa, definirtipo, verificartipo, completarcadastro, updatecompletarcadastroempresa, EnviarfotoPerfil, GetAllbyidPadrao, GetAllbyidEmpresas, Updatefoto, Updatefotobanner} = require("../model/usuariosService");
 const myController = require("../controller/usuariosController");
+const autenticarJWT = require("../utils/authMiddleware");
 const uploadfotoperfil = require('../config/upload_foto_perfil'); 
 const uploadfotobanner = require('../config/upload_foto_banner');
+
 
 
 const rota = Router()
 
 rota.get("/", myController.GetAll); 
+// rota.get("/:id", autenticarJWT, myController.GetById);
 rota.get("/:id", myController.GetById);
 rota.get("/verificarcaixa/:id", myController.Getbyidvarificarcaixa);
 rota.get("/verificartipo/:id", myController.verificartipo);

@@ -7,6 +7,11 @@ GET http://localhost:4500/usuarios
 ### Teste de obtenção de usuário por ID
 ### Descrição: Obtém os detalhes do usuário com ID 5
 GET http://localhost:4500/usuarios/3
+Content-Type: application/json
+
+{
+  "token": ""
+}
 
 ### Teste de criação de usuário
 ### Descrição: Cria um novo usuário com os dados fornecidos
@@ -105,8 +110,8 @@ POST http://localhost:4500/usuarios/login
 Content-Type: application/json
 
 {
-  "email": "fewfwfw@hbrhbv",
-  "senha": "senha123"
+  "email": "tectonicroom356@gmail.com",
+  "senha": "Otavio2006"
 }
 
 ### Teste recuperação de senha

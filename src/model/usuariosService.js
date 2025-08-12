@@ -1,8 +1,13 @@
 const express = require("express");
 
+const dotenv = require("dotenv");
+dotenv.config();
+
 const { banco } = require("./database");
 
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 
 const {
   enviarEmailRecuperacao,
@@ -288,6 +293,7 @@ const EnviarfotoPerfil = async (request, response) => {
   }
 };
 
+
 const Login = async (request, response) => {
   const { email, senha } = request.body;
 
@@ -302,21 +308,61 @@ const Login = async (request, response) => {
 
     const usuario = rows[0];
 
-    // Aqui compara a senha digitada com a criptografada
+    // Compara senha
     const senhaValida = await bcrypt.compare(senha, usuario.senha);
-
     if (!senhaValida) {
       return response.status(401).send({ message: "Email ou senha inválidos" });
     }
 
-    // Login OK, pode retornar os dados (sem a senha de preferência)
-    delete usuario.senha; // remove a senha da resposta
-    response.status(200).send({ usuario });
+    // Remove senha da resposta
+    delete usuario.senha;
+
+    // Gera o token
+    const token = jwt.sign(
+      { id: usuario.id, email: usuario.email }, // payload
+      process.env.JWT_SECRET,                  // chave secreta
+      { expiresIn: process.env.JWT_EXPIRES || "1d" } // tempo de expiração
+    );
+
+    // Retorna o usuário e o token
+    response.status(200).send({ usuario, token });
+
   } catch (error) {
     console.error("Erro ao verificar login:", error.message);
     response.status(500).send({ message: "Erro interno no servidor" });
   }
 };
+
+
+// const Login = async (request, response) => {
+//   const { email, senha } = request.body;
+
+//   try {
+//     const [rows] = await banco.query("SELECT * FROM usuarios WHERE email = ?", [
+//       email,
+//     ]);
+
+//     if (rows.length === 0) {
+//       return response.status(401).send({ message: "Email ou senha inválidos" });
+//     }
+
+//     const usuario = rows[0];
+
+//     // Aqui compara a senha digitada com a criptografada
+//     const senhaValida = await bcrypt.compare(senha, usuario.senha);
+
+//     if (!senhaValida) {
+//       return response.status(401).send({ message: "Email ou senha inválidos" });
+//     }
+
+//     // Login OK, pode retornar os dados (sem a senha de preferência)
+//     delete usuario.senha; // remove a senha da resposta
+//     response.status(200).send({ usuario });
+//   } catch (error) {
+//     console.error("Erro ao verificar login:", error.message);
+//     response.status(500).send({ message: "Erro interno no servidor" });
+//   }
+// };
 
 const RecuperarSenha = async (req, res) => {
   const { email } = req.body;
