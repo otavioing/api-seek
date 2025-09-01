@@ -10,8 +10,8 @@ const uploadfotobanner = require('../config/upload_foto_banner');
 const rota = Router()
 
 rota.get("/", myController.GetAll); 
-// rota.get("/:id", autenticarJWT, myController.GetById);
-rota.get("/:id", myController.GetById);
+rota.get("/:id", autenticarJWT, myController.GetById);
+// rota.get("/:id", myController.GetById);
 rota.get("/verificarcaixa/:id", myController.Getbyidvarificarcaixa);
 rota.get("/verificartipo/:id", myController.verificartipo);
 rota.delete("/:id", myController.Erase);
