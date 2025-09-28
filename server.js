@@ -5,6 +5,7 @@ const app = express();
 const path = require('path');
 const rotasUsuarios = require("./src/routers/usuariosRouters")
 const rotasPosts = require("./src/routers/postsRouters");
+const rotasPostsvagas = require("./src/routers/postvagaRouters");
 const rotasperfilspadrao = require ("./src/routers/perfils_padraoRouters")
 const rotasperfilsempresa = require ("./src/routers/perfils_empresaRouters")
 const rotasapiopenia = require("./src/routers/apiOpeniaRouters")
@@ -25,6 +26,7 @@ app.get("/", (request, response) => {
 
 app.use("/usuarios", rotasUsuarios);
 app.use("/posts", rotasPosts);
+app.use("/postsvagas", rotasPostsvagas);
 app.use("/padrao", rotasperfilspadrao)
 app.use("/empresa", rotasperfilsempresa)
 app.use("/openai", rotasapiopenia)

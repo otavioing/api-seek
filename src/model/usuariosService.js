@@ -298,7 +298,7 @@ const Login = async (request, response) => {
   const { email, senha } = request.body;
 
   try {
-    const [rows] = await banco.query("SELECT * FROM usuarios WHERE email = ?", [
+    const [rows] = await banco.query("SELECT id, email, senha, nome, status FROM usuarios WHERE email = ?", [
       email,
     ]);
 
@@ -313,6 +313,12 @@ const Login = async (request, response) => {
     if (!senhaValida) {
       return response.status(401).send({ message: "Email ou senha inválidos" });
     }
+
+
+    await banco.query("UPDATE usuarios SET ultimo_login = NOW() WHERE id = ?", [
+      usuario.id,
+    ]);
+    usuario.ultimo_login = new Date(); // adiciona no objeto
 
     // Remove senha da resposta
     delete usuario.senha;

@@ -13,28 +13,6 @@ const CriarPost = async (userId, imagem, legenda) => {
     throw new Error("Erro interno");
   }
 };
-// const CriarPost = async (req, res) => {
-//     try {
-//         const userId = req.body.user_id;
-//         const legenda = req.body.legenda || '';
-//         const imagem = req.file ? `/uploads/posts/${req.file.filename}` : null;
-
-//         if (!imagem) {
-//             return res.status(400).send({ message: "Imagem é obrigatória" });
-//         }
-
-//         await banco.query(
-//             'INSERT INTO posts (user_id, imagem, legenda) VALUES (?, ?, ?)',
-//             [userId, imagem, legenda]
-//         );
-
-//         res.status(201).send({ message: "Post criado com sucesso" });
-//     } catch (err) {
-//         console.error("Erro ao criar post:", err.message);
-//         res.status(500).send({ message: "Erro interno" });
-//     }
-//     console.log(req.file)
-// };
 
 const ListarPosts = async () => {
   try {
