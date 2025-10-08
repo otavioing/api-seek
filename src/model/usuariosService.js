@@ -132,6 +132,8 @@ const Create = async (nome, email, senhaHash) => {
 const Update = async (request, response) => {
   try {
     const id = request.params.id;
+
+    // Campos vindos do body
     const {
       nome,
       email,
@@ -142,36 +144,72 @@ const Update = async (request, response) => {
       nome_de_usuario,
       descricao,
       banner,
-      url_do_perfil_do_instagram,
-      url_do_perfil_do_x_twitter,
+      acessibilidade_ativa,
+      cadastro_completo,
+      ultimo_login,
+      status,
+      tipo,
+      permissao
     } = request.body;
+
+    // Se o usuário enviou uma nova foto
     const foto = request.file
       ? `/uploads/foto_perfil/${request.file.filename}`
-      : null;
-    const data = await banco.query(
-      "UPDATE usuarios SET nome=?, email=?, senha=?, foto=?, tema=?, cidade_pais=?, cargo=?, nome_de_usuario=?, descricao=?, banner=?, url_do_perfil_do_instagram=?, url_do_perfil_do_x_twitter=? WHERE id=?",
-      [
-        nome,
-        email,
-        senha,
-        foto,
-        tema,
-        cidade_pais,
-        cargo,
-        nome_de_usuario,
-        descricao,
-        banner,
-        url_do_perfil_do_instagram,
-        url_do_perfil_do_x_twitter,
-        id,
-      ]
+      : undefined;
+
+    // Objeto com todos os possíveis campos atualizáveis
+    const campos = {
+      nome,
+      email,
+      senha,
+      foto,
+      tema,
+      cidade_pais,
+      cargo,
+      nome_de_usuario,
+      descricao,
+      banner,
+      acessibilidade_ativa,
+      cadastro_completo,
+      ultimo_login,
+      status,
+      tipo,
+      permissao
+    };
+
+    // Filtra apenas os campos que foram realmente enviados
+    const chaves = Object.keys(campos).filter(
+      (key) => campos[key] !== undefined && campos[key] !== null
     );
-    response.status(200).send(data[0]);
+
+    // Se não tiver nada pra atualizar
+    if (chaves.length === 0) {
+      return response.status(400).send({ message: "Nenhum campo enviado para atualização!" });
+    }
+
+    // Monta a query dinamicamente (ex: "nome=?, email=?, tema=?")
+    const setClause = chaves.map((key) => `${key}=?`).join(", ");
+    const values = chaves.map((key) => campos[key]);
+
+    // Adiciona o ID no final
+    values.push(id);
+
+    // Executa o UPDATE
+    const sql = `UPDATE usuarios SET ${setClause} WHERE id=?`;
+    const [result] = await banco.query(sql, values);
+
+    response.status(200).send({
+      message: "Usuário atualizado com sucesso!",
+      alterados: chaves,
+      resultado: result
+    });
+
   } catch (error) {
-    console.log("Erro ao conectar ao banco de dados: ", error.message);
-    response.status(401).send({ message: "Falha ao executar a ação!" });
+    console.error("Erro ao atualizar usuário:", error.message);
+    response.status(500).send({ message: "Erro ao atualizar usuário!" });
   }
 };
+
 
 const Updatefoto = async (request, response) => {
   try {
@@ -298,7 +336,7 @@ const Login = async (request, response) => {
   const { email, senha } = request.body;
 
   try {
-    const [rows] = await banco.query("SELECT id, email, senha, nome, status FROM usuarios WHERE email = ?", [
+    const [rows] = await banco.query("SELECT id, email, senha, nome, status, tema FROM usuarios WHERE email = ?", [
       email,
     ]);
 
