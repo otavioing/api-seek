@@ -70,8 +70,6 @@ const UsuariosController = {
       response.status(500).send({ message: "Falha ao criar usuário!" });
     }
   },
-
-
 };
 
 module.exports = UsuariosController;

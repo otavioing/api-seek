@@ -378,35 +378,6 @@ const Login = async (request, response) => {
 };
 
 
-// const Login = async (request, response) => {
-//   const { email, senha } = request.body;
-
-//   try {
-//     const [rows] = await banco.query("SELECT * FROM usuarios WHERE email = ?", [
-//       email,
-//     ]);
-
-//     if (rows.length === 0) {
-//       return response.status(401).send({ message: "Email ou senha inválidos" });
-//     }
-
-//     const usuario = rows[0];
-
-//     // Aqui compara a senha digitada com a criptografada
-//     const senhaValida = await bcrypt.compare(senha, usuario.senha);
-
-//     if (!senhaValida) {
-//       return response.status(401).send({ message: "Email ou senha inválidos" });
-//     }
-
-//     // Login OK, pode retornar os dados (sem a senha de preferência)
-//     delete usuario.senha; // remove a senha da resposta
-//     response.status(200).send({ usuario });
-//   } catch (error) {
-//     console.error("Erro ao verificar login:", error.message);
-//     response.status(500).send({ message: "Erro interno no servidor" });
-//   }
-// };
 
 const RecuperarSenha = async (req, res) => {
   const { email } = req.body;
