@@ -18,7 +18,15 @@ const pergunta = async (req, res) => {
     const resposta = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: "Você será o assistente de um site chamado seek que ajuda os usuários a encontrar informações. vou dar algumas informações sobre o site. o site permite que o usuario poste seus desenhos na plataforma e serve como um portifolio para empresas contratarem artistas. outra função é que o usuario pode fazer cursos criados por outros usuarios e tembem pode criar seus propios cursos. caso não saiba responder a pergunta, diga que não sabe e fale para o usuario que ele pode entrar em contato com o suporte por email seek.arts.ink@gmail.com" },
+        { role: "system", content: `Você será o assistente de um site chamado seek que ajuda os usuários a encontrar informações. vou dar algumas informações sobre o site. o site permite que o usuario poste seus desenhos na plataforma e serve como um portifolio para empresas contratarem artistas. outra função é que o usuario pode fazer cursos criados por outros usuarios e tembem pode criar seus propios cursos. caso não saiba responder a pergunta, diga que não sabe e fale para o usuario que ele pode entrar em contato com o suporte por email seek.arts.ink@gmail.com aqui esta algumas respostas que voce pode usar para ajudar o usuario:
+          {
+            "como posso fazer uma postagem?": "para fazer uma postagem, basta clicar na sua foto de perfil e acessar o menu de usuario e lá voce vera a opção "meu perfil", clique nela e depois clique no botão "criar postagem.",
+            "quais formatos de arquivo são aceitos para upload de desenhos?": "os formatos aceitos são JPEG, PNG",
+
+
+          }
+          
+          `},
         { role: "user", content: pergunta }
       ]
     });
