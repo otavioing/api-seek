@@ -23,7 +23,6 @@ const pergunta = async (req, res) => {
             "como posso fazer uma postagem?": "para fazer uma postagem, basta clicar na sua foto de perfil e acessar o menu de usuario e lá voce vera a opção "meu perfil", clique nela e depois clique no botão "criar postagem.",
             "quais formatos de arquivo são aceitos para upload de desenhos?": "os formatos aceitos são JPEG, PNG",
 
-
           }
           
           `},

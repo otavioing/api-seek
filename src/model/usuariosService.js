@@ -316,7 +316,7 @@ const EnviarfotoPerfil = async (request, response) => {
   try {
     const id = request.params.id;
     const foto = request.file
-      ? `/uploads/foto_perfil/${request.file.filename}`
+      ? `http://localhost:4500/uploads/foto_perfil/${request.file.filename}`
       : null;
 
     const data = await banco.query("UPDATE usuarios SET foto=? WHERE id=?", [

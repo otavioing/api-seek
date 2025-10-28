@@ -25,7 +25,7 @@ CriarPost: async (request, response) => {
   try {
     const userId = request.body.user_id;
     const legenda = request.body.legenda || "";
-    const imagem = request.file ? `/uploads/posts/${request.file.filename}` : null;
+    const imagem = request.file ? `http://localhost:4500/uploads/posts/${request.file.filename}` : null;
 
     if (!imagem) {
       return response.status(400).send({ message: "Imagem é obrigatória" });
