@@ -215,7 +215,7 @@ const Updatefoto = async (request, response) => {
   try {
     const id = request.params.id;
     const foto = request.file
-      ? `/uploads/foto_perfil/${request.file.filename}`
+      ? `http://localhost:4500/uploads/foto_perfil/${request.file.filename}`
       : null;
     const data = await banco.query("UPDATE usuarios SET foto=? WHERE id=?", [
       foto,
@@ -231,13 +231,14 @@ const Updatefotobanner = async (request, response) => {
   try {
     const id = request.params.id;
     const foto = request.file
-      ? `/uploads/banners/${request.file.filename}`
+      ? `http://localhost:4500/uploads/banners/${request.file.filename}`
       : null;
     const data = await banco.query("UPDATE usuarios SET banner=? WHERE id=?", [
       foto,
       id,
     ]);
     response.status(200).send(data[0]);
+    console.log("Banner atualizado com sucesso!");
   } catch (error) {
     console.log("Erro ao conectar ao banco de dados: ", error.message);
     response.status(401).send({ message: "Falha ao executar a ação!" });
