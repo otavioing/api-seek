@@ -26,12 +26,13 @@ CriarPost: async (request, response) => {
     const userId = request.body.user_id;
     const legenda = request.body.legenda || "";
     const imagem = request.file ? `http://localhost:4500/uploads/posts/${request.file.filename}` : null;
+    const titulo = request.body.titulo || "";
 
     if (!imagem) {
       return response.status(400).send({ message: "Imagem é obrigatória" });
     }
 
-    const data = await model.CriarPost(userId, imagem, legenda);
+    const data = await model.CriarPost(userId, imagem, legenda, titulo);
     response.status(201).send(data); // ou data[0] se necessário
   } catch (error) {
     console.error("Erro ao criar post:", error.message);
