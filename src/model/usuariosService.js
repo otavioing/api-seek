@@ -366,7 +366,7 @@ const Login = async (request, response) => {
     const token = jwt.sign(
       { id: usuario.id, email: usuario.email }, // payload
       process.env.JWT_SECRET,                  // chave secreta
-      { expiresIn: process.env.JWT_EXPIRES || "1d" } // tempo de expiração
+      { expiresIn: process.env.JWT_EXPIRES} // tempo de expiração
     );
 
     // Retorna o usuário e o token
@@ -382,40 +382,86 @@ const Login = async (request, response) => {
 
 const RecuperarSenha = async (req, res) => {
   const { email } = req.body;
+
   try {
     const [result] = await banco.query(
       "SELECT * FROM usuarios WHERE email = ?",
       [email]
     );
+
     if (result.length === 0) {
       return res.status(404).send({ message: "Email não encontrado" });
     }
-    const codigo = Math.floor(100000 + Math.random() * 900000); // Ex: 654321
-    // Aqui você pode salvar esse código temporariamente no banco ou só validar depois (simples)
+
+    // Gera um código aleatório de 6 dígitos
+    const codigo = Math.floor(100000 + Math.random() * 900000);
+
+    // Define expiração para 10 minutos a partir de agora
+    const expiraEm = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+
+    // Salva o código e o tempo de expiração no banco
+    await banco.query(
+      "UPDATE usuarios SET codigo_recuperacao = ?, expira_em = ? WHERE email = ?",
+      [codigo, expiraEm, email]
+    );
+
+    // Envia o email com o código
     await enviarEmailRecuperacao(email, result[0].nome, codigo);
-    // Envia o código também no response (só enquanto você não tiver banco ou cache pra ele)
-    res.status(200).send({ message: "Código enviado para o email", codigo });
+
+    res.status(200).send({ message: "Código de recuperação enviado para o email." });
+
   } catch (err) {
     console.error("Erro ao recuperar senha:", err.message);
     res.status(500).send({ message: "Erro interno" });
   }
 };
 
+
 const AtualizarSenha = async (req, res) => {
-  const { email, novaSenha } = req.body;
+  const { email, codigo, novaSenha } = req.body;
 
   try {
-    const hashed = await bcrypt.hash(novaSenha, 10);
-    await banco.query("UPDATE usuarios SET senha = ? WHERE email = ?", [
-      hashed,
-      email,
-    ]);
+    const [result] = await banco.query(
+      "SELECT codigo_recuperacao, expira_em FROM usuarios WHERE email = ?",
+      [email]
+    );
+
+    if (result.length === 0) {
+      return res.status(404).send({ message: "Email não encontrado" });
+    }
+
+    const usuario = result[0];
+    const agora = new Date();
+
+    if (!usuario.codigo_recuperacao || !usuario.expira_em) {
+      return res.status(400).send({ message: "Nenhum código foi solicitado." });
+    }
+
+    if (agora > new Date(usuario.expira_em)) {
+      return res.status(400).send({ message: "O código expirou. Solicite um novo." });
+    }
+
+    if (usuario.codigo_recuperacao !== codigo) {
+      return res.status(400).send({ message: "Código incorreto." });
+    }
+
+    // Criptografa a nova senha antes de salvar
+    const hash = await bcrypt.hash(novaSenha, 10);
+
+    // Atualiza a senha e limpa o código de recuperação
+    await banco.query(
+      "UPDATE usuarios SET senha = ?, codigo_recuperacao = NULL, expira_em = NULL WHERE email = ?",
+      [hash, email]
+    );
 
     res.status(200).send({ message: "Senha atualizada com sucesso!" });
+
   } catch (err) {
-    res.status(500).send({ message: "Erro ao atualizar senha." });
+    console.error("Erro ao atualizar senha:", err.message);
+    res.status(500).send({ message: "Erro interno" });
   }
 };
+
 
 const Atualizartema = async (req, res) => {
   const { id, tema } = req.body;
