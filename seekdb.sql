@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 01/11/2025 às 22:30
+-- Tempo de geração: 02/11/2025 às 16:22
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.0.30
 
@@ -20,6 +20,26 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `seekdb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `likes_posts`
+--
+
+CREATE TABLE `likes_posts` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `criado_em` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `likes_posts`
+--
+
+INSERT INTO `likes_posts` (`id`, `user_id`, `post_id`, `criado_em`) VALUES
+(85, 9, 19, '2025-11-02 14:25:58');
 
 -- --------------------------------------------------------
 
@@ -132,7 +152,7 @@ INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `foto`, `tema`, `cidade_
 (3, 'who.jxao', 'joaojfpessoal@gmail.com', '$2b$10$fJwhob.w51UdYqGq8GV76uC7r6wE6dJw.cufVIJxvWwxdwXa7M9vK', '/uploads/foto_perfil/1750941401708-(,,_ï¹_,,).jpeg', 'claro', NULL, NULL, NULL, 'este usuário não possui descrição', '/uploads/banners/1750949495134-WIN_20250626_11_50_21_Pro.jpg', 1, '2025-05-05 10:39:11', 1, '2025-10-07 09:19:51', 'Ativo', 'padrao', 'Padrão', NULL, NULL),
 (4, 'João da Silva', 'joao.silva@example.com', 'novaSenha123', '/uploads/fotopadraousuario.svg', 'escuro', 'São Paulo, Brasil', NULL, NULL, NULL, 'https://meusite.com/banners/banner1.jpg', 1, '2025-05-06 16:39:09', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (7, 'João Silva Atualizado', 'fewfwfw@hbrhbv atualizado', 'senha1234', '/uploads/fotopadraousuario.svg', 'claro', NULL, NULL, NULL, 'este usuário não possui descrição', NULL, 1, '2025-06-17 14:06:16', 1, NULL, 'Ativo', 'empresa', 'Padrão', NULL, NULL),
-(9, 'Otávio', 'tectonicroom356@gmail.com', '$2b$10$EHAWkhmwv8MyWtnBfG/6yujRyiSJGZOM7TciIFNvkAasnFSikFgoq', '/uploads/foto_perfil/1759968055964-asteroid.png', 'claro', NULL, NULL, NULL, 'este usuário não possui descrição', '/uploads/banners/1750880103909-mr-robot.jpeg', 0, '2025-06-25 19:21:52', 1, '2025-11-01 16:42:45', 'Ativo', 'empresa', 'Admin', '462250', '2025-11-01 18:26:11'),
+(9, 'Otávio', 'tectonicroom356@gmail.com', '$2b$10$EHAWkhmwv8MyWtnBfG/6yujRyiSJGZOM7TciIFNvkAasnFSikFgoq', 'http://localhost:4500/uploads/foto_perfil/1759968055964-asteroid.png', 'escuro', NULL, NULL, NULL, 'este usuário não possui descrição', '/uploads/banners/1750880103909-mr-robot.jpeg', 0, '2025-06-25 19:21:52', 1, '2025-11-02 10:34:52', 'Ativo', 'empresa', 'Admin', '462250', '2025-11-01 18:26:11'),
 (10, 'testE', '3rwfrgtrhytjuyi@gmail.com', '$2b$10$GZsIzdtonQlQ0AycbW4UkerdIKgDHtFIIKawevfQG7SUOFEijFua2', '/uploads/fotopadraousuario.svg', 'claro', NULL, NULL, NULL, 'este usuário não possui descrição', NULL, 1, '2025-06-25 19:27:17', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (11, 'felipe', 'fellipe@mail.com', '$2b$10$VT.ofVWpRSlLxWiN01L9dulNuWwrpNs9yeiCTF1De.CWEIGy7UBC.', '/uploads/foto_perfil/1750936872115-Sem tÃ­tulo-1.png', 'claro', NULL, NULL, NULL, 'este usuário não possui descrição', NULL, 1, '2025-06-26 11:19:10', 1, NULL, 'Ativo', 'padrao', 'Padrão', '959579', '2025-11-01 18:26:48'),
 (12, 'Luiz Gustavo', 'luiz@gmail.com', '$2b$10$KozHbUufQSQVaKo4oq1P3eb.wHaaBTqRJjWjA.CHbCfVE8Tc2ZDbW', '/uploads/foto_perfil/1750937601688-Sem tÃ­tulo-1.png', 'claro', NULL, NULL, NULL, 'este usuário não possui descrição', NULL, 1, '2025-06-26 11:31:54', 1, NULL, 'Ativo', 'padrao', 'Padrão', '245296', '2025-11-01 18:32:21'),
@@ -152,6 +172,14 @@ INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `foto`, `tema`, `cidade_
 --
 -- Índices para tabelas despejadas
 --
+
+--
+-- Índices de tabela `likes_posts`
+--
+ALTER TABLE `likes_posts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_post_like` (`user_id`,`post_id`),
+  ADD KEY `post_id` (`post_id`);
 
 --
 -- Índices de tabela `perfis_empresa`
@@ -186,6 +214,12 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- AUTO_INCREMENT de tabela `likes_posts`
+--
+ALTER TABLE `likes_posts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+
+--
 -- AUTO_INCREMENT de tabela `posts`
 --
 ALTER TABLE `posts`
@@ -200,6 +234,13 @@ ALTER TABLE `usuarios`
 --
 -- Restrições para tabelas despejadas
 --
+
+--
+-- Restrições para tabelas `likes_posts`
+--
+ALTER TABLE `likes_posts`
+  ADD CONSTRAINT `likes_posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`),
+  ADD CONSTRAINT `likes_posts_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`);
 
 --
 -- Restrições para tabelas `perfis_empresa`
