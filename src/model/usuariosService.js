@@ -380,7 +380,7 @@ const Login = async (request, response) => {
 
 
 
-const RecuperarSenha = async (req, res) => {
+const CriarCodigoVerificacao = async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -545,7 +545,7 @@ module.exports = {
   Create,
   Update,
   Login,
-  RecuperarSenha,
+  CriarCodigoVerificacao,
   AtualizarSenha,
   SolicitarCriacao,
   Solicitarexclusao,

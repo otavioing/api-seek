@@ -1,5 +1,5 @@
 const {Router} = require('express');
-const {GetAll, GetById, Erase, Create, Update, Login, RecuperarSenha, AtualizarSenha, SolicitarCriacao, Solicitarexclusao, Atualizartema, Atualizaracessibilidade, updatecompletarcadastropadrao, Getbyidvarificarcaixa, definirtipo, verificartipo, completarcadastro, updatecompletarcadastroempresa, EnviarfotoPerfil, GetAllbyidPadrao, GetAllbyidEmpresas, Updatefoto, Updatefotobanner} = require("../model/usuariosService");
+const {GetAll, GetById, Erase, Create, Update, Login, CriarCodigoVerificacao, AtualizarSenha, SolicitarCriacao, Solicitarexclusao, Atualizartema, Atualizaracessibilidade, updatecompletarcadastropadrao, Getbyidvarificarcaixa, definirtipo, verificartipo, completarcadastro, updatecompletarcadastroempresa, EnviarfotoPerfil, GetAllbyidPadrao, GetAllbyidEmpresas, Updatefoto, Updatefotobanner} = require("../model/usuariosService");
 const myController = require("../controller/usuariosController");
 const autenticarJWT = require("../utils/authMiddleware");
 const uploadfotoperfil = require('../config/upload_foto_perfil'); 
@@ -20,7 +20,7 @@ rota.post("/", uploadfotoperfil.single("foto"), Create);
 rota.put("/:id", Update)
 rota.post("/completar-cadastro-padrao", updatecompletarcadastropadrao);
 rota.post("/login", Login)
-rota.post("/recuperar-senha", RecuperarSenha);
+rota.post("/criar-codigo-verificacao", CriarCodigoVerificacao);
 rota.post("/atualizar-senha", AtualizarSenha);
 rota.post("/solicitar-criacao", SolicitarCriacao);
 rota.post("/solicitar-exclusao", Solicitarexclusao);
