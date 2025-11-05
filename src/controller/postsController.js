@@ -79,8 +79,8 @@ const PostsServiceController = {
   },
   verificalike: async (request, response) => {
     try {
-      const userId = request.body.userId;
-      const postId = request.body.postId;
+      const userId = request.params.userId;
+      const postId = request.params.postId;
       const data = await model.verificalike(userId, postId);
       response.status(200).json(data);
     } catch (error) {

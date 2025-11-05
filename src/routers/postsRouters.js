@@ -10,6 +10,7 @@ rota.get("/", myController.ListarPosts);
 rota.get("/usuario/:id", myController.ListarPostsPorUsuario);
 rota.post("/like", myController.insertlike);
 rota.get("/likes/:id", myController.ListarLikesPorPost);
-rota.get("/verifica-like", myController.verificalike);
+rota.get("/verifica-like/:userId/:postId", myController.verificalike);
 
 module.exports = rota;
+ 
