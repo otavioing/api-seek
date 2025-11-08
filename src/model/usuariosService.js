@@ -13,6 +13,7 @@ const {
   enviarEmailRecuperacao,
   enviaremailcriacao,
   enviaremailexclusao,
+  enviaremaillogin,
 } = require("../utils/emailService");
 
 const GetAll = async () => {
@@ -358,6 +359,8 @@ const Login = async (request, response) => {
       usuario.id,
     ]);
     usuario.ultimo_login = new Date(); // adiciona no objeto
+
+    await enviaremaillogin(usuario.email, usuario.nome);
 
     // Remove senha da resposta
     delete usuario.senha;

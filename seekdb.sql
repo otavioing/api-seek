@@ -1,3 +1,5 @@
+USE sql10806752;
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -124,7 +126,7 @@ INSERT INTO `posts` (`id`, `user_id`, `imagem`, `legenda`, `criado_em`, `titulo`
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `nome` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(191) NOT NULL,
   `senha` varchar(255) NOT NULL,
   `foto` varchar(255) DEFAULT '/uploads/fotopadraousuario.svg',
   `tema` varchar(50) DEFAULT 'claro',

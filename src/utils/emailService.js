@@ -203,8 +203,38 @@ const enviaremailexclusao = async (email, nome, codigo) => {
   console.log("Email de criação de conta enviado:", info.messageId);
 };
 
+const enviaremaillogin = async (email, nome) => {
+      const info = await transporter.sendMail({
+    from: '"Seek App" <seek.arts.ink@gmail.com>',
+    to: email,
+    subject: "Confirmação de login da Sua Conta Seek",
+    text: `Olá ${nome}, identificamos um login em sua conta`,
+    html: `
+        <div style="font-family: Arial, sans-serif; color: #333; padding: 20px;">
+      <h2 style="color: #0066ff;">Olá, ${nome} 👋</h2>
+      <p>Detectamos um novo login na sua conta <strong>Seek</strong>.</p>
+      
+      <p>Se foi você, pode ignorar este aviso. ✅</p>
+      <p>Se <strong>não foi você</strong>, recomendamos que altere sua senha imediatamente para proteger sua conta.</p>
+      
+      <div style="margin-top: 25px;">
+        <a href="#" style="background-color: #0066ff; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none;">Alterar senha</a>
+      </div>
+      
+      <p style="margin-top: 25px; font-size: 14px; color: #666;">
+        Este é um e-mail automático. Por favor, não responda a esta mensagem.
+      </p>
+      
+      <p style="font-size: 14px; color: #999;">© 2025 Seek App</p>
+    </div>
+    `,
+  });
+    console.log("Email de login enviado:", info.messageId);
+}
+
 module.exports = {
   enviarEmailRecuperacao,
   enviaremailcriacao,
   enviaremailexclusao,
+  enviaremaillogin,
 };
