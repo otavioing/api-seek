@@ -1,5 +1,5 @@
 const model = require("../model/postsService");
-const { CriarPostvaga } = require("../model/postvagaService");
+// const { CriarPostvaga } = require("../model/postvagaService");
 
 const PostsServiceController = {
   ListarPostsvaga: async (request, response) => {
