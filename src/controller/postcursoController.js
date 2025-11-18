@@ -30,7 +30,7 @@ const CursosServiceController = {
             const nivel_curso = request.body.nivel_curso;
             const valor_curso = request.body.valor_curso;
             const quantidade_vagas = request.body.quantidade_vagas;
-            const categoria_curso = request.body.categoria_curso;
+            const id_categoria = request.body.id_categoria;
             const descricao_curso = request.body.descricao_curso;
             const imagem_curso = request.file ? `http://localhost:4500/uploads/capa_curso/${request.file.filename}` : null;
             const audio_curso = request.body.audio_curso;
@@ -38,7 +38,7 @@ const CursosServiceController = {
             if (!imagem_curso) {
                 return response.status(400).send({ message: "Imagem do curso é obrigatória" });
             }
-            const data = await model.CriarPostcurso(id_user, imagem_curso, nome_curso, nivel_curso, valor_curso, quantidade_vagas, audio_curso, legenda_curso, categoria_curso, descricao_curso);
+            const data = await model.CriarPostcurso(id_user, imagem_curso, nome_curso, nivel_curso, valor_curso, quantidade_vagas, audio_curso, legenda_curso, id_categoria, descricao_curso);
             response.status(201).send(data); // ou data[0] se necessário
         } catch (error) {
             console.error("Erro ao criar post de curso:", error.message);

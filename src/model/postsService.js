@@ -1,10 +1,10 @@
 const { banco } = require("./database");
 
-const CriarPost = async (userId, imagem, legenda, titulo, categoria) => {
+const CriarPost = async (userId, imagem, legenda, titulo, id_categoria) => {
   try {
     const [posts] = await banco.query(
-      "INSERT INTO posts (user_id, imagem, legenda, titulo, categoria) VALUES (?, ?, ?, ?, ?)",
-      [userId, imagem, legenda, titulo, categoria]
+      "INSERT INTO posts (user_id, imagem, legenda, titulo, id_categoria) VALUES (?, ?, ?, ?, ?)",
+      [userId, imagem, legenda, titulo, id_categoria]
     );
     console.log("Post criado com sucesso");
     return posts;

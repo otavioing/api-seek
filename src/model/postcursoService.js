@@ -32,12 +32,12 @@ const Listarcursosporusuario = async (userId) => {
     }
 };
 
-const CriarPostcurso = async (id_user, imagem_curso, nome_curso, nivel_curso, valor_curso, quantidade_vagas, audio_curso, legenda_curso, categoria_curso, descricao_curso) => {
+const CriarPostcurso = async (id_user, imagem_curso, nome_curso, nivel_curso, valor_curso, quantidade_vagas, audio_curso, legenda_curso, id_categoria, descricao_curso) => {
     try {
         const [posts] = await banco.query(`
-            insert into cursos (id_user, imagem_curso, nome_curso, nivel_curso, valor_curso, quantidade_vagas, audio_curso, legenda_curso, categoria_curso, descricao_curso)
+            insert into cursos (id_user, imagem_curso, nome_curso, nivel_curso, valor_curso, quantidade_vagas, audio_curso, legenda_curso, id_categoria, descricao_curso)
             values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `, [id_user, imagem_curso, nome_curso, nivel_curso, valor_curso, quantidade_vagas, audio_curso, legenda_curso, categoria_curso, descricao_curso]);
+        `, [id_user, imagem_curso, nome_curso, nivel_curso, valor_curso, quantidade_vagas, audio_curso, legenda_curso, id_categoria, descricao_curso]);
         console.log("Postcurso criado com sucesso");
         return posts;
     } catch (err) {
