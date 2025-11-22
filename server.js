@@ -9,6 +9,7 @@ const rotasPostsvagas = require("./src/routers/postvagaRouters");
 const rotasPostscursos = require("./src/routers/postcursoRouters");
 const rotasperfilspadrao = require("./src/routers/perfils_padraoRouters");
 const rotasperfilsempresa = require("./src/routers/perfils_empresaRouters");
+const rotasEstatisticas = require("./src/routers/estatisticasRouters");
 const rotasapiopenia = require("./src/routers/apiOpeniaRouters");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -30,6 +31,7 @@ app.use("/postsvagas", rotasPostsvagas);
 app.use("/postscursos", rotasPostscursos);
 app.use("/padrao", rotasperfilspadrao);
 app.use("/empresa", rotasperfilsempresa);
+app.use("/estatisticas", rotasEstatisticas);
 app.use("/openai", rotasapiopenia);
 
 app.listen(Port, () => {
