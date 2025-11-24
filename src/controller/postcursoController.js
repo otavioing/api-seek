@@ -23,6 +23,17 @@ const CursosServiceController = {
         }
     },
 
+    Listarcursosporid: async (request, response) => {
+        try {
+            const postId = request.params.id;
+            const data = await model.Listarcursosporid(postId);
+            response.status(200).json(data);
+        } catch (error) {
+            console.error("Erro ao conectar ao banco de dados:", error.message);
+            response.status(401).send({ message: "Falha ao executar a ação!" });
+        }
+    },
+
     CriarPostcurso: async (request, response) => {
         try {
             const id_user = request.body.id_user;

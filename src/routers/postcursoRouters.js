@@ -6,7 +6,8 @@ const upload = require('../config/upload_foto_capa_curso');
 const rota = Router();
 
 rota.get("/", myController.Listarcursos);
-rota.get("/:id", myController.Listarcursosporusuario);
+rota.get("/:id", myController.Listarcursosporid);
+rota.get("/listarporusuario/:id", myController.Listarcursosporusuario);
 rota.post("/", upload.single("imagem_curso"), myController.CriarPostcurso);
 rota.delete("/:id", myController.ApagarPostcurso);
 

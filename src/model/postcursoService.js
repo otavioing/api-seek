@@ -4,7 +4,7 @@ const { banco } = require("./database");
 const Listarcursos = async () => {
     try {
         const [posts] = await banco.query(`
-            select c.imagem_curso, c.nome_curso, c.valor_curso, u.nome as nome_usuario
+            select c.id, c.imagem_curso, c.nome_curso, c.valor_curso, u.nome as nome_usuario
             from cursos c
             join usuarios u ON c.id_user = u.id
             ORDER BY RAND() 
@@ -25,6 +25,21 @@ const Listarcursosporusuario = async (userId) => {
             join usuarios u ON c.id_user = u.id
             where c.id_user = ?
         `, [userId]);
+        return posts;
+    } catch (err) {
+        console.error("Erro ao criar postvaga:", err.message);
+        throw new Error("Erro interno");
+    }
+};
+
+const Listarcursosporid = async (postId) => {
+    try {
+        const [posts] = await banco.query(`
+            select c.*, u.nome as nome_usuario, u.email as email_usuario
+            from cursos c
+            join usuarios u ON c.id_user = u.id
+            where c.id = ?
+        `, [postId]);
         return posts;
     } catch (err) {
         console.error("Erro ao criar postvaga:", err.message);
@@ -56,4 +71,4 @@ const ApagarPostcurso = async (postId) => {
     }
 };
 
-module.exports = { Listarcursos, Listarcursosporusuario, CriarPostcurso, ApagarPostcurso};
+module.exports = { Listarcursos, Listarcursosporusuario, CriarPostcurso, ApagarPostcurso, Listarcursosporid };
