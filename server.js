@@ -5,6 +5,7 @@ const path = require('path');
 const app = express();
 const rotasUsuarios = require("./src/routers/usuariosRouters");
 const rotasPosts = require("./src/routers/postsRouters");
+const rotasTendencias = require("./src/routers/tendenciasRouters");
 const rotasPostsvagas = require("./src/routers/postvagaRouters");
 const rotasPostscursos = require("./src/routers/postcursoRouters");
 const rotasperfilspadrao = require("./src/routers/perfils_padraoRouters");
@@ -27,6 +28,7 @@ app.get("/", (request, response) => {
 
 app.use("/usuarios", rotasUsuarios);
 app.use("/posts", rotasPosts);
+app.use("/tendencias", rotasTendencias);
 app.use("/postsvagas", rotasPostsvagas);
 app.use("/postscursos", rotasPostscursos);
 app.use("/padrao", rotasperfilspadrao);

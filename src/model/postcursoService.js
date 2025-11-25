@@ -20,7 +20,7 @@ const Listarcursos = async () => {
 const Listarcursosporusuario = async (userId) => {
     try {
         const [posts] = await banco.query(`
-            select c.imagem_curso, c.nome_curso, c.valor_curso, u.nome as nome_usuario
+            select c.imagem_curso, c.nome_curso, c.valor_curso, c.descricao_curso, u.nome as nome_usuario
             from cursos c
             join usuarios u ON c.id_user = u.id
             where c.id_user = ?
