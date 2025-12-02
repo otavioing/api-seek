@@ -55,7 +55,7 @@ const buscarusuariopornome = async (nome) => {
   try {
     const like = `%${nome}%`;
     const data = await banco.query(
-      `SELECT id, nome, nome_de_usuario 
+      `SELECT id, nome, nome_de_usuario, foto 
        FROM usuarios 
        WHERE nome LIKE ? OR nome_de_usuario LIKE ?`,
       [like, like]
