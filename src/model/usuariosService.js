@@ -51,6 +51,23 @@ const Getbyidvarificarcaixa = async (id) => {
   }
 };
 
+const buscarusuariopornome = async (nome) => {
+  try {
+    const like = `%${nome}%`;
+    const data = await banco.query(
+      `SELECT id, nome, nome_de_usuario 
+       FROM usuarios 
+       WHERE nome LIKE ? OR nome_de_usuario LIKE ?`,
+      [like, like]
+    );
+    return data[0];
+  } catch (error) {
+    console.log("Erro ao conectar ao banco de dados: ", error.message);
+    throw new Error("Erro ao buscar usuário por nome");
+  }
+};
+
+
 const verificartipo = async (id) => {
   try {
     const data = await banco.query("SELECT tipo FROM usuarios WHERE id = ?", [id]);
@@ -369,7 +386,7 @@ const Login = async (request, response) => {
     const token = jwt.sign(
       { id: usuario.id, email: usuario.email }, // payload
       process.env.JWT_SECRET,                  // chave secreta
-      { expiresIn: process.env.JWT_EXPIRES} // tempo de expiração
+      { expiresIn: process.env.JWT_EXPIRES } // tempo de expiração
     );
 
     // Retorna o usuário e o token
@@ -556,6 +573,7 @@ module.exports = {
   Atualizaracessibilidade,
   updatecompletarcadastropadrao,
   Getbyidvarificarcaixa,
+  buscarusuariopornome,
   definirtipo,
   verificartipo,
   completarcadastro,

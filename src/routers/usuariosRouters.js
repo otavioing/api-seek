@@ -13,6 +13,7 @@ rota.get("/", myController.GetAll);
 rota.get("/:id", autenticarJWT, myController.GetById);
 // rota.get("/:id", myController.GetById);
 rota.get("/verificarcaixa/:id", myController.Getbyidvarificarcaixa);
+rota.get("/buscar-usuario-por-nome/:nome", myController.buscarusuariopornome);
 rota.get("/verificartipo/:id", myController.verificartipo);
 rota.delete("/:id", myController.Erase);
 rota.post("/", myController.Create);

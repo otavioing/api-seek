@@ -35,6 +35,17 @@ const UsuariosController = {
     }
   },
 
+  buscarusuariopornome: async (request, response) => {
+    try {
+      const nome = request.params.nome;
+      const data = await model.buscarusuariopornome(nome);
+      response.status(200).send(data);
+    } catch (error) {
+      console.error("Erro ao conectar ao banco de dados:", error.message);
+      response.status(401).send({ message: "Falha ao executar a ação!" });
+    }
+  },
+
   verificartipo: async (request, response) => {
     try {
       const id = request.params.id;
