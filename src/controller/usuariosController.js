@@ -81,6 +81,52 @@ const UsuariosController = {
       response.status(500).send({ message: "Falha ao criar usuário!" });
     }
   },
+
+  getseguindoporusuario: async (request, response) => {
+    try {
+      const id = request.params.id;
+      const data = await model.getseguindoporusuario(id);
+      response.status(200).send(data);
+    } catch (error) {
+      console.error("Erro ao conectar ao banco de dados:", error.message);
+      response.status(401).send({ message: "Falha ao executar a ação!" });
+    }
+  },
+
+  getseguidoresporusuario: async (request, response) => {
+    try {
+      const id = request.params.id;
+      const data = await model.getseguidoresporusuario(id);
+      response.status(200).send(data);
+    } catch (error) {
+      console.error("Erro ao conectar ao banco de dados:", error.message);
+      response.status(401).send({ message: "Falha ao executar a ação!" });
+    }
+  },
+
+  Seguirusuario: async (request, response) => {
+    try {
+      const seguidorId = request.params.seguidorId;
+      const seguidoId = request.params.seguidoId;
+      const data = await model.Seguirusuario(seguidorId, seguidoId);
+      response.status(200).send(data);
+    } catch (error) {
+      console.error("Erro ao conectar ao banco de dados:", error.message);
+      response.status(401).send({ message: "Falha ao executar a ação!" });
+    }
+  },
+
+  verificarsesegue: async (request, response) => {
+    try {
+      const seguidorId = request.params.seguidorId;
+      const seguidoId = request.params.seguidoId;
+      const data = await model.verificarsesegue(seguidorId, seguidoId);
+      response.status(200).send({ segue: data });
+    } catch (error) {
+      console.error("Erro ao conectar ao banco de dados:", error.message);
+      response.status(401).send({ message: "Falha ao executar a ação!" });
+    }
+  },
 };
 
 module.exports = UsuariosController;

@@ -15,6 +15,9 @@ rota.get("/:id", autenticarJWT, myController.GetById);
 rota.get("/verificarcaixa/:id", myController.Getbyidvarificarcaixa);
 rota.get("/buscar-usuario-por-nome/:nome", myController.buscarusuariopornome);
 rota.get("/verificartipo/:id", myController.verificartipo);
+rota.get("/seguindo/:id", myController.getseguindoporusuario);
+rota.get("/seguidores/:id", myController.getseguidoresporusuario);
+rota.get("/verificarsesegue/:seguidorId/:seguidoId", myController.verificarsesegue);
 rota.delete("/:id", myController.Erase);
 rota.post("/", myController.Create);
 rota.post("/", uploadfotoperfil.single("foto"), Create); 
@@ -35,6 +38,7 @@ rota.get("/padrao/:id", GetAllbyidPadrao);
 rota.get("/empresas/:id", GetAllbyidEmpresas);
 rota.put("/update-foto/:id", uploadfotoperfil.single("foto"), Updatefoto);
 rota.put("/update-fotobanner/:id", uploadfotobanner.single("foto"), Updatefotobanner);
+rota.post("/seguir-usuario/:seguidorId/:seguidoId", myController.Seguirusuario);
 
 
 

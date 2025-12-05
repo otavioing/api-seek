@@ -88,6 +88,67 @@ const Erase = async (id) => {
   }
 };
 
+const getseguindoporusuario = async (id) => {
+  try {
+    const data = await banco.query("SELECT COUNT(*) FROM seguidores WHERE seguidor_id = ?", [id]);
+    return data[0];
+  } catch (error) {
+    console.log("Erro ao conectar ao banco de dados: ", error.message);
+    throw new Error("Erro ao buscar total de seguindo");
+  }
+};
+
+const getseguidoresporusuario = async (id) => {
+  try {
+    const data = await banco.query("SELECT COUNT(*) FROM seguidores WHERE seguido_id = ?", [id]);
+    return data[0];
+  } catch (error) {
+    console.log("Erro ao conectar ao banco de dados: ", error.message);
+    throw new Error("Erro ao buscar total de seguidores");
+  }
+};
+
+const Seguirusuario = async (seguidorId, seguidoId) => {
+  try {
+    // Verifica se já existe o follow
+    const [rows] = await banco.query(
+      "SELECT id FROM seguidores WHERE seguidor_id = ? AND seguido_id = ? LIMIT 1",
+      [seguidorId, seguidoId]
+    );
+
+    if (rows.length > 0) {
+      // Já segue → então deixar de seguir
+      await banco.query(
+        "DELETE FROM seguidores WHERE seguidor_id = ? AND seguido_id = ?",
+        [seguidorId, seguidoId]
+      );
+      console.log(`Follow removido: ${seguidorId} deixou de seguir ${seguidoId}`);
+      return { message: "Deixou de seguir", seguindo: false };
+    } else {
+      // Não segue → então seguir
+      const [result] = await banco.query(
+        "INSERT INTO seguidores (seguidor_id, seguido_id) VALUES (?, ?)",
+        [seguidorId, seguidoId]
+      );
+      console.log(`Agora segue: ${seguidorId} começou a seguir ${seguidoId}`);
+      return { message: "Agora segue", seguindo: true, insertId: result.insertId };
+    }
+  } catch (err) {
+    console.error("Erro ao alternar follow:", err.message);
+    throw new Error("Erro interno");
+  }
+};
+
+const verificarsesegue = async (seguidorId, seguidoId) => {
+  try {
+    const [rows] = await banco.query("SELECT id FROM seguidores WHERE seguidor_id = ? AND seguido_id = ? LIMIT 1", [seguidorId, seguidoId]);
+    return rows.length > 0;
+  } catch (error) {
+    console.log("Erro ao conectar ao banco de dados: ", error.message);
+    throw new Error("Erro ao verificar se segue");
+  }
+};
+
 const SolicitarCriacao = async (request, response) => {
   try {
     const { nome, email, senha } = request.body;
@@ -534,7 +595,7 @@ const GetAllbyidPadrao = async (request, response) => {
   try {
     const id = request.params.id;
     const data = await banco.query(
-      "SELECT u.foto, u.banner, u.nome, u.nome_de_usuario, pp.descricao, (SELECT COUNT(*) FROM posts WHERE user_id = u.id) AS total_posts FROM usuarios AS u INNER JOIN perfis_padrao AS pp ON u.id = pp.usuario_id WHERE u.id = ?;",
+      "SELECT u.foto, u.banner, u.nome, u.nome_de_usuario, pp.descricao,(SELECT COUNT(*) FROM posts WHERE user_id = u.id) AS total_posts,(SELECT COUNT(*) FROM seguidores WHERE seguido_id = u.id) AS total_seguidores,(SELECT COUNT(*) FROM seguidores WHERE seguidor_id = u.id) AS total_seguindo FROM usuarios AS u INNER JOIN perfis_padrao AS pp ON u.id = pp.usuario_id WHERE u.id = ?;",
       [id]
     );
     response.status(200).send(data[0]);
@@ -548,7 +609,7 @@ const GetAllbyidEmpresas = async (request, response) => {
   try {
     const id = request.params.id;
     const data = await banco.query(
-      "SELECT u.foto, u.banner, u.nome, u.nome_de_usuario, pe.descricao, (SELECT COUNT(*) FROM posts WHERE user_id = u.id) AS total_posts FROM usuarios AS u INNER JOIN perfis_empresa AS pe ON u.id = pe.usuario_id WHERE u.id = ?;",
+      "SELECT u.foto, u.banner, u.nome, u.nome_de_usuario, pe.descricao,(SELECT COUNT(*) FROM posts WHERE user_id = u.id) AS total_posts,(SELECT COUNT(*) FROM seguidores WHERE seguido_id = u.id) AS total_seguidores,(SELECT COUNT(*) FROM seguidores WHERE seguidor_id = u.id) AS total_seguindo FROM usuarios AS u INNER JOIN perfis_empresa AS pe ON u.id = pe.usuario_id WHERE u.id = ?;",
       [id]
     );
     response.status(200).send(data[0]);
@@ -557,6 +618,9 @@ const GetAllbyidEmpresas = async (request, response) => {
     response.status(401).send({ message: "Falha ao executar a ação!" });
   }
 };
+
+
+
 
 module.exports = {
   GetAll,
@@ -583,4 +647,8 @@ module.exports = {
   GetAllbyidEmpresas,
   Updatefoto,
   Updatefotobanner,
+  getseguindoporusuario,
+  getseguidoresporusuario,
+  Seguirusuario,
+  verificarsesegue,
 };
