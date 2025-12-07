@@ -108,6 +108,26 @@ const getseguidoresporusuario = async (id) => {
   }
 };
 
+const getlistaseguindoporusuario = async (id) => {
+  try {
+    const data = await banco.query("SELECT u.id,u.nome, u.foto FROM seguidores s JOIN usuarios u ON u.id = s.seguido_id WHERE s.seguidor_id = ?", [id]);
+    return data[0];
+  } catch (error) {
+    console.log("Erro ao conectar ao banco de dados: ", error.message);
+    throw new Error("Erro ao buscar lista de seguindo");
+  }
+};
+
+const getlistaseguidoresporusuario = async (id) => {
+  try {
+    const data = await banco.query("SELECT u.id,u.nome,u.foto FROM seguidores s JOIN usuarios u ON u.id = s.seguidor_id WHERE s.seguido_id = ?",[id]);
+    return data[0];
+  } catch (error) {
+    console.log("Erro ao conectar ao banco de dados: ", error.message);
+    throw new Error("Erro ao buscar lista de seguidores");
+  }
+};
+
 const Seguirusuario = async (seguidorId, seguidoId) => {
   try {
     // Verifica se já existe o follow
@@ -651,4 +671,6 @@ module.exports = {
   getseguidoresporusuario,
   Seguirusuario,
   verificarsesegue,
+  getlistaseguindoporusuario,
+  getlistaseguidoresporusuario,
 };

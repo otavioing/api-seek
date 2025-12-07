@@ -18,6 +18,8 @@ rota.get("/verificartipo/:id", myController.verificartipo);
 rota.get("/seguindo/:id", myController.getseguindoporusuario);
 rota.get("/seguidores/:id", myController.getseguidoresporusuario);
 rota.get("/verificarsesegue/:seguidorId/:seguidoId", myController.verificarsesegue);
+rota.get("/lista-seguindo/:id", myController.getlistaseguindoporusuario);
+rota.get("/lista-seguidores/:id", myController.getlistaseguidoresporusuario);
 rota.delete("/:id", myController.Erase);
 rota.post("/", myController.Create);
 rota.post("/", uploadfotoperfil.single("foto"), Create); 
