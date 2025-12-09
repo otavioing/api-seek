@@ -129,22 +129,22 @@ const UsuariosController = {
   },
 
   getlistaseguindoporusuario: async (request, response) => {
-    try{
+    try {
       const id = request.params.id;
       const data = await model.getlistaseguindoporusuario(id);
       response.status(200).send(data);
-    }catch (error){
+    } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
       response.status(401).send({ message: "Falha ao executar a ação!" });
     }
   },
 
   getlistaseguidoresporusuario: async (request, response) => {
-    try{
+    try {
       const id = request.params.id;
       const data = await model.getlistaseguidoresporusuario(id);
       response.status(200).send(data);
-    }catch (error){
+    } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
       response.status(401).send({ message: "Falha ao executar a ação!" });
     }

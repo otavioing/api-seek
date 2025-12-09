@@ -55,9 +55,11 @@ const buscarusuariopornome = async (nome) => {
   try {
     const like = `%${nome}%`;
     const data = await banco.query(
-      `SELECT id, nome, nome_de_usuario, foto 
-       FROM usuarios 
-       WHERE nome LIKE ? OR nome_de_usuario LIKE ?`,
+      `SELECT id, nome, nome_de_usuario, foto
+FROM usuarios
+WHERE (nome LIKE ? OR nome_de_usuario LIKE ?)
+  AND tipo = 1;
+`,
       [like, like]
     );
     return data[0];
@@ -120,7 +122,7 @@ const getlistaseguindoporusuario = async (id) => {
 
 const getlistaseguidoresporusuario = async (id) => {
   try {
-    const data = await banco.query("SELECT u.id,u.nome,u.foto FROM seguidores s JOIN usuarios u ON u.id = s.seguidor_id WHERE s.seguido_id = ?",[id]);
+    const data = await banco.query("SELECT u.id,u.nome,u.foto FROM seguidores s JOIN usuarios u ON u.id = s.seguidor_id WHERE s.seguido_id = ?", [id]);
     return data[0];
   } catch (error) {
     console.log("Erro ao conectar ao banco de dados: ", error.message);
