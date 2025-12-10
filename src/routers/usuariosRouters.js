@@ -21,10 +21,12 @@ rota.get("/verificarsesegue/:seguidorId/:seguidoId", myController.verificarseseg
 rota.get("/lista-seguindo/:id", myController.getlistaseguindoporusuario);
 rota.get("/lista-seguidores/:id", myController.getlistaseguidoresporusuario);
 rota.get("/preferencias-notificacoes/:id_user", myController.verificarpreferencianotificacao);
+rota.get("/preferencias-privacidade/:id_user", myController.verificarpreferenciaprivacidade);
 rota.put("/:id", Update)
 rota.put("/atualizar-tipo/:id", definirtipo);
 rota.put("/completarcoluna-cadastro/:id", completarcadastro)
-rota.put("/preferencias-notificacoes/:id_user", myController.atualizarPreferencia);
+rota.put("/preferencias-notificacoes/:id_user", myController.atualizarPreferencianotificacao);
+rota.put("/preferencias-privacidade/:id_user", myController.atualizarPreferenciaprivacidade);
 rota.put("/update-foto/:id", uploadfotoperfil.single("foto"), Updatefoto);
 rota.put("/update-fotobanner/:id", uploadfotobanner.single("foto"), Updatefotobanner);
 rota.post("/", myController.Create);

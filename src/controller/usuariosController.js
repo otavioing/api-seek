@@ -161,15 +161,38 @@ const UsuariosController = {
     }
   },
 
-  atualizarPreferencia: async (request, response) => {
+  verificarpreferenciaprivacidade: async (request, response) => {
+    try {
+      const id_user = request.params.id_user;
+      const data = await model.verificarpreferenciaprivacidade(id_user);
+      response.status(200).send(data);
+    } catch (error) {
+      console.error("Erro ao conectar ao banco de dados:", error.message);
+      response.status(401).send({ message: "Falha ao executar a ação!" });
+    }
+  },
+
+  atualizarPreferencianotificacao: async (request, response) => {
     try {
       const id_user = request.params.id_user;
       const { nome_notificacao, preferencia } = request.body;
-      await model.atualizarPreferencia(id_user, nome_notificacao, preferencia);
+      await model.atualizarPreferencianotificacao(id_user, nome_notificacao, preferencia);
       response.status(200).send({ message: "Preferência atualizada com sucesso!" });
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
       response.status(500).send({ message: "Falha ao atualizar preferência!" });
+    }
+  },
+
+  atualizarPreferenciaprivacidade: async (request, response) => {
+    try {
+      const id_user = request.params.id_user;
+      const { nome_privacidade, preferencia } = request.body;
+      await model.atualizarPreferenciaprivacidade(id_user, nome_privacidade, preferencia);
+      response.status(200).send({ message: "Preferência de privacidade atualizada com sucesso!" });
+    } catch (error) {
+      console.error("Erro ao conectar ao banco de dados:", error.message);
+      response.status(500).send({ message: "Falha ao atualizar preferência de privacidade!" });
     }
   },
 

@@ -55,10 +55,7 @@ const buscarusuariopornome = async (nome) => {
   try {
     const like = `%${nome}%`;
     const data = await banco.query(
-      `SELECT id, nome, nome_de_usuario, foto
-FROM usuarios
-WHERE (nome LIKE ? OR nome_de_usuario LIKE ?)
-  AND tipo = 1;
+      `SELECT u.id, u.nome, u.nome_de_usuario, u.foto FROM usuarios AS u JOIN preferencias_privacidade AS p ON p.id_user = u.id WHERE (u.nome LIKE ? OR u.nome_de_usuario LIKE ?) AND u.tipo = 1 AND p.nome_privacidade = 'exibir_na_busca' AND p.preferencia = 1;
 `,
       [like, like]
     );
@@ -180,6 +177,15 @@ const verificarpreferencianotificacao = async (id_user) => {
     throw new Error("Erro ao verificar preferencia de notificação");
   }
 }
+const verificarpreferenciaprivacidade = async (id_user) => {
+  try{
+    const data = await banco.query("SELECT nome_privacidade, preferencia FROM preferencias_privacidade WHERE id_user = ?", [id_user]);
+    return data[0];
+  }catch(error){
+    console.log("Erro ao conectar ao banco de dados: ", error.message);
+    throw new Error("Erro ao verificar preferencia de privacidade");
+  }
+}
 
 const verificarnotificacaologin = async (id_user) => {
   try{
@@ -195,7 +201,7 @@ const verificarnotificacaologin = async (id_user) => {
   }
 }
 
-const atualizarPreferencia = async (id_user, nome_notificacao, preferencia) => {
+const atualizarPreferencianotificacao = async (id_user, nome_notificacao, preferencia) => {
 
   if (!id_user || !nome_notificacao || preferencia === undefined) {
     return res.status(400).json({ message: "Dados incompletos" });
@@ -208,6 +214,27 @@ const atualizarPreferencia = async (id_user, nome_notificacao, preferencia) => {
        VALUES (?, ?, ?)
        ON DUPLICATE KEY UPDATE preferencia = VALUES(preferencia)`,
       [id_user, nome_notificacao, preferencia]
+    );
+
+    return { message: "Preferência atualizada com sucesso!" };
+  } catch (error) {
+    console.error("Erro ao atualizar preferência:", error);
+    throw new Error("Erro interno no servidor");
+  }
+};
+const atualizarPreferenciaprivacidade = async (id_user, nome_privacidade, preferencia) => {
+
+  if (!id_user || !nome_privacidade || preferencia === undefined) {
+    return res.status(400).json({ message: "Dados incompletos" });
+  }
+
+  try {
+    // Atualiza (ou cria caso não exista)
+    const [result] = await banco.query(
+      `INSERT INTO preferencias_privacidade (id_user, nome_privacidade, preferencia)
+       VALUES (?, ?, ?)
+       ON DUPLICATE KEY UPDATE preferencia = VALUES(preferencia)`,
+      [id_user, nome_privacidade, preferencia]
     );
 
     return { message: "Preferência atualizada com sucesso!" };
@@ -507,7 +534,8 @@ const Login = async (request, response) => {
     ]);
     usuario.ultimo_login = new Date(); // adiciona no objeto
 
-    await aplicarPreferenciasSeNaoExistirem(usuario.id);
+    await aplicarPreferenciasnotificacoesSeNaoExistirem(usuario.id);
+    await aplicarPreferenciasprivacidadeSeNaoExistirem(usuario.id);
 
 
     await verificarnotificacaologin(usuario.id);
@@ -538,7 +566,7 @@ const Login = async (request, response) => {
   }
 };
 
-async function aplicarPreferenciasSeNaoExistirem(userId) {
+async function aplicarPreferenciasnotificacoesSeNaoExistirem(userId) {
     const preferenciasPadrao = [
         'receber_login',
         'receber_seguidores',
@@ -550,6 +578,23 @@ async function aplicarPreferenciasSeNaoExistirem(userId) {
         await banco.execute(   // CORRIGIDO AQUI
             `INSERT IGNORE INTO preferencias_notificacoes 
              (id_user, nome_notificacao, preferencia)
+             VALUES (?, ?, 1)`,
+            [userId, pref]
+        );
+    }
+}
+async function aplicarPreferenciasprivacidadeSeNaoExistirem(userId) {
+    const preferenciasPadrao = [
+        'exibir_na_busca',
+        'exibir_no_feed',
+        'exibir_cursos_no_feed',
+        'exibir_likes',
+    ];
+
+    for (const pref of preferenciasPadrao) {
+        await banco.execute(   // CORRIGIDO AQUI
+            `INSERT IGNORE INTO preferencias_privacidade 
+             (id_user, nome_privacidade, preferencia)
              VALUES (?, ?, 1)`,
             [userId, pref]
         );
@@ -753,5 +798,7 @@ module.exports = {
   getlistaseguindoporusuario,
   getlistaseguidoresporusuario,
   verificarpreferencianotificacao,
-  atualizarPreferencia,
+  verificarpreferenciaprivacidade,
+  atualizarPreferencianotificacao,
+  atualizarPreferenciaprivacidade,
 };
