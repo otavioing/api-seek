@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 10/12/2025 às 17:46
+-- Tempo de geração: 10/12/2025 às 18:57
 -- Versão do servidor: 10.4.32-MariaDB
--- Versão do PHP: 8.2.12
+-- Versão do PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -250,10 +250,36 @@ CREATE TABLE `preferencias_notificacoes` (
 --
 
 INSERT INTO `preferencias_notificacoes` (`id`, `id_user`, `nome_notificacao`, `preferencia`) VALUES
-(1, 9, 'receber_login', 1),
+(1, 9, 'receber_login', 0),
 (5, 9, 'receber_seguidores', 1),
-(6, 9, 'receber_comentarios', 1),
-(7, 9, 'receber_likes', 1);
+(6, 9, 'receber_comentarios', 0),
+(7, 9, 'receber_likes', 1),
+(85, 9, 'exibir_na_busca', 0),
+(86, 9, 'exibir_no_feed', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `preferencias_privacidade`
+--
+
+CREATE TABLE `preferencias_privacidade` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `nome_privacidade` varchar(50) NOT NULL,
+  `preferencia` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `preferencias_privacidade`
+--
+
+INSERT INTO `preferencias_privacidade` (`id`, `id_user`, `nome_privacidade`, `preferencia`) VALUES
+(1, 9, 'exibir_na_busca', 0),
+(2, 9, 'exibir_no_feed', 0),
+(3, 9, 'exibir_cursos_no_feed', 1),
+(4, 9, 'exibir_likes', 1),
+(14, 9, 'receber_comentarios', 0);
 
 -- --------------------------------------------------------
 
@@ -320,7 +346,7 @@ INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `foto`, `tema`, `cargo`,
 (3, 'who.jxao', 'joaojfpessoal@gmail.com', '$2b$10$fJwhob.w51UdYqGq8GV76uC7r6wE6dJw.cufVIJxvWwxdwXa7M9vK', 'http://localhost:4500/uploads/fotopadraousuario.png', 'claro', NULL, NULL, 'este usuário não possui descrição', '/uploads/banners/1750949495134-WIN_20250626_11_50_21_Pro.jpg', 1, '2025-05-05 16:39:11', 1, '2025-10-07 09:19:51', 'Ativo', 'padrao', 'Padrão', NULL, NULL),
 (4, 'João da Silva', 'joao.silva@example.com', 'novaSenha123', 'http://localhost:4500/uploads/fotopadraousuario.png', 'escuro', NULL, NULL, NULL, 'https://meusite.com/banners/banner1.jpg', 1, '2025-05-06 22:39:09', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (7, 'João Silva Atualizado', 'fewfwfw@hbrhbv atualizado', 'senha1234', 'http://localhost:4500/uploads/fotopadraousuario.png', 'claro', NULL, NULL, 'este usuário não possui descrição', NULL, 1, '2025-06-17 20:06:16', 1, NULL, 'Ativo', 'padrao', 'Padrão', NULL, NULL),
-(9, 'Otávio', 'tectonicroom356@gmail.com', '$2b$10$EHAWkhmwv8MyWtnBfG/6yujRyiSJGZOM7TciIFNvkAasnFSikFgoq', 'http://localhost:4500/uploads/foto_perfil/1759968055964-asteroid.png', 'escuro', NULL, NULL, 'este usuário não possui descrição', 'http://localhost:4500/uploads/banners/1763990447336-WIN_20251107_08_47_31_Pro.jpg', 0, '2025-06-26 01:21:52', 1, '2025-12-10 10:56:34', 'Ativo', 'padrao', 'Admin', '462250', '2025-11-01 18:26:11'),
+(9, 'Otávio', 'tectonicroom356@gmail.com', '$2b$10$EHAWkhmwv8MyWtnBfG/6yujRyiSJGZOM7TciIFNvkAasnFSikFgoq', 'http://localhost:4500/uploads/foto_perfil/1759968055964-asteroid.png', 'escuro', NULL, NULL, 'este usuário não possui descrição', 'http://localhost:4500/uploads/banners/1763990447336-WIN_20251107_08_47_31_Pro.jpg', 0, '2025-06-26 01:21:52', 1, '2025-12-10 14:19:39', 'Ativo', 'padrao', 'Admin', '462250', '2025-11-01 18:26:11'),
 (10, 'testE', '3rwfrgtrhytjuyi@gmail.com', '$2b$10$GZsIzdtonQlQ0AycbW4UkerdIKgDHtFIIKawevfQG7SUOFEijFua2', 'http://localhost:4500/uploads/fotopadraousuario.png', 'claro', NULL, NULL, 'este usuário não possui descrição', NULL, 1, '2025-06-26 01:27:17', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (11, 'felipe', 'fellipe@mail.com', '$2b$10$VT.ofVWpRSlLxWiN01L9dulNuWwrpNs9yeiCTF1De.CWEIGy7UBC.', 'http://localhost:4500/uploads/fotopadraousuario.png', 'claro', NULL, NULL, 'este usuário não possui descrição', NULL, 1, '2025-06-26 17:19:10', 1, NULL, 'Ativo', 'padrao', 'Padrão', '959579', '2025-11-01 18:26:48'),
 (12, 'Luiz Gustavo', 'luiz@gmail.com', '$2b$10$KozHbUufQSQVaKo4oq1P3eb.wHaaBTqRJjWjA.CHbCfVE8Tc2ZDbW', 'http://localhost:4500/uploads/fotopadraousuario.png', 'claro', NULL, NULL, 'este usuário não possui descrição', NULL, 1, '2025-06-26 17:31:54', 1, NULL, 'Ativo', 'padrao', 'Padrão', '245296', '2025-11-01 18:32:21'),
@@ -401,6 +427,14 @@ ALTER TABLE `preferencias_notificacoes`
   ADD UNIQUE KEY `id_user` (`id_user`,`nome_notificacao`);
 
 --
+-- Índices de tabela `preferencias_privacidade`
+--
+ALTER TABLE `preferencias_privacidade`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_user` (`id_user`,`nome_privacidade`),
+  ADD KEY `fk_user_privacidade` (`id_user`);
+
+--
 -- Índices de tabela `seguidores`
 --
 ALTER TABLE `seguidores`
@@ -453,7 +487,13 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT de tabela `preferencias_notificacoes`
 --
 ALTER TABLE `preferencias_notificacoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+
+--
+-- AUTO_INCREMENT de tabela `preferencias_privacidade`
+--
+ALTER TABLE `preferencias_privacidade`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de tabela `seguidores`
@@ -509,6 +549,12 @@ ALTER TABLE `posts`
 --
 ALTER TABLE `preferencias_notificacoes`
   ADD CONSTRAINT `preferencias_notificacoes_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
+
+--
+-- Restrições para tabelas `preferencias_privacidade`
+--
+ALTER TABLE `preferencias_privacidade`
+  ADD CONSTRAINT `fk_user_privacidade` FOREIGN KEY (`id_user`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Restrições para tabelas `seguidores`
