@@ -20,10 +20,15 @@ rota.get("/seguidores/:id", myController.getseguidoresporusuario);
 rota.get("/verificarsesegue/:seguidorId/:seguidoId", myController.verificarsesegue);
 rota.get("/lista-seguindo/:id", myController.getlistaseguindoporusuario);
 rota.get("/lista-seguidores/:id", myController.getlistaseguidoresporusuario);
-rota.delete("/:id", myController.Erase);
+rota.get("/preferencias-notificacoes/:id_user", myController.verificarpreferencianotificacao);
+rota.put("/:id", Update)
+rota.put("/atualizar-tipo/:id", definirtipo);
+rota.put("/completarcoluna-cadastro/:id", completarcadastro)
+rota.put("/preferencias-notificacoes/:id_user", myController.atualizarPreferencia);
+rota.put("/update-foto/:id", uploadfotoperfil.single("foto"), Updatefoto);
+rota.put("/update-fotobanner/:id", uploadfotobanner.single("foto"), Updatefotobanner);
 rota.post("/", myController.Create);
 rota.post("/", uploadfotoperfil.single("foto"), Create); 
-rota.put("/:id", Update)
 rota.post("/completar-cadastro-padrao", updatecompletarcadastropadrao);
 rota.post("/login", Login)
 rota.post("/criar-codigo-verificacao", CriarCodigoVerificacao);
@@ -32,15 +37,12 @@ rota.post("/solicitar-criacao", SolicitarCriacao);
 rota.post("/solicitar-exclusao", Solicitarexclusao);
 rota.post("/atualizar-tema", Atualizartema);
 rota.post("/atualizar-acessibilidade", Atualizaracessibilidade);
-rota.put("/atualizar-tipo/:id", definirtipo);
-rota.put("/completarcoluna-cadastro/:id", completarcadastro)
 rota.post("/completar-cadastro-empresa", updatecompletarcadastroempresa);
 rota.post("/enviar-foto-perfil/:id", uploadfotoperfil.single("foto"), EnviarfotoPerfil);
 rota.get("/padrao/:id", GetAllbyidPadrao);
 rota.get("/empresas/:id", GetAllbyidEmpresas);
-rota.put("/update-foto/:id", uploadfotoperfil.single("foto"), Updatefoto);
-rota.put("/update-fotobanner/:id", uploadfotobanner.single("foto"), Updatefotobanner);
 rota.post("/seguir-usuario/:seguidorId/:seguidoId", myController.Seguirusuario);
+rota.delete("/:id", myController.Erase);
 
 
 

@@ -171,6 +171,53 @@ const verificarsesegue = async (seguidorId, seguidoId) => {
   }
 };
 
+const verificarpreferencianotificacao = async (id_user) => {
+  try{
+    const data = await banco.query("SELECT nome_notificacao, preferencia FROM preferencias_notificacoes WHERE id_user = ?", [id_user]);
+    return data[0];
+  }catch(error){
+    console.log("Erro ao conectar ao banco de dados: ", error.message);
+    throw new Error("Erro ao verificar preferencia de notificação");
+  }
+}
+
+const verificarnotificacaologin = async (id_user) => {
+  try{
+    const data = await banco.query("SELECT preferencia FROM preferencias_notificacoes WHERE id_user = ? AND nome_notificacao = 'receber_login'", [id_user]);
+    if(data[0][0].preferencia === 1){
+      return true;
+    }else{
+      return false;
+    }
+  }catch(error){
+    console.log("Erro ao conectar ao banco de dados: ", error.message);
+    throw new Error("Erro ao verificar preferencia de notificação de login");
+  }
+}
+
+const atualizarPreferencia = async (id_user, nome_notificacao, preferencia) => {
+
+  if (!id_user || !nome_notificacao || preferencia === undefined) {
+    return res.status(400).json({ message: "Dados incompletos" });
+  }
+
+  try {
+    // Atualiza (ou cria caso não exista)
+    const [result] = await banco.query(
+      `INSERT INTO preferencias_notificacoes (id_user, nome_notificacao, preferencia)
+       VALUES (?, ?, ?)
+       ON DUPLICATE KEY UPDATE preferencia = VALUES(preferencia)`,
+      [id_user, nome_notificacao, preferencia]
+    );
+
+    return { message: "Preferência atualizada com sucesso!" };
+  } catch (error) {
+    console.error("Erro ao atualizar preferência:", error);
+    throw new Error("Erro interno no servidor");
+  }
+};
+
+
 const SolicitarCriacao = async (request, response) => {
   try {
     const { nome, email, senha } = request.body;
@@ -460,7 +507,17 @@ const Login = async (request, response) => {
     ]);
     usuario.ultimo_login = new Date(); // adiciona no objeto
 
-    await enviaremaillogin(usuario.email, usuario.nome);
+    await aplicarPreferenciasSeNaoExistirem(usuario.id);
+
+
+    await verificarnotificacaologin(usuario.id);
+
+    if(await verificarnotificacaologin(usuario.id)){
+      await enviaremaillogin(usuario.email, usuario.nome);
+      console.log("Email de login enviado.");
+    }else{
+      console.log("Usuário optou por não receber email de login.");
+    }
 
     // Remove senha da resposta
     delete usuario.senha;
@@ -480,6 +537,26 @@ const Login = async (request, response) => {
     response.status(500).send({ message: "Erro interno no servidor" });
   }
 };
+
+async function aplicarPreferenciasSeNaoExistirem(userId) {
+    const preferenciasPadrao = [
+        'receber_login',
+        'receber_seguidores',
+        'receber_comentarios',
+        'receber_likes',
+    ];
+
+    for (const pref of preferenciasPadrao) {
+        await banco.execute(   // CORRIGIDO AQUI
+            `INSERT IGNORE INTO preferencias_notificacoes 
+             (id_user, nome_notificacao, preferencia)
+             VALUES (?, ?, 1)`,
+            [userId, pref]
+        );
+    }
+}
+
+
 
 
 
@@ -675,4 +752,6 @@ module.exports = {
   verificarsesegue,
   getlistaseguindoporusuario,
   getlistaseguidoresporusuario,
+  verificarpreferencianotificacao,
+  atualizarPreferencia,
 };
