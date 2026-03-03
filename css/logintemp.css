@@ -1,0 +1,790 @@
+/*------------------------------------------------------------------------------*/
+/*-------------------------------- Explorar CSS --------------------------------*/
+/*------------------------------------------------------------------------------*/
+:root {
+    --cinzaBase: rgb(220, 220, 220);
+
+    --cinzaBasee: rgb(158, 158, 158);
+
+    --cinzaBasec: rgb(215, 214, 214);
+
+    --cinzaClaro: rgb(235, 235, 235);
+
+    --laranjaBase: rgb(228, 95, 16);
+
+    --brancoBase: rgb(255, 255, 255);
+
+    --preto: #0E0E0E;
+
+    --azulBase: #2B63F0;
+
+    --azulDesq: #322BF0;
+
+    --azulBasee: #00008b;
+
+    --azulBasec: rgb(116, 84, 233);
+
+    --roxobase: #942af1;
+
+    --roxoc: rgb(172, 161, 210);
+
+    --branco: #f3f3f3;
+
+    --vermelhom: #EF0000;
+
+
+
+    --ModoEscuroBase: #1F1F1F;
+    --ModoEscuroMesc: #656565;
+    --ModoEscuroMesc2: #555555;
+    --ModoEscuroFilt: #131313;
+
+    --ModoEscuroFontV: #5AB3FF;
+    --ModoEscuroFontC: #E197FF;
+
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: var(--brancoBase);
+}
+
+body{
+    overflow-y: hidden;
+}
+
+/*------------------------------Modal Portifolio-----------------------------*/
+
+.sign-up-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.sign-up-content {
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--brancoBase);
+    margin: auto;
+    height: auto;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.close:hover,
+.close:focus {
+    color: var(--cinzaBasec);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*---------------------------------------------------------------------------*/
+/*-------------------------------- Login CSS --------------------------------*/
+/*---------------------------------------------------------------------------*/
+
+.mainlogin {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.footerLogin{
+    position: absolute;
+    bottom: 0;
+    background-color: var(--cinzaClaro);
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    z-index: 5;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.footerLogin a{
+    color: rgba(0, 0, 0, 0.5);
+    padding: 0 1rem;
+}
+
+.bordaFooterLogin{
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
+    border-left: 1px solid rgba(0, 0, 0, 0.5);
+    padding: 0 1rem;
+    color: var(--preto);
+}
+
+.direitosautorais{
+    padding: 0 1rem;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.spanSeekLogin{
+    border-bottom: 1px solid var(--branco);
+    padding-bottom: 0.2rem;
+}
+
+/*------ Trocar o fundo da página de login -------*/
+
+/* Animação esmaecer */
+
+#imgBanner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/*------------------------------------------------*/
+
+.logologin{
+    height: 100%;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    color: var(--brancoBase);
+    z-index: 0;
+}
+
+.logologin img{
+    object-fit: cover;
+    overflow: hidden;
+    width: 80%;
+}
+
+.logologin div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    transform: translateY(-3rem);
+}
+
+.logologin div h1{
+    font-size: 1.5rem;
+    text-shadow: 4px 4px 5px #000;
+    margin-left: 45%;
+}
+
+.cardlogin{
+    width: 35%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    z-index: 0;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 20px;
+    padding: 2rem;
+}
+
+.title{
+    text-align: center;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", "Geneva", Verdana, sans-serif;
+    margin: 10px 0 30px 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--preto);
+}
+
+.logoMobile{
+    height: 4rem;
+    display: none;
+}
+
+.formLogin{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.modalInput{
+    border-radius: 20px;
+    border: 1px solid #c0c0c0;
+    outline: 0 !important;
+    box-sizing: border-box;
+    padding: 12px 15px;
+}
+
+.sign-up-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign-up-container input {
+    width: 100%;
+}
+
+.sign-up-content h1,
+.sign-up-content h2 {
+    color: var(--azulBase);
+}
+
+.sign-up-content .close {
+    position: absolute;
+    top: 0%;
+    left: 85%;
+    color: var(--preto);
+    font-size: 3rem;
+}
+
+.page-link {
+    text-decoration: underline;
+    text-align: end;
+    color: #747474;
+    text-decoration-color: #747474;
+}
+
+.form-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", "Geneva", Verdana, sans-serif;
+    border-radius: 20px;
+    border: 0 !important;
+    outline: 0 !important;
+    background: var(--azulDesq);
+    color: white;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+  width: 30px;
+  aspect-ratio: 4;
+  --_g: no-repeat radial-gradient(circle closest-side,#ffffff 90%,#0000);
+  background: 
+  var(--_g) 0%   50%,
+    var(--_g) 50%  50%,
+    var(--_g) 100% 50%;
+    background-size: calc(100%/3) 100%;
+    animation: l7 1s infinite linear;
+}
+@keyframes l7 {
+    33%{background-size:calc(100%/3) 0%  ,calc(100%/3) 100%,calc(100%/3) 100%}
+    50%{background-size:calc(100%/3) 100%,calc(100%/3) 0%  ,calc(100%/3) 100%}
+    66%{background-size:calc(100%/3) 100%,calc(100%/3) 100%,calc(100%/3) 0%  }
+}
+
+/*------Sistema de validação da senha------*/
+
+#aviso {
+    display: none;
+    position: relative;
+}
+
+.valid {
+    color: green;
+}
+
+.valid:before {
+    position: relative;
+    content: "✔";
+}
+
+/* Adiciona um "✖" e troca a cor para vemrmelho se os requrimentos não estarem certos */
+
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    content: "✖";
+}
+
+/*-----------------------------------------*/
+
+input:disabled{
+    background-color: var(--cinzaBase);
+    cursor: default;
+}
+
+.form-btn:active{
+    box-shadow: none;
+}
+
+.sign-up-label{
+    display: flex;
+    justify-content: center;
+    color: #747474;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", "Geneva", Verdana, sans-serif;
+    gap: 0.5rem;
+    margin: 1rem;
+}
+
+.sign-up-link{
+    border: none;
+    border-right: 1px solid #747474;
+    padding-right: 0.5rem;
+    font-size: 0.75rem;
+    text-decoration: underline;
+    font-weight: 800;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", "Geneva", Verdana, sans-serif;
+    padding-bottom: 0.1rem;
+    cursor: pointer;
+
+}
+.sign-up-link,
+.page-link-label{
+    color: var(--azulDesq);
+    transition: color 0.5s;
+}
+
+.page-link-label {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", "Geneva", Verdana, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;  
+}
+
+.sign-up-link:hover, .page-link-label:hover{
+    color: black
+}
+
+.buttons-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 1.5rem;
+    gap: 1rem;
+}
+
+.apple-login-button,
+.google-login-button {
+    width: 100%;
+    border-radius: 20px;
+    box-sizing: border-box;
+    padding: 0.75rem 1rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", "Geneva", Verdana, sans-serif;
+    gap: 0.5rem;
+    font-size: 1rem;
+}
+
+.apple-login-button {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #000;
+}
+
+.apple-login-button .entrarapple {
+    font-size: 1rem;
+}
+
+.google-login-button {
+    border: 2px solid #747474;
+}
+
+.google-login-button .entrargoogle {
+    color: var(--preto);
+    font-size: 1rem;
+}
+
+/*-------------------------------- Sobre nós --------------------------------*/
+
+main .quemsomoslogin {
+    z-index: 1;
+    display: inline;
+    position: absolute;
+    bottom: 2rem;
+    left: 3rem;
+    font-size: 2rem;
+}
+
+main .quemsomoslogin a{
+    color: var(--preto);
+    border-bottom: 2px solid var(--preto);
+}
+
+.faclogin {
+    height: 3rem;
+    width: 8rem;
+    background-color: var(--cinzaBase);
+    border: none;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 2rem;
+    right: 3rem;
+    font-size: 2rem;
+    color: var(--brancoBase);
+    border-radius: 20px;
+    gap: 0.2rem;
+    padding: 0.5rem;
+    color: var(--preto);
+    justify-content: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.8), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.faclogin img {
+    height: 90%;
+}
+
+.faclogin p {
+    font-size: 1.5rem;
+}
+
+/*------------------------ Recuperação de senha ------------------------*/
+.container_enviar_email_recuperacao, .container_enviar_codigo_recuperacao {
+    display: block;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.enviar_email_recuperacao, .enviar_codigo_recuperacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 500px;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+.modal-cabecalho{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.modal-cabecalho h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--preto);
+}
+.modal-cabecalho .fechar {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--preto);
+    cursor: pointer;
+}
+
+.container_inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.container_inputs input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 20px;
+    border: 1px solid var(--cinzaBase);
+    outline: none;
+    font-size: 1rem;
+}
+
+.container_inputs button {
+    height: 2.5rem;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 20px;
+    border: none;
+    background-color: var(--azulBase);
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*------------------------fim Recuperação de senha ---------------------*/
+
+.loader {
+  width: 30px;
+  aspect-ratio: 5;
+  --_g: no-repeat radial-gradient(circle closest-side,#ffffff 90%,#0000);
+  background: 
+    var(--_g) 0%   50%,
+    var(--_g) 50%  50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100%/3) 100%;
+  animation: l7 1s infinite linear;
+}
+@keyframes l7 {
+    33%{background-size:calc(100%/3) 0%  ,calc(100%/3) 100%,calc(100%/3) 100%}
+    50%{background-size:calc(100%/3) 100%,calc(100%/3) 0%  ,calc(100%/3) 100%}
+    66%{background-size:calc(100%/3) 100%,calc(100%/3) 100%,calc(100%/3) 0%  }
+}
+
+  #verificacaoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  #verificacaoContainer label {
+    font-size: 1.3rem;
+    color: var(--preto);
+    margin-bottom: 0.3px;
+  }
+
+  #verificacaoContainer input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 20px;
+    border: 1px solid var(--cinzaBase);
+    outline: none;
+    font-size: 1.2rem;
+    margin-bottom: 0.3px;
+    margin-top: 0.3rem;
+  }
+
+  #verificacaoContainer button {
+    height: 2.5rem;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 20px;
+    border: none;
+    background-color: var(--azulBase);
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+/*------------------------------------------------------------------------*/
+/*-------------------------------- @media --------------------------------*/
+/*------------------------------- max-width ------------------------------*/
+
+@media screen and (max-width:1600px) {
+
+    .logologin h1 {
+        font-size: 1.5rem;
+    }
+
+}
+
+@media screen and (max-width: 1200px) {
+
+    *{
+        font-size: 1.2rem;
+    }
+
+    .logoMobile{
+        display: flex;
+    }
+
+    .slideshow,
+    .logologin{
+        display: none;
+    }
+
+    .mainlogin{
+        justify-content: center;
+        align-items: center;
+    }
+
+    .sign-up-modal {
+        background-color: transparent;
+    }
+
+    .cardlogin,
+    .form-container,
+    .sign-up-content{
+        position: static;
+        width: 85%;
+        height: 100svh;
+        box-shadow: none;
+        align-items: center;
+    }
+
+    .logoMobile{
+        align-self: start;
+    }
+    .title{
+        font-size: 156%;
+        font-weight: 900;
+    }
+    .sign-up-content{
+        justify-content: flex-start;
+    }
+
+    .faclogin{
+        z-index: 2;
+    }
+
+    .modal-conteudo {
+        padding: 20px;
+        width: 50%;
+    }
+
+    .footerLogin a, .footerLogin p, .footerLogin span{
+        font-size: 0.8rem;
+    }
+  
+
+}
+
+@media screen and (max-width: 900px) {
+
+  *{
+        font-size: 1.14rem;
+    }
+    .cardlogin,
+    .form-container,
+    .sign-up-content{
+        width: 85%;
+    }
+   
+}
+
+@media screen and (max-width: 700px){
+
+    .footerLogin{
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        height: auto;
+        padding: 0.4rem;
+    }
+
+    .aFooter{
+        width: 80%;
+        padding-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    }
+
+}
+
+@media screen and (max-width: 550px) {
+    *{
+        font-size: 1rem;
+    }
+    .cardlogin,
+    .form-container,
+    .sign-up-content{
+        width: 96%;
+    }
+
+    main .quemsomoslogin {
+        z-index: 1;
+        display: inline;
+        bottom: 1.5rem;
+        left: 1.75rem;
+        font-size: 1rem;
+    }
+
+    .faclogin {
+        height: 2rem;
+        width: 6rem;
+        bottom: 1.5rem;
+        right: 1.75rem;
+        font-size: 2rem;
+    }
+    
+    .faclogin p {
+        font-size: 1rem;
+    }
+
+    .modal-conteudo {
+        padding: 20px;
+        width: 80%;
+    }
+
+    #mensagemRec{
+        color: var(--preto);
+        margin-bottom: 10px;
+    }
+
+}
+
+@media screen and (max-width: 350px) {
+
+    .modal-conteudo h3 {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--preto);
+    }
+
+    #mensagemRec{
+        color: var(--preto);
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+    }
+
+    .modal-conteudo {
+        padding: 20px;
+        width: 95%;
+    }
+
+    #verificacaoContainer label{
+        font-size: 1rem;
+    }
+}
