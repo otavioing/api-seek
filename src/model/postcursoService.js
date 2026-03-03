@@ -71,4 +71,37 @@ const ApagarPostcurso = async (postId) => {
     }
 };
 
-module.exports = { Listarcursos, Listarcursosporusuario, CriarPostcurso, ApagarPostcurso, Listarcursosporid };
+const listarporcategoria = async (categoriaId) => {
+    try {
+        const [posts] = await banco.query(`SELECT c.*, cc.nome_categoria FROM cursos c JOIN categorias_cursos cc ON c.id_categoria = cc.id_categoria WHERE c.id_categoria = ?;`, [categoriaId]);
+        return posts;
+    } catch (err) {
+        console.error("Erro ao listar por categoria:", err.message);
+        throw new Error("Erro interno");
+    };
+};
+
+
+const listarporidioma = async (idioma) => {
+    try {
+        const [posts] = await banco.query(`SELECT * FROM cursos WHERE audio_curso = ?;`, [idioma]);
+        return posts;
+    } catch (err) {
+        console.error("Erro ao listar por idioma:", err.message);
+        throw new Error("Erro interno");
+    };
+};
+
+const listarPorPagamento = async (status) => {
+    try {
+        const [posts] = await banco.query(`SELECT * FROM cursos WHERE valor_curso = ?;`, [status]);
+        return posts;
+    } catch (err) {
+        console.error("Erro ao listar por status:", err.message);
+        throw new Error("Erro interno");
+    };
+};
+
+
+
+module.exports = { Listarcursos, Listarcursosporusuario, CriarPostcurso, ApagarPostcurso, Listarcursosporid, listarporcategoria, listarporidioma, listarPorPagamento};

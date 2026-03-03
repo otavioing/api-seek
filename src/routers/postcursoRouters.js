@@ -7,6 +7,9 @@ const rota = Router();
 
 rota.get("/", myController.Listarcursos);
 rota.get("/:id", myController.Listarcursosporid);
+rota.get("/listarporcategoria/:id", myController.listarporcategoria);
+rota.get("/listarporidioma/:idioma", myController.listarporidioma);
+rota.get("/listarporpagamento/:status", myController.listarPorPagamento);
 rota.get("/listarporusuario/:id", myController.Listarcursosporusuario);
 rota.post("/", upload.single("imagem_curso"), myController.CriarPostcurso);
 rota.delete("/:id", myController.ApagarPostcurso);

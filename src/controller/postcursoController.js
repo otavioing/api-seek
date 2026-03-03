@@ -67,6 +67,40 @@ const CursosServiceController = {
             response.status(500).send({ message: "Erro interno ao apagar postcurso." });
         }
     },
+
+    listarporcategoria: async (request, response) => {
+        try {
+            const categoriaId = request.params.id;
+            const data = await model.listarporcategoria(categoriaId);
+            response.status(200).json(data);
+        } catch (error) {
+            console.error("Erro ao listar cursos por categoria:", error.message);
+            response.status(500).send({ message: "Erro interno ao listar cursos por categoria." });
+        }
+    },
+
+    listarporidioma: async (request, response) => {
+        try {
+            const idioma = request.params.idioma;
+            const data = await model.listarporidioma(idioma);
+            response.status(200).json(data);
+        } catch (error) {
+            console.error("Erro ao listar cursos por idioma:", error.message);
+            response.status(500).send({ message: "Erro interno ao listar cursos por idioma." });
+        }
+    },
+
+    listarPorPagamento: async (request, response) => {
+        try {
+            const status = request.params.status;
+            const data = await model.listarPorPagamento(status);
+            response.status(200).json(data);
+        } catch (error) {
+            console.error("Erro ao listar cursos por status:", error.message);
+            response.status(500).send({ message: "Erro interno ao listar cursos por status." });
+        }
+    },
+
 };
 
 module.exports = CursosServiceController;
