@@ -17,10 +17,16 @@ const CriarPost = async (userId, imagem, legenda, titulo, id_categoria) => {
 const ListarPosts = async () => {
   try {
     const [posts] = await banco.query(`
-            SELECT posts.*, usuarios.nome, usuarios.foto AS foto_perfil
-            FROM posts
-            JOIN usuarios ON posts.user_id = usuarios.id
-            ORDER BY RAND() 
+            SELECT 
+    posts.*, 
+    usuarios.nome, 
+    usuarios.foto AS foto_perfil,
+    COUNT(seguidores.id) AS total_seguidores
+FROM posts
+JOIN usuarios ON posts.user_id = usuarios.id
+LEFT JOIN seguidores ON seguidores.seguido_id = usuarios.id
+GROUP BY posts.id
+ORDER BY RAND(); 
         `);
     return posts;
   } catch (err) {
