@@ -169,33 +169,33 @@ const verificarsesegue = async (seguidorId, seguidoId) => {
 };
 
 const verificarpreferencianotificacao = async (id_user) => {
-  try{
+  try {
     const data = await banco.query("SELECT nome_notificacao, preferencia FROM preferencias_notificacoes WHERE id_user = ?", [id_user]);
     return data[0];
-  }catch(error){
+  } catch (error) {
     console.log("Erro ao conectar ao banco de dados: ", error.message);
     throw new Error("Erro ao verificar preferencia de notificação");
   }
 }
 const verificarpreferenciaprivacidade = async (id_user) => {
-  try{
+  try {
     const data = await banco.query("SELECT nome_privacidade, preferencia FROM preferencias_privacidade WHERE id_user = ?", [id_user]);
     return data[0];
-  }catch(error){
+  } catch (error) {
     console.log("Erro ao conectar ao banco de dados: ", error.message);
     throw new Error("Erro ao verificar preferencia de privacidade");
   }
 }
 
 const verificarnotificacaologin = async (id_user) => {
-  try{
+  try {
     const data = await banco.query("SELECT preferencia FROM preferencias_notificacoes WHERE id_user = ? AND nome_notificacao = 'receber_login'", [id_user]);
-    if(data[0][0].preferencia === 1){
+    if (data[0][0].preferencia === 1) {
       return true;
-    }else{
+    } else {
       return false;
     }
-  }catch(error){
+  } catch (error) {
     console.log("Erro ao conectar ao banco de dados: ", error.message);
     throw new Error("Erro ao verificar preferencia de notificação de login");
   }
@@ -240,6 +240,24 @@ const atualizarPreferenciaprivacidade = async (id_user, nome_privacidade, prefer
     return { message: "Preferência atualizada com sucesso!" };
   } catch (error) {
     console.error("Erro ao atualizar preferência:", error);
+    throw new Error("Erro interno no servidor");
+  }
+};
+
+const selectfoto = async (id) => {
+  try {
+    const [rows] = await banco.query(
+      "SELECT foto FROM usuarios WHERE id = ?",
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    return rows[0]; // só retorna o caminho
+  } catch (error) {
+    console.error("Erro ao buscar foto:", error);
     throw new Error("Erro interno no servidor");
   }
 };
@@ -492,7 +510,7 @@ const EnviarfotoPerfil = async (request, response) => {
   try {
     const id = request.params.id;
     const foto = request.file
-      ? `http://localhost:4500/uploads/foto_perfil/${request.file.filename}`
+      ? `/uploads/foto_perfil/${request.file.filename}`
       : null;
 
     const data = await banco.query("UPDATE usuarios SET foto=? WHERE id=?", [
@@ -540,10 +558,10 @@ const Login = async (request, response) => {
 
     await verificarnotificacaologin(usuario.id);
 
-    if(await verificarnotificacaologin(usuario.id)){
+    if (await verificarnotificacaologin(usuario.id)) {
       await enviaremaillogin(usuario.email, usuario.nome);
       console.log("Email de login enviado.");
-    }else{
+    } else {
       console.log("Usuário optou por não receber email de login.");
     }
 
@@ -567,38 +585,38 @@ const Login = async (request, response) => {
 };
 
 async function aplicarPreferenciasnotificacoesSeNaoExistirem(userId) {
-    const preferenciasPadrao = [
-        'receber_login',
-        'receber_seguidores',
-        'receber_comentarios',
-        'receber_likes',
-    ];
+  const preferenciasPadrao = [
+    'receber_login',
+    'receber_seguidores',
+    'receber_comentarios',
+    'receber_likes',
+  ];
 
-    for (const pref of preferenciasPadrao) {
-        await banco.execute(   // CORRIGIDO AQUI
-            `INSERT IGNORE INTO preferencias_notificacoes 
+  for (const pref of preferenciasPadrao) {
+    await banco.execute(   // CORRIGIDO AQUI
+      `INSERT IGNORE INTO preferencias_notificacoes 
              (id_user, nome_notificacao, preferencia)
              VALUES (?, ?, 1)`,
-            [userId, pref]
-        );
-    }
+      [userId, pref]
+    );
+  }
 }
 async function aplicarPreferenciasprivacidadeSeNaoExistirem(userId) {
-    const preferenciasPadrao = [
-        'exibir_na_busca',
-        'exibir_no_feed',
-        'exibir_cursos_no_feed',
-        'exibir_likes',
-    ];
+  const preferenciasPadrao = [
+    'exibir_na_busca',
+    'exibir_no_feed',
+    'exibir_cursos_no_feed',
+    'exibir_likes',
+  ];
 
-    for (const pref of preferenciasPadrao) {
-        await banco.execute(   // CORRIGIDO AQUI
-            `INSERT IGNORE INTO preferencias_privacidade 
+  for (const pref of preferenciasPadrao) {
+    await banco.execute(   // CORRIGIDO AQUI
+      `INSERT IGNORE INTO preferencias_privacidade 
              (id_user, nome_privacidade, preferencia)
              VALUES (?, ?, 1)`,
-            [userId, pref]
-        );
-    }
+      [userId, pref]
+    );
+  }
 }
 
 
@@ -766,6 +784,8 @@ const GetAllbyidEmpresas = async (request, response) => {
 
 
 
+
+
 module.exports = {
   GetAll,
   GetById,
@@ -801,4 +821,5 @@ module.exports = {
   verificarpreferenciaprivacidade,
   atualizarPreferencianotificacao,
   atualizarPreferenciaprivacidade,
+  selectfoto
 };

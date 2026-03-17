@@ -196,6 +196,29 @@ const UsuariosController = {
     }
   },
 
+  selectfoto: async (request, response) => {
+    try {
+      const id = request.params.id;
+      const data = await model.selectfoto(id);
+
+      if (!data || !data.foto) {
+        return response.status(404).send({ foto: null });
+      }
+
+      const baseUrl = `${request.protocol}://${request.get("host")}`;
+
+      const resultado = {
+        foto: baseUrl + data.foto
+      };
+
+      response.status(200).send(resultado);
+
+    } catch (error) {
+      console.error("Erro ao conectar ao banco de dados:", error.message);
+      response.status(500).send({ message: "Falha ao executar a ação!" });
+    }
+  },
+
 };
 
 module.exports = UsuariosController;

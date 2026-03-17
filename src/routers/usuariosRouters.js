@@ -22,6 +22,7 @@ rota.get("/lista-seguindo/:id", myController.getlistaseguindoporusuario);
 rota.get("/lista-seguidores/:id", myController.getlistaseguidoresporusuario);
 rota.get("/preferencias-notificacoes/:id_user", myController.verificarpreferencianotificacao);
 rota.get("/preferencias-privacidade/:id_user", myController.verificarpreferenciaprivacidade);
+rota.get("/foto-perfil/:id", myController.selectfoto);
 rota.put("/:id", Update)
 rota.put("/atualizar-tipo/:id", definirtipo);
 rota.put("/completarcoluna-cadastro/:id", completarcadastro)
