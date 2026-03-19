@@ -264,7 +264,6 @@ const selectfoto = async (id) => {
 
 const GetAllbyidPadrao = async (id) => {
   try {
-    console.log("ID NO MODEL:", id, typeof id);
     const [rows] = await banco.query(
       `SELECT 
         u.foto, u.banner, u.nome, u.nome_de_usuario, pp.descricao,

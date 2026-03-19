@@ -136,10 +136,17 @@ const UsuariosController = {
     try {
       const id = request.params.id;
       const data = await model.getlistaseguindoporusuario(id);
-      response.status(200).send(data);
+
+      const resultado = data.map(user => ({
+        ...user,
+        foto: montarUrl(request, user.foto)
+      }));
+
+      response.status(200).json(resultado);
+
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
-      response.status(401).send({ message: "Falha ao executar a ação!" });
+      response.status(500).send({ message: "Falha ao executar a ação!" });
     }
   },
 
@@ -147,10 +154,17 @@ const UsuariosController = {
     try {
       const id = request.params.id;
       const data = await model.getlistaseguidoresporusuario(id);
-      response.status(200).send(data);
+
+      const resultado = data.map(user => ({
+        ...user,
+        foto: montarUrl(request, user.foto)
+      }));
+
+      response.status(200).json(resultado);
+
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
-      response.status(401).send({ message: "Falha ao executar a ação!" });
+      response.status(500).send({ message: "Falha ao executar a ação!" });
     }
   },
 
@@ -226,7 +240,6 @@ const UsuariosController = {
 
   GetAllbyidPadrao: async (request, response) => {
     try {
-      console.log("ID recebido:", request.params.id, typeof request.params.id);
       const id = request.params.id;
       const data = await model.GetAllbyidPadrao(id);
       if (!data) {

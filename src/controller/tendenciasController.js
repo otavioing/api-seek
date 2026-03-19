@@ -1,5 +1,10 @@
 const model = require("../model/tendenciasService");
 
+const montarUrl = (req, caminho) => {
+    if (!caminho) return null;
+    return `${req.protocol}://${req.get("host")}${caminho}`;
+};
+
 const TendenciasServiceController = {
 
     verificarTendencias: async (request, response) => {
@@ -15,7 +20,13 @@ const TendenciasServiceController = {
         try {
             const id_categoria = request.params.id_categoria;
             const posts = await model.listarpostscategoria(id_categoria);
-            response.json(posts);
+
+            const resultado = posts.map(post => ({
+                ...post,
+                imagem: montarUrl(request, post.imagem)
+            }));
+
+            response.json(resultado);
         } catch (error) {
             response.status(500).json({ error: error.message });
         }
