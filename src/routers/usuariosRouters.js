@@ -43,7 +43,7 @@ rota.post("/atualizar-acessibilidade", Atualizaracessibilidade);
 rota.post("/completar-cadastro-empresa", updatecompletarcadastroempresa);
 rota.post("/enviar-foto-perfil/:id", uploadfotoperfil.single("foto"), EnviarfotoPerfil);
 rota.get("/padrao/:id", myController.GetAllbyidPadrao);
-rota.get("/empresas/:id", GetAllbyidEmpresas);
+rota.get("/empresas/:id", myController.GetAllbyidEmpresas);
 rota.post("/seguir-usuario/:seguidorId/:seguidoId", myController.Seguirusuario);
 rota.delete("/:id", myController.Erase);
 
