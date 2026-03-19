@@ -247,7 +247,7 @@ const atualizarPreferenciaprivacidade = async (id_user, nome_privacidade, prefer
 const selectfoto = async (id) => {
   try {
     const [rows] = await banco.query(
-      "SELECT foto FROM usuarios WHERE id = ?",
+      "SELECT foto,nome FROM usuarios WHERE id = ?",
       [id]
     );
 

@@ -212,7 +212,8 @@ const UsuariosController = {
       const baseUrl = `${request.protocol}://${request.get("host")}`;
 
       const resultado = {
-        foto: baseUrl + data.foto
+        foto: baseUrl + data.foto,
+        nome: data.nome
       };
 
       response.status(200).send(resultado);
