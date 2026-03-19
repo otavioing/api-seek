@@ -1,6 +1,10 @@
 const model = require("../model/usuariosService");
 const bcrypt = require("bcrypt");
 
+const montarUrl = (req, caminho) => {
+  if (!caminho) return null;
+  return `${req.protocol}://${req.get("host")}${caminho}`;
+};
 
 const UsuariosController = {
   GetAll: async (request, response) => {
@@ -218,6 +222,53 @@ const UsuariosController = {
       response.status(500).send({ message: "Falha ao executar a ação!" });
     }
   },
+
+  GetAllbyidPadrao: async (request, response) => {
+    try {
+      console.log("ID recebido:", request.params.id, typeof request.params.id);
+      const id = request.params.id;
+      const data = await model.GetAllbyidPadrao(id);
+      if (!data) {
+        return response.status(404).send({ message: "Usuário não encontrado" });
+      }
+
+
+      const resultado = {
+        ...data,
+        foto: montarUrl(request, data.foto),
+        banner: montarUrl(request, data.banner)
+      };
+
+      response.status(200).json(resultado);
+
+    } catch (error) {
+      console.error("Erro ao conectar ao banco de dados:", error.message);
+      response.status(500).send({ message: "Falha ao executar a ação!" });
+    }
+  },
+
+  GetAllbyidEmpresas: async (request, response) => {
+    try {
+      const id = request.params.id;
+      const data = await model.GetAllbyidEmpresas(id);
+
+      if (!data) {
+        return response.status(404).send({ message: "Usuário não encontrado" });
+      }
+
+      const resultado = {
+        ...data,
+        foto: montarUrl(request, data.foto),
+        banner: montarUrl(request, data.banner)
+      };
+
+      response.status(200).json(resultado);
+
+    } catch (error) {
+      console.error("Erro ao conectar ao banco de dados:", error.message);
+      response.status(500).send({ message: "Falha ao executar a ação!" });
+    }
+  }
 
 };
 

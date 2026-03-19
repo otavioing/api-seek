@@ -262,6 +262,49 @@ const selectfoto = async (id) => {
   }
 };
 
+const GetAllbyidPadrao = async (id) => {
+  try {
+    console.log("ID NO MODEL:", id, typeof id);
+    const [rows] = await banco.query(
+      `SELECT 
+        u.foto, u.banner, u.nome, u.nome_de_usuario, pp.descricao,
+        (SELECT COUNT(*) FROM posts WHERE user_id = u.id) AS total_posts,
+        (SELECT COUNT(*) FROM seguidores WHERE seguido_id = u.id) AS total_seguidores,
+        (SELECT COUNT(*) FROM seguidores WHERE seguidor_id = u.id) AS total_seguindo
+      FROM usuarios AS u
+      INNER JOIN perfis_padrao AS pp ON u.id = pp.usuario_id
+      WHERE u.id = ?`,
+      [id]
+    );
+
+    return rows[0] || null;
+  } catch (error) {
+    console.error("Erro ao buscar perfil padrão:", error.message);
+    throw new Error("Erro interno");
+  }
+};
+
+const GetAllbyidEmpresas = async (id) => {
+  try {
+    const [rows] = await banco.query(
+      `SELECT 
+        u.foto, u.banner, u.nome, u.nome_de_usuario, pe.descricao,
+        (SELECT COUNT(*) FROM posts WHERE user_id = u.id) AS total_posts,
+        (SELECT COUNT(*) FROM seguidores WHERE seguido_id = u.id) AS total_seguidores,
+        (SELECT COUNT(*) FROM seguidores WHERE seguidor_id = u.id) AS total_seguindo
+      FROM usuarios AS u
+      INNER JOIN perfis_empresa AS pe ON u.id = pe.usuario_id
+      WHERE u.id = ?`,
+      [id]
+    );
+
+    return rows[0] || null;
+  } catch (error) {
+    console.error("Erro ao buscar perfil empresa:", error.message);
+    throw new Error("Erro interno");
+  }
+};
+
 
 const SolicitarCriacao = async (request, response) => {
   try {
@@ -408,7 +451,7 @@ const Updatefoto = async (request, response) => {
   try {
     const id = request.params.id;
     const foto = request.file
-      ? `http://localhost:4500/uploads/foto_perfil/${request.file.filename}`
+      ? `/uploads/foto_perfil/${request.file.filename}`
       : null;
     const data = await banco.query("UPDATE usuarios SET foto=? WHERE id=?", [
       foto,
@@ -424,7 +467,7 @@ const Updatefotobanner = async (request, response) => {
   try {
     const id = request.params.id;
     const foto = request.file
-      ? `http://localhost:4500/uploads/banners/${request.file.filename}`
+      ? `/uploads/banners/${request.file.filename}`
       : null;
     const data = await banco.query("UPDATE usuarios SET banner=? WHERE id=?", [
       foto,
@@ -752,35 +795,6 @@ const definirtipo = async (req, res) => {
       .send({ message: "Erro ao definir tipo.", error: err.message });
   }
 };
-
-const GetAllbyidPadrao = async (request, response) => {
-  try {
-    const id = request.params.id;
-    const data = await banco.query(
-      "SELECT u.foto, u.banner, u.nome, u.nome_de_usuario, pp.descricao,(SELECT COUNT(*) FROM posts WHERE user_id = u.id) AS total_posts,(SELECT COUNT(*) FROM seguidores WHERE seguido_id = u.id) AS total_seguidores,(SELECT COUNT(*) FROM seguidores WHERE seguidor_id = u.id) AS total_seguindo FROM usuarios AS u INNER JOIN perfis_padrao AS pp ON u.id = pp.usuario_id WHERE u.id = ?;",
-      [id]
-    );
-    response.status(200).send(data[0]);
-  } catch (error) {
-    console.log("Erro ao conectar ao banco de dados: ", error.message);
-    response.status(401).send({ message: "Falha ao executar a ação!" });
-  }
-};
-
-const GetAllbyidEmpresas = async (request, response) => {
-  try {
-    const id = request.params.id;
-    const data = await banco.query(
-      "SELECT u.foto, u.banner, u.nome, u.nome_de_usuario, pe.descricao,(SELECT COUNT(*) FROM posts WHERE user_id = u.id) AS total_posts,(SELECT COUNT(*) FROM seguidores WHERE seguido_id = u.id) AS total_seguidores,(SELECT COUNT(*) FROM seguidores WHERE seguidor_id = u.id) AS total_seguindo FROM usuarios AS u INNER JOIN perfis_empresa AS pe ON u.id = pe.usuario_id WHERE u.id = ?;",
-      [id]
-    );
-    response.status(200).send(data[0]);
-  } catch (error) {
-    console.log("Erro ao conectar ao banco de dados: ", error.message);
-    response.status(401).send({ message: "Falha ao executar a ação!" });
-  }
-};
-
 
 
 

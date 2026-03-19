@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 17/03/2026 às 14:07
+-- Tempo de geração: 19/03/2026 às 12:16
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -113,12 +113,12 @@ CREATE TABLE `cursos` (
 --
 
 INSERT INTO `cursos` (`id`, `id_user`, `imagem_curso`, `nome_curso`, `nivel_curso`, `valor_curso`, `quantidade_vagas`, `audio_curso`, `legenda_curso`, `id_categoria`, `descricao_curso`) VALUES
-(4, 9, 'http://localhost:4500/uploads/capa_curso/8ecd61b4-0142-49b4-a3a1-6f76f97df3a4.png', 'dfgh', 'Intermediário', 'gratuito', 5, 'Português', 'Português', 6, 'frgtfh'),
-(5, 9, 'http://localhost:4500/uploads/capa_curso/55eafd18-a06e-40a3-aca3-57ca51e87e73.png', 'efrgtr', 'Iniciante', 'gratuito', 5, 'Inglês', 'Inglês', 5, 'dewfrtg'),
-(6, 28, 'http://localhost:4500/uploads/capa_curso/94401e91-8923-4ab9-b13c-02a69bcd93c5.png', 'aaaaaaaaaaaaaaaaaaa', 'Iniciante', 'gratuito', 30, 'Português', 'Português', 1, 'aaaaaaaaaaaaaaaaaaa'),
-(7, 28, 'http://localhost:4500/uploads/capa_curso/229f992e-2aa0-4351-a189-cda9f0d576f7.png', 'teste', 'Iniciante', 'gratuito', 77, 'Português', 'Português', 1, 'teste'),
-(8, 28, 'http://localhost:4500/uploads/capa_curso/3246dc6e-e935-4b75-8e5e-b34b89a10fa4.png', 'teste2', 'Iniciante', 'gratuito', 222, 'Português', 'Inglês', 1, 'teste2'),
-(9, 33, 'http://localhost:4500/uploads/capa_curso/737f4f05-81b3-40cd-935c-da50a2fbdbc0.jpg', 'Curso de teste', 'Iniciante', 'pago', 5, 'Português', 'Espanhol', 1, 'Curso de teste.');
+(4, 9, '/uploads/capa_curso/8ecd61b4-0142-49b4-a3a1-6f76f97df3a4.png', 'dfgh', 'Intermediário', 'gratuito', 5, 'Português', 'Português', 6, 'frgtfh'),
+(5, 9, '/uploads/capa_curso/55eafd18-a06e-40a3-aca3-57ca51e87e73.png', 'efrgtr', 'Iniciante', 'gratuito', 5, 'Inglês', 'Inglês', 5, 'dewfrtg'),
+(6, 28, '/uploads/capa_curso/94401e91-8923-4ab9-b13c-02a69bcd93c5.png', 'aaaaaaaaaaaaaaaaaaa', 'Iniciante', 'gratuito', 30, 'Português', 'Português', 1, 'aaaaaaaaaaaaaaaaaaa'),
+(7, 28, '/uploads/capa_curso/229f992e-2aa0-4351-a189-cda9f0d576f7.png', 'teste', 'Iniciante', 'gratuito', 77, 'Português', 'Português', 1, 'teste'),
+(8, 28, '/uploads/capa_curso/3246dc6e-e935-4b75-8e5e-b34b89a10fa4.png', 'teste2', 'Iniciante', 'gratuito', 222, 'Português', 'Inglês', 1, 'teste2'),
+(9, 33, '/uploads/capa_curso/737f4f05-81b3-40cd-935c-da50a2fbdbc0.jpg', 'Curso de teste', 'Iniciante', 'pago', 5, 'Português', 'Espanhol', 1, 'Curso de teste.');
 
 -- --------------------------------------------------------
 
@@ -242,26 +242,26 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`id`, `user_id`, `imagem`, `legenda`, `criado_em`, `titulo`, `id_categoria`) VALUES
-(19, 28, 'http://localhost:4500/uploads/posts/1761830948440-82_Sem_Titulo_20201120124526.png', 'Stella', '2025-10-30 19:29:08', 'Oloko', 2),
-(20, 28, 'http://localhost:4500/uploads/posts/1761832971318-376_Sem_Titulo_20230124235253.png', 'aaaaaaaa', '2025-10-30 20:02:51', 'Projeto teste', 2),
-(22, 29, 'http://localhost:4500/uploads/posts/1762614080266-WIN_20251107_08_47_31_Pro.jpg', '', '2025-11-08 21:02:56', '', NULL),
-(23, 29, 'http://localhost:4500/uploads/posts/1762614090205-WIN_20250626_11_50_21_Pro.jpg', '', '2025-11-08 21:03:06', '', NULL),
-(24, 29, 'http://localhost:4500/uploads/posts/1762614096438-WIN_20250626_11_09_04_Pro.jpg', '', '2025-11-08 21:03:12', '', NULL),
-(25, 29, 'http://localhost:4500/uploads/posts/1762614101151-WIN_20250626_10_58_50_Pro.jpg', '', '2025-11-08 21:03:17', '', NULL),
-(26, 29, 'http://localhost:4500/uploads/posts/1762614110552-WIN_20250626_10_58_04_Pro.jpg', '', '2025-11-08 21:03:26', '', NULL),
-(27, 29, 'http://localhost:4500/uploads/posts/1762614116858-WIN_20250626_10_10_43_Pro.jpg', '', '2025-11-08 21:03:33', '', NULL),
-(28, 29, 'http://localhost:4500/uploads/posts/1762614124306-WIN_20250626_10_02_55_Pro.jpg', '', '2025-11-08 21:03:40', '', NULL),
-(29, 29, 'http://localhost:4500/uploads/posts/1762614130792-WIN_20250626_09_51_39_Pro.jpg', '', '2025-11-08 21:03:47', '', NULL),
-(30, 29, 'http://localhost:4500/uploads/posts/1762614135764-WIN_20250626_09_37_13_Pro.jpg', '', '2025-11-08 21:03:52', '', NULL),
-(31, 29, 'http://localhost:4500/uploads/posts/1762614139519-WIN_20250626_08_42_13_Pro.jpg', '', '2025-11-08 21:03:55', '', NULL),
-(32, 9, 'http://localhost:4500/uploads/posts/1762717188556-Captura de tela 2025-07-06 122421.png', '', '2025-11-10 01:41:45', '', 4),
-(35, 9, 'http://localhost:4500/uploads/posts/1762717662548-Captura de tela 2025-06-30 202713.png', '', '2025-11-10 01:49:39', '...', 2),
-(37, 9, 'http://localhost:4500/uploads/posts/1762717816779-Captura de tela 2025-06-25 220835.png', '', '2025-11-10 01:52:13', '', 1),
-(38, 28, 'http://localhost:4500/uploads/posts/1763845767626-Colapse_omenagi_pos_sombreado2.png', 'aaaaaaaaaaaaaaaaa', '2025-11-23 00:12:38', 'aaaaaaaaaaaaaaaaaaa', 1),
-(39, 30, 'http://localhost:4500/uploads/posts/1763916783362-Captura de tela 2025-11-23 113445.png', 'testeapenas', '2025-11-23 19:56:16', 'testeapenas', 5),
-(40, 9, 'http://localhost:4500/uploads/posts/1763990293424-WIN_20251107_08_47_31_Pro.jpg', 'teste', '2025-11-24 16:19:56', 'teste222', 3),
-(41, 9, 'http://localhost:4500/uploads/posts/1763996543214-WIN_20251107_08_47_44_Pro.jpg', 'amor é lindo', '2025-11-24 18:04:07', 'minha vida', 6),
-(42, 33, 'http://localhost:4500/uploads/posts/1772537992746-cliente2.png', 'dfghjklç~çl,mnbvbnm,.;ASD', '2026-03-03 11:39:52', 'Imagem que não consigo excluir', 2);
+(19, 28, '/uploads/posts/1761830948440-82_Sem_Titulo_20201120124526.png', 'Stella', '2025-10-30 19:29:08', 'Oloko', 2),
+(20, 28, '/uploads/posts/1761832971318-376_Sem_Titulo_20230124235253.png', 'aaaaaaaa', '2025-10-30 20:02:51', 'Projeto teste', 2),
+(22, 29, '/uploads/posts/1762614080266-WIN_20251107_08_47_31_Pro.jpg', '', '2025-11-08 21:02:56', '', NULL),
+(23, 29, '/uploads/posts/1762614090205-WIN_20250626_11_50_21_Pro.jpg', '', '2025-11-08 21:03:06', '', NULL),
+(24, 29, '/uploads/posts/1762614096438-WIN_20250626_11_09_04_Pro.jpg', '', '2025-11-08 21:03:12', '', NULL),
+(25, 29, '/uploads/posts/1762614101151-WIN_20250626_10_58_50_Pro.jpg', '', '2025-11-08 21:03:17', '', NULL),
+(26, 29, '/uploads/posts/1762614110552-WIN_20250626_10_58_04_Pro.jpg', '', '2025-11-08 21:03:26', '', NULL),
+(27, 29, '/uploads/posts/1762614116858-WIN_20250626_10_10_43_Pro.jpg', '', '2025-11-08 21:03:33', '', NULL),
+(28, 29, '/uploads/posts/1762614124306-WIN_20250626_10_02_55_Pro.jpg', '', '2025-11-08 21:03:40', '', NULL),
+(29, 29, '/uploads/posts/1762614130792-WIN_20250626_09_51_39_Pro.jpg', '', '2025-11-08 21:03:47', '', NULL),
+(30, 29, '/uploads/posts/1762614135764-WIN_20250626_09_37_13_Pro.jpg', '', '2025-11-08 21:03:52', '', NULL),
+(31, 29, '/uploads/posts/1762614139519-WIN_20250626_08_42_13_Pro.jpg', '', '2025-11-08 21:03:55', '', NULL),
+(32, 9, '/uploads/posts/1762717188556-Captura de tela 2025-07-06 122421.png', '', '2025-11-10 01:41:45', '', 4),
+(35, 9, '/uploads/posts/1762717662548-Captura de tela 2025-06-30 202713.png', '', '2025-11-10 01:49:39', '...', 2),
+(37, 9, '/uploads/posts/1762717816779-Captura de tela 2025-06-25 220835.png', '', '2025-11-10 01:52:13', '', 1),
+(38, 28, '/uploads/posts/1763845767626-Colapse_omenagi_pos_sombreado2.png', 'aaaaaaaaaaaaaaaaa', '2025-11-23 00:12:38', 'aaaaaaaaaaaaaaaaaaa', 1),
+(39, 30, '/uploads/posts/1763916783362-Captura de tela 2025-11-23 113445.png', 'testeapenas', '2025-11-23 19:56:16', 'testeapenas', 5),
+(40, 9, '/uploads/posts/1763990293424-WIN_20251107_08_47_31_Pro.jpg', 'teste', '2025-11-24 16:19:56', 'teste222', 3),
+(41, 9, '/uploads/posts/1763996543214-WIN_20251107_08_47_44_Pro.jpg', 'amor é lindo', '2025-11-24 18:04:07', 'minha vida', 6),
+(42, 33, '/uploads/posts/1772537992746-cliente2.png', 'dfghjklç~çl,mnbvbnm,.;ASD', '2026-03-03 11:39:52', 'Imagem que não consigo excluir', 2);
 
 -- --------------------------------------------------------
 
@@ -386,7 +386,7 @@ INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `foto`, `banner`, `tema`
 (3, 'who.jxao', 'joaojfpessoal@gmail.com', '$2b$10$fJwhob.w51UdYqGq8GV76uC7r6wE6dJw.cufVIJxvWwxdwXa7M9vK', '/uploads/fotopadraousuario.png', '/uploads/banners/1750949495134-WIN_20250626_11_50_21_Pro.jpg', 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-05-05 16:39:11', 1, '2025-10-07 09:19:51', 'Ativo', 'padrao', 'Padrão', NULL, NULL),
 (4, 'João da Silva', 'joao.silva@example.com', 'novaSenha123', '/uploads/fotopadraousuario.png', 'https://meusite.com/banners/banner1.jpg', 'escuro', NULL, NULL, NULL, 1, '2025-05-06 22:39:09', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (7, 'João Silva Atualizado', 'fewfwfw@hbrhbv atualizado', 'senha1234', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-17 20:06:16', 1, NULL, 'Ativo', 'padrao', 'Padrão', NULL, NULL),
-(9, 'Otávio', 'tectonicroom356@gmail.com', '$2b$10$EHAWkhmwv8MyWtnBfG/6yujRyiSJGZOM7TciIFNvkAasnFSikFgoq', '/uploads/foto_perfil/1759968055964-asteroid.png', 'http://localhost:4500/uploads/banners/1763990447336-WIN_20251107_08_47_31_Pro.jpg', 'escuro', NULL, NULL, 'este usuário não possui descrição', 0, '2025-06-26 01:21:52', 1, '2026-03-17 08:35:48', 'Ativo', 'padrao', 'Admin', '462250', '2025-11-01 18:26:11'),
+(9, 'Otávio', 'tectonicroom356@gmail.com', '$2b$10$EHAWkhmwv8MyWtnBfG/6yujRyiSJGZOM7TciIFNvkAasnFSikFgoq', '/uploads/foto_perfil/1759968055964-asteroid.png', '/uploads/banners/1763990447336-WIN_20251107_08_47_31_Pro.jpg', 'escuro', NULL, NULL, 'este usuário não possui descrição', 0, '2025-06-26 01:21:52', 1, '2026-03-17 08:35:48', 'Ativo', 'padrao', 'Admin', '462250', '2025-11-01 18:26:11'),
 (10, 'testE', '3rwfrgtrhytjuyi@gmail.com', '$2b$10$GZsIzdtonQlQ0AycbW4UkerdIKgDHtFIIKawevfQG7SUOFEijFua2', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-26 01:27:17', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (11, 'felipe', 'fellipe@mail.com', '$2b$10$VT.ofVWpRSlLxWiN01L9dulNuWwrpNs9yeiCTF1De.CWEIGy7UBC.', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-26 17:19:10', 1, NULL, 'Ativo', 'padrao', 'Padrão', '959579', '2025-11-01 18:26:48'),
 (12, 'Luiz Gustavo', 'luiz@gmail.com', '$2b$10$KozHbUufQSQVaKo4oq1P3eb.wHaaBTqRJjWjA.CHbCfVE8Tc2ZDbW', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-26 17:31:54', 1, NULL, 'Ativo', 'padrao', 'Padrão', '245296', '2025-11-01 18:32:21'),
@@ -401,7 +401,7 @@ INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `foto`, `banner`, `tema`
 (22, 'thais', 'thais@email.com', '$2b$10$A6m13mXEZg6S8KO182PIR.c0WubG8z0zh4cbdEFMgwfQ8gSAnd3Fu', '/uploads/fotopadraousuario.png', NULL, 'escuro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-26 20:08:26', 1, NULL, 'Ativo', 'padrao', 'Padrão', NULL, NULL),
 (26, 'João Silvad', 'fewfwfw@hbrhbv4', '$2b$10$2vtR0w9FZmFetb6KWnAPOuyXHefNXsZ0SKoMf9K52NCqSIZbK3n6.', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-07-12 21:33:19', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (27, 'João Silvad', 'fewfwfw@hbrhbvS4', '$2b$10$DdjxQFLX28PT5H8ccvfIg.IXsmobUlC41z8FntiN1/1Pln9g7I5Da', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-10-08 16:49:44', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
-(28, 'CautelaDev', 'Caua.teste.dev@gmail.com', '$2b$10$SwsVtq1xThGMg4VfEu2NG.bi8Qd7yROR/wZd7hcgpOuTRGFfwQ6x2', '/uploads/foto_perfil/1761689598376-376_Sem_Titulo_20230124235253.png', 'http://localhost:4500/uploads/banners/1761689877791-Colapse_omenagi_pos_sombreado.png', 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-10-29 02:48:58', 1, '2025-10-28 18:33:33', 'Ativo', 'padrao', 'Padrão', NULL, NULL),
+(28, 'CautelaDev', 'Caua.teste.dev@gmail.com', '$2b$10$SwsVtq1xThGMg4VfEu2NG.bi8Qd7yROR/wZd7hcgpOuTRGFfwQ6x2', '/uploads/foto_perfil/1761689598376-376_Sem_Titulo_20230124235253.png', '/uploads/banners/1761689877791-Colapse_omenagi_pos_sombreado.png', 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-10-29 02:48:58', 1, '2025-10-28 18:33:33', 'Ativo', 'padrao', 'Padrão', NULL, NULL),
 (29, 'Fatec', 'feira.fatec@gmail.com', '$2b$10$EHAWkhmwv8MyWtnBfG/6yujRyiSJGZOM7TciIFNvkAasnFSikFgoq', '/uploads/foto_perfil/1762614061580-5b086da164407.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-11-08 20:52:55', 1, '2025-11-08 11:57:51', 'Ativo', 'padrao', 'Padrão', NULL, NULL),
 (30, 'Cautelaaa', 'caaa@gmail.com', '$2b$10$2FkuHJulouWOgy9R7howiuMlr.rN1AXYEGjRnFD1SYK1svy2MS6fu', '/uploads/foto_perfil/1763916724042-Captura de tela 2025-11-23 113445.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-11-23 19:54:31', 1, '2025-11-23 13:54:40', 'Ativo', 'padrao', 'Padrão', NULL, NULL),
 (31, 'gregegherhe', 'tectonicroom3556@gmail.com', '$2b$10$IBdOHKR82p/Jok6pRlhpcOyJ7H1pRZJsWdwpuxenNXN1WPxS4kFwS', '/uploads/fotopadraousuario.svg', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2026-02-24 13:40:48', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),

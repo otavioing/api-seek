@@ -4,7 +4,17 @@ const PostsServiceController = {
   ListarPosts: async (request, response) => {
     try {
       const data = await model.ListarPosts();
-      response.status(200).json(data);
+
+      const baseUrl = `${request.protocol}://${request.get("host")}`;
+
+      const resultado = data.map(post => ({
+        ...post,
+        imagem: post.imagem ? baseUrl + post.imagem : null,
+        foto_perfil: post.foto_perfil ? baseUrl + post.foto_perfil : null
+      }));
+
+      response.status(200).json(resultado);
+
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
       response.status(401).send({ message: "Falha ao executar a ação!" });
@@ -14,7 +24,17 @@ const PostsServiceController = {
     try {
       const userId = request.params.id;
       const data = await model.ListarPostsPorUsuario(userId);
-      response.status(200).json(data);
+
+      const baseUrl = `${request.protocol}://${request.get("host")}`;
+
+      const resultado = data.map(post => ({
+        ...post,
+        imagem: post.imagem ? baseUrl + post.imagem : null,
+        foto_perfil: post.foto_perfil ? baseUrl + post.foto_perfil : null
+      }));
+
+      response.status(200).json(resultado);
+
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
       response.status(401).send({ message: "Falha ao executar a ação!" });
@@ -25,7 +45,7 @@ const PostsServiceController = {
     try {
       const userId = request.body.user_id;
       const legenda = request.body.legenda || "";
-      const imagem = request.file ? `http://localhost:4500/uploads/posts/${request.file.filename}` : null;
+      const imagem = request.file ? `/uploads/posts/${request.file.filename}` : null;
       const titulo = request.body.titulo || "";
       const id_categoria = request.body.id_categoria || "";
 
@@ -88,7 +108,7 @@ const PostsServiceController = {
       console.error("Erro ao conectar ao banco de dados:", error.message);
       response.status(401).send({ message: "Falha ao executar a ação!" });
     }
-},
+  },
 
 };
 

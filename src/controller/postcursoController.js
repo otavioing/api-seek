@@ -5,7 +5,15 @@ const CursosServiceController = {
     Listarcursos: async (request, response) => {
         try {
             const data = await model.Listarcursos();
-            response.status(200).json(data);
+
+            const baseUrl = `${request.protocol}://${request.get("host")}`;
+
+            const resultado = data.map(curso => ({
+                ...curso,
+                imagem_curso: curso.imagem_curso ? baseUrl + curso.imagem_curso : null
+            }));
+
+            response.status(200).json(resultado);
         } catch (error) {
             console.error("Erro ao conectar ao banco de dados:", error.message);
             response.status(401).send({ message: "Falha ao executar a ação!" });
@@ -16,7 +24,15 @@ const CursosServiceController = {
         try {
             const userId = request.params.id;
             const data = await model.Listarcursosporusuario(userId);
-            response.status(200).json(data);
+
+            const baseUrl = `${request.protocol}://${request.get("host")}`;
+
+            const resultado = data.map(curso => ({
+                ...curso,
+                imagem_curso: curso.imagem_curso ? baseUrl + curso.imagem_curso : null
+            }));
+
+            response.status(200).json(resultado);
         } catch (error) {
             console.error("Erro ao conectar ao banco de dados:", error.message);
             response.status(401).send({ message: "Falha ao executar a ação!" });
@@ -27,7 +43,15 @@ const CursosServiceController = {
         try {
             const postId = request.params.id;
             const data = await model.Listarcursosporid(postId);
-            response.status(200).json(data);
+
+            const baseUrl = `${request.protocol}://${request.get("host")}`;
+
+            const resultado = data.map(curso => ({
+                ...curso,
+                imagem_curso: curso.imagem_curso ? baseUrl + curso.imagem_curso : null
+            }));
+
+            response.status(200).json(resultado);
         } catch (error) {
             console.error("Erro ao conectar ao banco de dados:", error.message);
             response.status(401).send({ message: "Falha ao executar a ação!" });
@@ -43,7 +67,7 @@ const CursosServiceController = {
             const quantidade_vagas = request.body.quantidade_vagas;
             const id_categoria = request.body.id_categoria;
             const descricao_curso = request.body.descricao_curso;
-            const imagem_curso = request.file ? `http://localhost:4500/uploads/capa_curso/${request.file.filename}` : null;
+            const imagem_curso = request.file ? `/uploads/capa_curso/${request.file.filename}` : null;
             const audio_curso = request.body.audio_curso;
             const legenda_curso = request.body.legenda_curso;
             if (!imagem_curso) {
