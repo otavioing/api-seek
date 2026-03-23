@@ -54,6 +54,18 @@ const ListarPostsPorUsuario = async (userId) => {
   }
 };
 
+const listarpostdequemousersegue = async (userId) => {
+  try {
+    const [posts] = await banco.query("SELECT posts.*, usuarios.nome, usuarios.foto FROM posts JOIN seguidores ON posts.user_id = seguidores.seguido_id JOIN usuarios ON posts.user_id = usuarios.id WHERE seguidores.seguidor_id = ? ORDER BY posts.criado_em DESC;",
+      [userId]
+    );
+    return posts;
+  } catch (err) {
+    console.error("Erro ao buscar posts:", err.message);
+    throw new Error("Erro interno");
+  }
+};
+
 
 const insertlike = async (userId, postId) => {
   try {
@@ -114,4 +126,4 @@ const verificalike = async (userId, postId) => {
 };
 
 
-module.exports = { CriarPost, ListarPosts, ListarPostsPorUsuario, insertlike, ListarLikesPorPost, verificalike };
+module.exports = { CriarPost, ListarPosts, ListarPostsPorUsuario, listarpostdequemousersegue, insertlike, ListarLikesPorPost, verificalike };

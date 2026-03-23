@@ -61,6 +61,25 @@ const PostsServiceController = {
     }
   },
 
+  listarpostdequemousersegue: async (request, response) => {
+    try {
+      const userId = request.params.id;
+      const data = await model.listarpostdequemousersegue(userId);
+      const baseUrl = `${request.protocol}://${request.get("host")}`;
+
+      const resultado = data.map(post => ({
+        ...post,
+        imagem: post.imagem ? baseUrl + post.imagem : null,
+        foto: post.foto ? baseUrl + post.foto : null
+      }));
+
+      response.status(200).json(resultado);
+    } catch (error) {
+      console.error("Erro ao listar posts dos usuários que o usuário segue:", error.message);
+      response.status(401).send({ message: "Falha ao executar a ação!" });
+    }
+  },
+
   insertlike: async (request, response) => {
     try {
       // aceita tanto userId quanto user_id (flexível)
