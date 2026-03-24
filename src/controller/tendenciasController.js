@@ -23,7 +23,8 @@ const TendenciasServiceController = {
 
             const resultado = posts.map(post => ({
                 ...post,
-                imagem: montarUrl(request, post.imagem)
+                imagem: montarUrl(request, post.imagem),
+                foto_perfil: montarUrl(request, post.foto_perfil)
             }));
 
             response.json(resultado);

@@ -39,11 +39,17 @@ const ListarPostsPorUsuario = async (userId) => {
   try {
     const [posts] = await banco.query(
       `
-            SELECT posts.*, usuarios.nome, usuarios.foto AS foto_perfil
-            FROM posts
-            JOIN usuarios ON posts.user_id = usuarios.id
-            WHERE posts.user_id = ?
-            ORDER BY posts.criado_em DESC
+SELECT 
+    posts.*, 
+    usuarios.nome, 
+    usuarios.foto AS foto_perfil,
+    COUNT(likes_posts.id) AS total_likes
+FROM posts
+JOIN usuarios ON posts.user_id = usuarios.id
+LEFT JOIN likes_posts ON likes_posts.post_id = posts.id
+WHERE posts.user_id = ?
+GROUP BY posts.id
+ORDER BY posts.criado_em DESC;
         `,
       [userId]
     );

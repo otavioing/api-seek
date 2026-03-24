@@ -4,7 +4,7 @@ const { banco } = require("./database");
 const Listarcursos = async () => {
     try {
         const [posts] = await banco.query(`
-            select c.id, c.imagem_curso, c.nome_curso, c.valor_curso, u.nome as nome_usuario
+            select c.id, c.imagem_curso, c.nome_curso, c.valor_curso, c.descricao_curso, u.nome as nome_usuario
             from cursos c
             join usuarios u ON c.id_user = u.id
             ORDER BY RAND() 

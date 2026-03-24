@@ -262,6 +262,20 @@ const selectfoto = async (id) => {
   }
 };
 
+const selectbanner = async (id) => {
+  try {
+    const [rows] = await banco.query(
+      "SELECT banner FROM usuarios WHERE id = ?",
+      [id]
+    );
+    return rows[0]; // só retorna o caminho
+  } catch (error) {
+    console.error("Erro ao buscar banner:", error);
+    throw new Error("Erro interno no servidor");
+  }
+};
+
+
 const GetAllbyidPadrao = async (id) => {
   try {
     const [rows] = await banco.query(
@@ -300,6 +314,37 @@ const GetAllbyidEmpresas = async (id) => {
     return rows[0] || null;
   } catch (error) {
     console.error("Erro ao buscar perfil empresa:", error.message);
+    throw new Error("Erro interno");
+  }
+};
+
+const numerodepostseguidreselikes = async (id) => {
+  try {
+    const [rows] = await banco.query(`SELECT 
+    u.id,
+    u.nome,
+
+    -- total de seguidores
+    (SELECT COUNT(*) 
+     FROM seguidores s 
+     WHERE s.seguido_id = u.id) AS total_seguidores,
+
+    -- total de posts
+    (SELECT COUNT(*) 
+     FROM posts p 
+     WHERE p.user_id = u.id) AS total_posts,
+
+    -- total de likes em todos os posts do usuário
+    (SELECT COUNT(*) 
+     FROM likes_posts lp
+     JOIN posts p2 ON lp.post_id = p2.id
+     WHERE p2.user_id = u.id) AS total_likes
+
+FROM usuarios u
+WHERE u.id = ?`, [id]);
+    return rows[0] || null;
+  } catch (error) {
+    console.error("Erro ao buscar número de posts, seguidores e likes:", error.message);
     throw new Error("Erro interno");
   }
 };
@@ -834,5 +879,7 @@ module.exports = {
   verificarpreferenciaprivacidade,
   atualizarPreferencianotificacao,
   atualizarPreferenciaprivacidade,
-  selectfoto
+  selectfoto,
+  selectbanner,
+  numerodepostseguidreselikes
 };
