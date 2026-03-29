@@ -109,7 +109,7 @@ const listarpostdequemousersegue = async (userId) => {
         p.legenda,
         p.criado_em,
         u.nome,
-        u.foto,
+        u.foto AS foto_perfil,
         pi.imagem
       FROM posts p
       JOIN seguidores s ON p.user_id = s.seguido_id

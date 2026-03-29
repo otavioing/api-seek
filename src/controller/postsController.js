@@ -68,25 +68,6 @@ const PostsServiceController = {
     }
   },
 
-  // CriarPost: async (request, response) => {
-  //   try {
-  //     const userId = request.body.user_id;
-  //     const legenda = request.body.legenda || "";
-  //     const imagem = request.file ? `/uploads/posts/${request.file.filename}` : null;
-  //     const titulo = request.body.titulo || "";
-  //     const id_categoria = request.body.id_categoria || "";
-
-  //     if (!imagem) {
-  //       return response.status(400).send({ message: "Imagem é obrigatória" });
-  //     }
-
-  //     const data = await model.CriarPost(userId, imagem, legenda, titulo, id_categoria);
-  //     response.status(201).send(data); // ou data[0] se necessário
-  //   } catch (error) {
-  //     console.error("Erro ao criar post:", error.message);
-  //     response.status(500).send({ message: "Erro interno ao criar post." });
-  //   }
-  // },
 
   CriarPost: async (request, response) => {
     try {
