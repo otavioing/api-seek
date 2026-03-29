@@ -22,55 +22,52 @@ ORDER BY total_posts DESC;
 }
 
 const listarpostscategoria = async (id_categoria) => {
-    try {
-        const [posts] = await banco.query(`
-SELECT 
-    p.id,
-    p.titulo,
-    p.legenda,
-    p.imagem,
-    p.criado_em,
-    p.user_id,
-    c.nome_categoria,
-    
-    u.nome AS nome_usuario,
-    u.foto AS foto_perfil,
+  try {
+    const [rows] = await banco.query(`
+      SELECT 
+        p.id,
+        p.titulo,
+        p.legenda,
+        p.criado_em,
+        p.user_id,
+        c.nome_categoria,
+        
+        u.nome AS nome_usuario,
+        u.foto AS foto_perfil,
 
-    COUNT(lp.id) AS total_likes
+        COUNT(DISTINCT lp.id) AS total_likes,
+        pi.imagem
 
-FROM posts p
+      FROM posts p
 
-JOIN categorias_posts c
-    ON c.id_categoria = p.id_categoria
+      JOIN categorias_posts c
+        ON c.id_categoria = p.id_categoria
 
-JOIN usuarios u
-    ON u.id = p.user_id
+      JOIN usuarios u
+        ON u.id = p.user_id
 
-LEFT JOIN likes_posts lp
-    ON lp.post_id = p.id
+      LEFT JOIN likes_posts lp
+        ON lp.post_id = p.id
 
-WHERE p.id_categoria = ?
+      LEFT JOIN post_imagens pi
+        ON pi.post_id = p.id
 
-GROUP BY 
-    p.id,
-    p.titulo,
-    p.legenda,
-    p.imagem,
-    p.criado_em,
-    p.user_id,
-    c.nome_categoria,
-    u.nome,
-    u.foto
+      WHERE p.id_categoria = ?
 
-ORDER BY p.criado_em DESC;
-            
-        `, [id_categoria]);
-        return posts;
-    } catch (err) {
-        console.error("Erro ao listar posts por categoria de foto:", err.message);
-        throw new Error("Erro interno");
-    }
-}
+      GROUP BY 
+        p.id,
+        pi.imagem
+
+      ORDER BY p.criado_em DESC;
+    `, [id_categoria]);
+
+    return rows;
+
+  } catch (err) {
+    console.error("Erro ao listar posts por categoria:", err.message);
+    throw new Error("Erro interno");
+  }
+};
 
 
 module.exports = { verificarTendencias, listarpostscategoria };

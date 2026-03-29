@@ -1,13 +1,39 @@
 const { banco } = require("./database");
 
-const CriarPost = async (userId, imagem, legenda, titulo, id_categoria) => {
+// const CriarPost = async (userId, imagem, legenda, titulo, id_categoria) => {
+//   try {
+//     const [posts] = await banco.query(
+//       "INSERT INTO posts (user_id, imagem, legenda, titulo, id_categoria) VALUES (?, ?, ?, ?, ?)",
+//       [userId, imagem, legenda, titulo, id_categoria]
+//     );
+//     console.log("Post criado com sucesso");
+//     return posts;
+//   } catch (err) {
+//     console.error("Erro ao criar post:", err.message);
+//     throw new Error("Erro interno");
+//   }
+// };
+
+const CriarPost = async (userId, imagens, legenda, titulo, id_categoria) => {
   try {
-    const [posts] = await banco.query(
-      "INSERT INTO posts (user_id, imagem, legenda, titulo, id_categoria) VALUES (?, ?, ?, ?, ?)",
-      [userId, imagem, legenda, titulo, id_categoria]
+    // cria post
+    const [postResult] = await banco.query(
+      "INSERT INTO posts (user_id, legenda, titulo, id_categoria) VALUES (?, ?, ?, ?)",
+      [userId, legenda, titulo, id_categoria]
     );
-    console.log("Post criado com sucesso");
-    return posts;
+
+    const postId = postResult.insertId;
+
+    // salva imagens (uma por vez)
+    for (const file of imagens) {
+      await banco.query(
+        "INSERT INTO post_imagens (post_id, imagem) VALUES (?, ?)",
+        [postId, `/uploads/posts/${file.filename}`]
+      );
+    }
+
+    return { message: "Post criado com múltiplas imagens!" };
+
   } catch (err) {
     console.error("Erro ao criar post:", err.message);
     throw new Error("Erro interno");
@@ -16,44 +42,58 @@ const CriarPost = async (userId, imagem, legenda, titulo, id_categoria) => {
 
 const ListarPosts = async () => {
   try {
-    const [posts] = await banco.query(`
-            SELECT 
-    posts.*, 
-    usuarios.nome, 
-    usuarios.foto AS foto_perfil,
-    COUNT(seguidores.id) AS total_seguidores
-FROM posts
-JOIN usuarios ON posts.user_id = usuarios.id
-LEFT JOIN seguidores ON seguidores.seguido_id = usuarios.id
-GROUP BY posts.id
-ORDER BY RAND(); 
-        `);
-    return posts;
+    const [rows] = await banco.query(`
+      SELECT 
+        p.id,
+        p.titulo,
+        p.legenda,
+        p.criado_em,
+        p.user_id,
+        u.nome,
+        u.foto AS foto_perfil,
+        COUNT(DISTINCT s.id) AS total_seguidores,
+        pi.imagem
+      FROM posts p
+      JOIN usuarios u ON p.user_id = u.id
+      LEFT JOIN seguidores s ON s.seguido_id = u.id
+      LEFT JOIN post_imagens pi ON pi.post_id = p.id
+      GROUP BY p.id, pi.imagem
+      ORDER BY p.criado_em DESC
+    `);
+
+    return rows;
+
   } catch (err) {
     console.error("Erro ao buscar posts:", err.message);
     throw new Error("Erro interno");
   }
 };
 
+
+
 const ListarPostsPorUsuario = async (userId) => {
   try {
-    const [posts] = await banco.query(
-      `
-SELECT 
-    posts.*, 
-    usuarios.nome, 
-    usuarios.foto AS foto_perfil,
-    COUNT(likes_posts.id) AS total_likes
-FROM posts
-JOIN usuarios ON posts.user_id = usuarios.id
-LEFT JOIN likes_posts ON likes_posts.post_id = posts.id
-WHERE posts.user_id = ?
-GROUP BY posts.id
-ORDER BY posts.criado_em DESC;
-        `,
-      [userId]
-    );
-    return posts;
+    const [rows] = await banco.query(`
+      SELECT 
+        p.id,
+        p.titulo,
+        p.legenda,
+        p.criado_em,
+        u.nome,
+        u.foto AS foto_perfil,
+        COUNT(DISTINCT l.id) AS total_likes,
+        pi.imagem
+      FROM posts p
+      JOIN usuarios u ON p.user_id = u.id
+      LEFT JOIN likes_posts l ON l.post_id = p.id
+      LEFT JOIN post_imagens pi ON pi.post_id = p.id
+      WHERE p.user_id = ?
+      GROUP BY p.id, pi.imagem
+      ORDER BY p.criado_em DESC
+    `, [userId]);
+
+    return rows;
+
   } catch (err) {
     console.error("Erro ao buscar posts:", err.message);
     throw new Error("Erro interno");
@@ -62,10 +102,26 @@ ORDER BY posts.criado_em DESC;
 
 const listarpostdequemousersegue = async (userId) => {
   try {
-    const [posts] = await banco.query("SELECT posts.*, usuarios.nome, usuarios.foto FROM posts JOIN seguidores ON posts.user_id = seguidores.seguido_id JOIN usuarios ON posts.user_id = usuarios.id WHERE seguidores.seguidor_id = ? ORDER BY posts.criado_em DESC;",
-      [userId]
-    );
-    return posts;
+    const [rows] = await banco.query(`
+      SELECT 
+        p.id,
+        p.titulo,
+        p.legenda,
+        p.criado_em,
+        u.nome,
+        u.foto,
+        pi.imagem
+      FROM posts p
+      JOIN seguidores s ON p.user_id = s.seguido_id
+      JOIN usuarios u ON p.user_id = u.id
+      LEFT JOIN post_imagens pi ON pi.post_id = p.id
+      WHERE s.seguidor_id = ?
+      GROUP BY p.id, pi.imagem
+      ORDER BY p.criado_em DESC
+    `, [userId]);
+
+    return rows;
+
   } catch (err) {
     console.error("Erro ao buscar posts:", err.message);
     throw new Error("Erro interno");

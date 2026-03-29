@@ -16,22 +16,52 @@ const TendenciasServiceController = {
         }
     },
 
-    listarpostscategoria: async (request, response) => {
-        try {
-            const id_categoria = request.params.id_categoria;
-            const posts = await model.listarpostscategoria(id_categoria);
+listarpostscategoria: async (request, response) => {
+  try {
+    const id_categoria = request.params.id_categoria;
+    const data = await model.listarpostscategoria(id_categoria);
 
-            const resultado = posts.map(post => ({
-                ...post,
-                imagem: montarUrl(request, post.imagem),
-                foto_perfil: montarUrl(request, post.foto_perfil)
-            }));
+    const baseUrl = `${request.protocol}://${request.get("host")}`;
 
-            response.json(resultado);
-        } catch (error) {
-            response.status(500).json({ error: error.message });
-        }
-    }
+    const posts = [];
+
+    data.forEach(row => {
+      let post = posts.find(p => p.id === row.id);
+
+      if (!post) {
+        post = {
+          id: row.id,
+          titulo: row.titulo,
+          legenda: row.legenda,
+          criado_em: row.criado_em,
+          nome_categoria: row.nome_categoria,
+
+          user: {
+            id: row.user_id,
+            nome: row.nome_usuario,
+            foto: row.foto_perfil
+              ? baseUrl + row.foto_perfil
+              : null
+          },
+
+          total_likes: row.total_likes || 0,
+          imagens: []
+        };
+
+        posts.push(post);
+      }
+
+      if (row.imagem) {
+        post.imagens.push(baseUrl + row.imagem);
+      }
+    });
+
+    response.json(posts);
+
+  } catch (error) {
+    response.status(500).json({ error: error.message });
+  }
+}
 
 
 };

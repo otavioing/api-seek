@@ -1,25 +1,56 @@
 const model = require("../model/postsService");
 
+function agruparPosts(data, baseUrl) {
+  const posts = [];
+
+  data.forEach(row => {
+    let post = posts.find(p => p.id === row.id);
+
+    if (!post) {
+      post = {
+        id: row.id,
+        titulo: row.titulo,
+        legenda: row.legenda,
+        criado_em: row.criado_em,
+        user: {
+          id: row.user_id,
+          nome: row.nome,
+          foto: row.foto_perfil
+            ? baseUrl + row.foto_perfil
+            : null
+        },
+        imagens: [],
+        total_likes: row.total_likes || 0,
+        total_seguidores: row.total_seguidores || 0
+      };
+
+      posts.push(post);
+    }
+
+    if (row.imagem) {
+      post.imagens.push(baseUrl + row.imagem);
+    }
+  });
+
+  return posts;
+}
+
 const PostsServiceController = {
   ListarPosts: async (request, response) => {
     try {
       const data = await model.ListarPosts();
-
       const baseUrl = `${request.protocol}://${request.get("host")}`;
 
-      const resultado = data.map(post => ({
-        ...post,
-        imagem: post.imagem ? baseUrl + post.imagem : null,
-        foto_perfil: post.foto_perfil ? baseUrl + post.foto_perfil : null
-      }));
+      const resultado = agruparPosts(data, baseUrl);
 
       response.status(200).json(resultado);
 
     } catch (error) {
-      console.error("Erro ao conectar ao banco de dados:", error.message);
-      response.status(401).send({ message: "Falha ao executar a ação!" });
+      console.error(error.message);
+      response.status(500).send({ message: "Erro interno" });
     }
   },
+
   ListarPostsPorUsuario: async (request, response) => {
     try {
       const userId = request.params.id;
@@ -27,34 +58,58 @@ const PostsServiceController = {
 
       const baseUrl = `${request.protocol}://${request.get("host")}`;
 
-      const resultado = data.map(post => ({
-        ...post,
-        imagem: post.imagem ? baseUrl + post.imagem : null,
-        foto_perfil: post.foto_perfil ? baseUrl + post.foto_perfil : null
-      }));
+      const resultado = agruparPosts(data, baseUrl);
 
       response.status(200).json(resultado);
 
     } catch (error) {
-      console.error("Erro ao conectar ao banco de dados:", error.message);
-      response.status(401).send({ message: "Falha ao executar a ação!" });
+      console.error(error.message);
+      response.status(500).send({ message: "Erro interno" });
     }
   },
+
+  // CriarPost: async (request, response) => {
+  //   try {
+  //     const userId = request.body.user_id;
+  //     const legenda = request.body.legenda || "";
+  //     const imagem = request.file ? `/uploads/posts/${request.file.filename}` : null;
+  //     const titulo = request.body.titulo || "";
+  //     const id_categoria = request.body.id_categoria || "";
+
+  //     if (!imagem) {
+  //       return response.status(400).send({ message: "Imagem é obrigatória" });
+  //     }
+
+  //     const data = await model.CriarPost(userId, imagem, legenda, titulo, id_categoria);
+  //     response.status(201).send(data); // ou data[0] se necessário
+  //   } catch (error) {
+  //     console.error("Erro ao criar post:", error.message);
+  //     response.status(500).send({ message: "Erro interno ao criar post." });
+  //   }
+  // },
 
   CriarPost: async (request, response) => {
     try {
       const userId = request.body.user_id;
       const legenda = request.body.legenda || "";
-      const imagem = request.file ? `/uploads/posts/${request.file.filename}` : null;
       const titulo = request.body.titulo || "";
       const id_categoria = request.body.id_categoria || "";
 
-      if (!imagem) {
-        return response.status(400).send({ message: "Imagem é obrigatória" });
+      const imagens = request.files; // 👈 mudou aqui
+
+      if (!imagens || imagens.length === 0) {
+        return response.status(400).send({ message: "Pelo menos uma imagem é obrigatória" });
       }
 
-      const data = await model.CriarPost(userId, imagem, legenda, titulo, id_categoria);
-      response.status(201).send(data); // ou data[0] se necessário
+      const data = await model.CriarPost(
+        userId,
+        imagens,
+        legenda,
+        titulo,
+        id_categoria
+      );
+      response.status(201).send(data);
+
     } catch (error) {
       console.error("Erro ao criar post:", error.message);
       response.status(500).send({ message: "Erro interno ao criar post." });
@@ -65,18 +120,16 @@ const PostsServiceController = {
     try {
       const userId = request.params.id;
       const data = await model.listarpostdequemousersegue(userId);
+
       const baseUrl = `${request.protocol}://${request.get("host")}`;
 
-      const resultado = data.map(post => ({
-        ...post,
-        imagem: post.imagem ? baseUrl + post.imagem : null,
-        foto: post.foto ? baseUrl + post.foto : null
-      }));
+      const resultado = agruparPosts(data, baseUrl);
 
       response.status(200).json(resultado);
+
     } catch (error) {
-      console.error("Erro ao listar posts dos usuários que o usuário segue:", error.message);
-      response.status(401).send({ message: "Falha ao executar a ação!" });
+      console.error(error.message);
+      response.status(500).send({ message: "Erro interno" });
     }
   },
 
