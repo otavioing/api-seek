@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 29/03/2026 às 21:27
+-- Tempo de geração: 05/04/2026 às 21:34
 -- Versão do servidor: 10.4.32-MariaDB
--- Versão do PHP: 8.0.30
+-- Versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -86,7 +86,16 @@ CREATE TABLE `comentarios` (
 --
 
 INSERT INTO `comentarios` (`id`, `post_id`, `user_id`, `comentario`, `criado_em`) VALUES
-(1, 40, 9, 'primeiro comentario do seek', '2025-12-10 21:30:24');
+(1, 40, 9, 'primeiro comentario do seek', '2025-12-10 21:30:24'),
+(4, 35, 9, 'primeiro comentario', '2026-03-30 19:59:41'),
+(5, 42, 9, 'Teste', '2026-03-30 20:21:43'),
+(6, 38, 9, 'Ainda bem que esse cara faz faculdade pq se fosse viver do desenho não ia dar certo', '2026-03-30 20:24:53'),
+(7, 38, 9, 'Ainda bem que esse cara faz faculdade pq se fosse viver do desenho passaria fome', '2026-03-31 11:03:16'),
+(8, 41, 9, 'O cara da esquerda é paia', '2026-03-31 11:05:44'),
+(9, 42, 3, 'Ah', '2026-03-31 11:15:35'),
+(10, 42, 3, 'Ovo', '2026-03-31 13:26:20'),
+(11, 39, 3, 'Ovo', '2026-03-31 13:27:04'),
+(16, 42, 9, 'Obiii', '2026-03-31 14:06:00');
 
 -- --------------------------------------------------------
 
@@ -160,7 +169,10 @@ INSERT INTO `likes_posts` (`id`, `user_id`, `post_id`, `criado_em`, `numero_like
 (103, 28, 32, '2025-11-22 17:14:34', 0),
 (104, 29, 32, '2025-11-22 17:14:34', 0),
 (105, 9, 40, '2025-12-10 21:30:08', 0),
-(106, 9, 32, '2026-03-29 19:17:48', 0);
+(112, 9, 41, '2026-03-30 23:07:25', 0),
+(113, 9, 32, '2026-03-30 23:09:31', 0),
+(121, 3, 39, '2026-03-31 13:27:12', 0),
+(122, 9, 37, '2026-04-05 19:11:58', 0);
 
 -- --------------------------------------------------------
 
@@ -254,9 +266,9 @@ INSERT INTO `posts` (`id`, `user_id`, `legenda`, `criado_em`, `titulo`, `id_cate
 (29, 29, '', '2025-11-08 21:03:47', '', NULL),
 (30, 29, '', '2025-11-08 21:03:52', '', NULL),
 (31, 29, '', '2025-11-08 21:03:55', '', NULL),
-(32, 9, '', '2025-11-10 01:41:45', '', 4),
+(32, 9, '', '2025-11-10 01:41:45', 'eee', 4),
 (35, 9, '', '2025-11-10 01:49:39', '...', 2),
-(37, 9, '', '2025-11-10 01:52:13', '', 1),
+(37, 9, '', '2025-11-10 01:52:13', 'fff', 1),
 (38, 28, 'aaaaaaaaaaaaaaaaa', '2025-11-23 00:12:38', 'aaaaaaaaaaaaaaaaaaa', 1),
 (39, 30, 'testeapenas', '2025-11-23 19:56:16', 'testeapenas', 5),
 (40, 9, 'teste', '2025-11-24 16:19:56', 'teste222', 3),
@@ -293,8 +305,8 @@ INSERT INTO `post_imagens` (`id`, `post_id`, `imagem`) VALUES
 (11, 30, '/uploads/posts/1762614135764-WIN_20250626_09_37_13_Pro.jpg'),
 (12, 31, '/uploads/posts/1762614139519-WIN_20250626_08_42_13_Pro.jpg'),
 (13, 32, '/uploads/posts/1762717188556-Captura de tela 2025-07-06 122421.png'),
-(14, 35, '/uploads/posts/1762717662548-Captura de tela 2025-06-30 202713.png'),
-(15, 37, '/uploads/posts/1762717816779-Captura de tela 2025-06-25 220835.png'),
+(14, 35, '/uploads/posts/1761598125649-CatÃ¡logo (7).png'),
+(15, 37, '/uploads/posts/1764177518537-hqdefault.jpg'),
 (16, 38, '/uploads/posts/1763845767626-Colapse_omenagi_pos_sombreado2.png'),
 (17, 39, '/uploads/posts/1763916783362-Captura de tela 2025-11-23 113445.png'),
 (18, 40, '/uploads/posts/1763990293424-WIN_20251107_08_47_31_Pro.jpg'),
@@ -329,7 +341,15 @@ INSERT INTO `preferencias_notificacoes` (`id`, `id_user`, `nome_notificacao`, `p
 (160, 33, 'receber_login', 1),
 (161, 33, 'receber_seguidores', 1),
 (162, 33, 'receber_comentarios', 1),
-(163, 33, 'receber_likes', 1);
+(163, 33, 'receber_likes', 1),
+(260, 3, 'receber_login', 1),
+(261, 3, 'receber_seguidores', 1),
+(262, 3, 'receber_comentarios', 1),
+(263, 3, 'receber_likes', 1),
+(280, 40, 'receber_login', 1),
+(281, 40, 'receber_seguidores', 1),
+(282, 40, 'receber_comentarios', 1),
+(283, 40, 'receber_likes', 1);
 
 -- --------------------------------------------------------
 
@@ -357,7 +377,15 @@ INSERT INTO `preferencias_privacidade` (`id`, `id_user`, `nome_privacidade`, `pr
 (82, 33, 'exibir_na_busca', 1),
 (83, 33, 'exibir_no_feed', 1),
 (84, 33, 'exibir_cursos_no_feed', 1),
-(85, 33, 'exibir_likes', 1);
+(85, 33, 'exibir_likes', 1),
+(182, 3, 'exibir_na_busca', 1),
+(183, 3, 'exibir_no_feed', 1),
+(184, 3, 'exibir_cursos_no_feed', 1),
+(185, 3, 'exibir_likes', 1),
+(202, 40, 'exibir_na_busca', 1),
+(203, 40, 'exibir_no_feed', 1),
+(204, 40, 'exibir_cursos_no_feed', 1),
+(205, 40, 'exibir_likes', 1);
 
 -- --------------------------------------------------------
 
@@ -399,7 +427,7 @@ CREATE TABLE `usuarios` (
   `nome` varchar(255) NOT NULL,
   `email` varchar(191) NOT NULL,
   `senha` varchar(255) NOT NULL,
-  `foto` varchar(255) DEFAULT '/uploads/fotopadraousuario.svg',
+  `foto` varchar(255) DEFAULT '/uploads/fotopadraousuario.png',
   `banner` varchar(255) DEFAULT NULL,
   `tema` varchar(50) DEFAULT 'claro',
   `cargo` varchar(255) DEFAULT NULL,
@@ -421,10 +449,10 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `foto`, `banner`, `tema`, `cargo`, `nome_de_usuario`, `descricao`, `acessibilidade_ativa`, `data_de_criacao`, `cadastro_completo`, `ultimo_login`, `status`, `tipo`, `permissao`, `codigo_recuperacao`, `expira_em`) VALUES
-(3, 'who.jxao', 'joaojfpessoal@gmail.com', '$2b$10$fJwhob.w51UdYqGq8GV76uC7r6wE6dJw.cufVIJxvWwxdwXa7M9vK', '/uploads/fotopadraousuario.png', '/uploads/banners/1750949495134-WIN_20250626_11_50_21_Pro.jpg', 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-05-05 16:39:11', 1, '2025-10-07 09:19:51', 'Ativo', 'padrao', 'Padrão', NULL, NULL),
+(3, 'who.jxao', 'joaojfpessoal@gmail.com', '$2b$10$fJwhob.w51UdYqGq8GV76uC7r6wE6dJw.cufVIJxvWwxdwXa7M9vK', '/uploads/fotopadraousuario.png', '/uploads/banners/1750949495134-WIN_20250626_11_50_21_Pro.jpg', 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-05-05 16:39:11', 1, '2026-03-31 10:19:55', 'Ativo', 'padrao', 'Padrão', NULL, NULL),
 (4, 'João da Silva', 'joao.silva@example.com', 'novaSenha123', '/uploads/fotopadraousuario.png', 'https://meusite.com/banners/banner1.jpg', 'escuro', NULL, NULL, NULL, 1, '2025-05-06 22:39:09', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (7, 'João Silva Atualizado', 'fewfwfw@hbrhbv atualizado', 'senha1234', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-17 20:06:16', 1, NULL, 'Ativo', 'padrao', 'Padrão', NULL, NULL),
-(9, 'Otávio', 'tectonicroom356@gmail.com', '$2b$10$EHAWkhmwv8MyWtnBfG/6yujRyiSJGZOM7TciIFNvkAasnFSikFgoq', '/uploads/foto_perfil/1759968055964-asteroid.png', '/uploads/banners/1763990447336-WIN_20251107_08_47_31_Pro.jpg', 'escuro', NULL, NULL, 'este usuário não possui descrição', 0, '2025-06-26 01:21:52', 1, '2026-03-29 15:52:13', 'Ativo', 'padrao', 'Admin', '462250', '2025-11-01 18:26:11'),
+(9, 'Otávio', 'tectonicroom356@gmail.com', '$2b$10$EHAWkhmwv8MyWtnBfG/6yujRyiSJGZOM7TciIFNvkAasnFSikFgoq', '/uploads/foto_perfil/1759968055964-asteroid.png', '/uploads/banners/1763990447336-WIN_20251107_08_47_31_Pro.jpg', 'escuro', NULL, NULL, 'este usuário não possui descrição', 0, '2025-06-26 01:21:52', 1, '2026-04-05 16:11:32', 'Ativo', 'padrao', 'Admin', '563887', '2026-03-31 10:56:23'),
 (10, 'testE', '3rwfrgtrhytjuyi@gmail.com', '$2b$10$GZsIzdtonQlQ0AycbW4UkerdIKgDHtFIIKawevfQG7SUOFEijFua2', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-26 01:27:17', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (11, 'felipe', 'fellipe@mail.com', '$2b$10$VT.ofVWpRSlLxWiN01L9dulNuWwrpNs9yeiCTF1De.CWEIGy7UBC.', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-26 17:19:10', 1, NULL, 'Ativo', 'padrao', 'Padrão', '959579', '2025-11-01 18:26:48'),
 (12, 'Luiz Gustavo', 'luiz@gmail.com', '$2b$10$KozHbUufQSQVaKo4oq1P3eb.wHaaBTqRJjWjA.CHbCfVE8Tc2ZDbW', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-26 17:31:54', 1, NULL, 'Ativo', 'padrao', 'Padrão', '245296', '2025-11-01 18:32:21'),
@@ -450,7 +478,8 @@ INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `foto`, `banner`, `tema`
 (36, 'otavio', 'dfwescdvf@gmail.com', '$2b$10$0KZWA4gnGwLqLK1oWKH7b.e4CzJqJysGh5A2d4kTcvwZUwyGTjTnO', '/uploads/fotopadraousuario.svg', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2026-03-11 15:53:27', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (37, 'testefront', 'fervfdvsd@gmail.com', '$2b$10$YTCYYiyQ12z5.8TWwLIexe.ijwiTWuJA7OZG5BCJMEzMKH3fTYKHW', '/uploads/fotopadraousuario.svg', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2026-03-11 15:59:26', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (38, 'desfcsecs', 'eefdbg@gmail.com', '$2b$10$x5P5Rwh9AswP3bOvVfA.d.YoG/1j/X23Yo7No4mJfP8Ou7jx39Rlu', '/uploads/fotopadraousuario.svg', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2026-03-11 16:00:08', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
-(39, 'testeapi2.0', 'fnilenesinf@gmail.com', '$2b$10$w/MSeXycM0u5BAeXdwG1heQ/oTGChz/FDNDJi1e.PznNgb..g.aP.', '/uploads/fotopadraousuario.svg', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2026-03-11 16:01:09', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL);
+(39, 'testeapi2.0', 'fnilenesinf@gmail.com', '$2b$10$w/MSeXycM0u5BAeXdwG1heQ/oTGChz/FDNDJi1e.PznNgb..g.aP.', '/uploads/fotopadraousuario.svg', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2026-03-11 16:01:09', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
+(40, 'Teste de cadastro mobile', 'Otaviodominguessilva@gmail.com', '$2b$10$ALU/SmgpBlaoN3vyDCBV.ef93QLF1XWTUY4E9cT2tVrrQGxxaf4UC', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2026-04-05 19:13:20', 0, '2026-04-05 16:14:14', 'Ativo', NULL, 'Padrão', NULL, NULL);
 
 --
 -- Índices para tabelas despejadas
@@ -571,7 +600,7 @@ ALTER TABLE `categorias_posts`
 -- AUTO_INCREMENT de tabela `comentarios`
 --
 ALTER TABLE `comentarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de tabela `cursos`
@@ -583,7 +612,7 @@ ALTER TABLE `cursos`
 -- AUTO_INCREMENT de tabela `likes_posts`
 --
 ALTER TABLE `likes_posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 
 --
 -- AUTO_INCREMENT de tabela `posts`
@@ -601,13 +630,13 @@ ALTER TABLE `post_imagens`
 -- AUTO_INCREMENT de tabela `preferencias_notificacoes`
 --
 ALTER TABLE `preferencias_notificacoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=256;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=284;
 
 --
 -- AUTO_INCREMENT de tabela `preferencias_privacidade`
 --
 ALTER TABLE `preferencias_privacidade`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
 
 --
 -- AUTO_INCREMENT de tabela `seguidores`
@@ -619,7 +648,7 @@ ALTER TABLE `seguidores`
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- Restrições para tabelas despejadas
