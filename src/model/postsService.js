@@ -108,6 +108,7 @@ const listarpostdequemousersegue = async (userId) => {
         p.titulo,
         p.legenda,
         p.criado_em,
+        p.user_id,
         u.nome,
         u.foto AS foto_perfil,
         pi.imagem
