@@ -49,6 +49,34 @@ const marcarNotificacaoComoLida = async (idNotificacao, destinatarioId) => {
 	}
 };
 
+const excluirNotificacao = async (idNotificacao, destinatarioId) => {
+	try {
+		const [resultado] = await banco.query(
+			"DELETE FROM notificacoes WHERE id = ? AND destinatario_id = ?;",
+			[idNotificacao, destinatarioId]
+		);
+
+		return resultado;
+	} catch (error) {
+		console.error("Erro ao excluir notificacao:", error.message);
+		throw new Error("Falha ao executar a ação!");
+	}
+};
+
+const excluirTodasNotificacoesPorDestinatario = async (destinatarioId) => {
+	try {
+		const [resultado] = await banco.query(
+			"DELETE FROM notificacoes WHERE destinatario_id = ?;",
+			[destinatarioId]
+		);
+
+		return resultado;
+	} catch (error) {
+		console.error("Erro ao excluir notificacoes do destinatario:", error.message);
+		throw new Error("Falha ao executar a ação!");
+	}
+};
+
 const criarNotificacaoRespostaComentario = async ({ idcomentariopai, remetente_id, post_id }) => {
 	try {
 		const [comentarios] = await banco.query(
@@ -162,6 +190,8 @@ module.exports = {
 	criarNotificacao,
 	listarNotificacoesPorDestinatario,
 	marcarNotificacaoComoLida,
+	excluirNotificacao,
+	excluirTodasNotificacoesPorDestinatario,
 	criarNotificacaoRespostaComentario,
 	criarNotificacaoComentarioPost,
 	criarNotificacaoSeguindo,
