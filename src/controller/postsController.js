@@ -1,4 +1,5 @@
 const model = require("../model/postsService");
+const notificacoesModel = require("../model/notificacoesService");
 
 function agruparPosts(data, baseUrl) {
   const posts = [];
@@ -133,6 +134,14 @@ const PostsServiceController = {
       }
 
       const data = await model.insertlike(uId, pId);
+
+      if (data.liked === true) {
+        await notificacoesModel.criarNotificacaoLikePost({
+          remetente_id: uId,
+          post_id: pId,
+        });
+      }
+
       // dependendo do model, pode retornar insertId ou objeto
       return response.status(201).json(data);
     } catch (error) {

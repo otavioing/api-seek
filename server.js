@@ -11,6 +11,7 @@ const rotasPostscursos = require("./src/routers/postcursoRouters");
 const rotasperfilspadrao = require("./src/routers/perfils_padraoRouters");
 const rotasperfilsempresa = require("./src/routers/perfils_empresaRouters");
 const rotasComentarios = require("./src/routers/comentariosRouters");
+const rotasNotificacoes = require("./src/routers/notificacoesRouters");
 const rotasEstatisticas = require("./src/routers/estatisticasRouters");
 const rotasapiopenia = require("./src/routers/apiOpeniaRouters");
 const dotenv = require("dotenv");
@@ -35,6 +36,7 @@ app.use("/postscursos", rotasPostscursos);
 app.use("/padrao", rotasperfilspadrao);
 app.use("/empresa", rotasperfilsempresa);
 app.use("/comentarios", rotasComentarios);
+app.use("/notificacoes", rotasNotificacoes);
 app.use("/estatisticas", rotasEstatisticas);
 app.use("/openai", rotasapiopenia);
 

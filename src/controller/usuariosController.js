@@ -1,4 +1,5 @@
 const model = require("../model/usuariosService");
+const notificacoesModel = require("../model/notificacoesService");
 const bcrypt = require("bcrypt");
 
 const montarUrl = (req, caminho) => {
@@ -113,6 +114,14 @@ const UsuariosController = {
       const seguidorId = request.params.seguidorId;
       const seguidoId = request.params.seguidoId;
       const data = await model.Seguirusuario(seguidorId, seguidoId);
+
+      if (data.seguindo === true) {
+        await notificacoesModel.criarNotificacaoSeguindo({
+          remetente_id: seguidorId,
+          destinatario_id: seguidoId,
+        });
+      }
+
       response.status(200).send(data);
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);

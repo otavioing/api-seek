@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 05/04/2026 às 21:34
+-- Tempo de geração: 09/04/2026 às 02:07
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -78,24 +78,34 @@ CREATE TABLE `comentarios` (
   `post_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `comentario` text NOT NULL,
-  `criado_em` timestamp NOT NULL DEFAULT current_timestamp()
+  `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
+  `comentario_pai_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `comentarios`
 --
 
-INSERT INTO `comentarios` (`id`, `post_id`, `user_id`, `comentario`, `criado_em`) VALUES
-(1, 40, 9, 'primeiro comentario do seek', '2025-12-10 21:30:24'),
-(4, 35, 9, 'primeiro comentario', '2026-03-30 19:59:41'),
-(5, 42, 9, 'Teste', '2026-03-30 20:21:43'),
-(6, 38, 9, 'Ainda bem que esse cara faz faculdade pq se fosse viver do desenho não ia dar certo', '2026-03-30 20:24:53'),
-(7, 38, 9, 'Ainda bem que esse cara faz faculdade pq se fosse viver do desenho passaria fome', '2026-03-31 11:03:16'),
-(8, 41, 9, 'O cara da esquerda é paia', '2026-03-31 11:05:44'),
-(9, 42, 3, 'Ah', '2026-03-31 11:15:35'),
-(10, 42, 3, 'Ovo', '2026-03-31 13:26:20'),
-(11, 39, 3, 'Ovo', '2026-03-31 13:27:04'),
-(16, 42, 9, 'Obiii', '2026-03-31 14:06:00');
+INSERT INTO `comentarios` (`id`, `post_id`, `user_id`, `comentario`, `criado_em`, `comentario_pai_id`) VALUES
+(1, 40, 9, 'primeiro comentario do seek', '2025-12-10 21:30:24', NULL),
+(4, 35, 9, 'primeiro comentario', '2026-03-30 19:59:41', NULL),
+(5, 42, 9, 'Teste', '2026-03-30 20:21:43', NULL),
+(6, 38, 9, 'Ainda bem que esse cara faz faculdade pq se fosse viver do desenho não ia dar certo', '2026-03-30 20:24:53', NULL),
+(7, 38, 9, 'Ainda bem que esse cara faz faculdade pq se fosse viver do desenho passaria fome', '2026-03-31 11:03:16', NULL),
+(8, 41, 9, 'O cara da esquerda é paia', '2026-03-31 11:05:44', NULL),
+(9, 42, 3, 'Ah', '2026-03-31 11:15:35', NULL),
+(10, 42, 3, 'Ovo', '2026-03-31 13:26:20', NULL),
+(11, 39, 3, 'Ovo', '2026-03-31 13:27:04', NULL),
+(16, 42, 9, 'Obiii', '2026-03-31 14:06:00', NULL),
+(17, 41, 9, 'top d+', '2026-04-08 23:19:06', NULL),
+(18, 41, 9, 'top d+', '2026-04-08 23:19:51', 17),
+(20, 42, 9, 'Teste de resposta de comentários', '2026-04-08 23:30:36', 5),
+(21, 42, 9, 'Teste 2', '2026-04-08 23:30:48', 20),
+(22, 22, 9, 'Esse mano é diferenciado', '2026-04-08 23:33:55', NULL),
+(23, 42, 9, 'Teste de notificação', '2026-04-08 23:43:18', 21),
+(24, 42, 9, 'Teste', '2026-04-08 23:44:14', 9),
+(25, 42, 9, 'Teste de comentário com notificação', '2026-04-08 23:52:01', NULL),
+(26, 42, 9, 'Segundo teste de comentário com notificação', '2026-04-08 23:53:48', NULL);
 
 -- --------------------------------------------------------
 
@@ -148,7 +158,6 @@ CREATE TABLE `likes_posts` (
 --
 
 INSERT INTO `likes_posts` (`id`, `user_id`, `post_id`, `criado_em`, `numero_likes`) VALUES
-(85, 9, 19, '2025-11-02 20:25:58', 0),
 (86, 3, 32, '2025-11-22 17:14:34', 0),
 (87, 4, 32, '2025-11-22 17:14:34', 0),
 (88, 7, 32, '2025-11-22 17:14:34', 0),
@@ -172,7 +181,37 @@ INSERT INTO `likes_posts` (`id`, `user_id`, `post_id`, `criado_em`, `numero_like
 (112, 9, 41, '2026-03-30 23:07:25', 0),
 (113, 9, 32, '2026-03-30 23:09:31', 0),
 (121, 3, 39, '2026-03-31 13:27:12', 0),
-(122, 9, 37, '2026-04-05 19:11:58', 0);
+(122, 9, 37, '2026-04-05 19:11:58', 0),
+(126, 9, 38, '2026-04-08 23:50:35', 0),
+(127, 9, 42, '2026-04-08 23:54:04', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `notificacoes`
+--
+
+CREATE TABLE `notificacoes` (
+  `id` int(11) NOT NULL,
+  `destinatario_id` int(11) NOT NULL,
+  `remetente_id` int(11) NOT NULL,
+  `tipo` enum('like','comentario','seguindo') NOT NULL,
+  `post_id` int(11) DEFAULT NULL,
+  `comentario_id` int(11) DEFAULT NULL,
+  `lida` tinyint(1) DEFAULT 0,
+  `criada_em` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `notificacoes`
+--
+
+INSERT INTO `notificacoes` (`id`, `destinatario_id`, `remetente_id`, `tipo`, `post_id`, `comentario_id`, `lida`, `criada_em`) VALUES
+(1, 3, 9, 'comentario', 42, 9, 0, '2026-04-08 23:44:14'),
+(2, 33, 9, 'seguindo', NULL, NULL, 0, '2026-04-08 23:50:02'),
+(3, 28, 9, 'like', 38, NULL, 0, '2026-04-08 23:50:35'),
+(4, 33, 9, 'comentario', 42, 26, 0, '2026-04-08 23:53:48'),
+(5, 33, 9, 'like', 42, NULL, 0, '2026-04-08 23:54:04');
 
 -- --------------------------------------------------------
 
@@ -414,7 +453,8 @@ INSERT INTO `seguidores` (`id`, `seguidor_id`, `seguido_id`, `criado_em`) VALUES
 (16, 10, 9, '2025-12-07 18:12:32'),
 (17, 11, 9, '2025-12-07 18:12:32'),
 (18, 12, 9, '2025-12-07 18:12:32'),
-(19, 13, 9, '2025-12-07 18:12:32');
+(19, 13, 9, '2025-12-07 18:12:32'),
+(21, 9, 33, '2026-04-08 23:50:02');
 
 -- --------------------------------------------------------
 
@@ -449,10 +489,10 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `foto`, `banner`, `tema`, `cargo`, `nome_de_usuario`, `descricao`, `acessibilidade_ativa`, `data_de_criacao`, `cadastro_completo`, `ultimo_login`, `status`, `tipo`, `permissao`, `codigo_recuperacao`, `expira_em`) VALUES
-(3, 'who.jxao', 'joaojfpessoal@gmail.com', '$2b$10$fJwhob.w51UdYqGq8GV76uC7r6wE6dJw.cufVIJxvWwxdwXa7M9vK', '/uploads/fotopadraousuario.png', '/uploads/banners/1750949495134-WIN_20250626_11_50_21_Pro.jpg', 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-05-05 16:39:11', 1, '2026-03-31 10:19:55', 'Ativo', 'padrao', 'Padrão', NULL, NULL),
+(3, 'who.jxao', 'joaojfpessoal@gmail.com', '$2b$10$fJwhob.w51UdYqGq8GV76uC7r6wE6dJw.cufVIJxvWwxdwXa7M9vK', '/uploads/fotopadraousuario.png', '/uploads/banners/1750949495134-WIN_20250626_11_50_21_Pro.jpg', 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-05-05 16:39:11', 1, '2026-04-08 21:03:04', 'Ativo', 'padrao', 'Padrão', NULL, NULL),
 (4, 'João da Silva', 'joao.silva@example.com', 'novaSenha123', '/uploads/fotopadraousuario.png', 'https://meusite.com/banners/banner1.jpg', 'escuro', NULL, NULL, NULL, 1, '2025-05-06 22:39:09', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (7, 'João Silva Atualizado', 'fewfwfw@hbrhbv atualizado', 'senha1234', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-17 20:06:16', 1, NULL, 'Ativo', 'padrao', 'Padrão', NULL, NULL),
-(9, 'Otávio', 'tectonicroom356@gmail.com', '$2b$10$EHAWkhmwv8MyWtnBfG/6yujRyiSJGZOM7TciIFNvkAasnFSikFgoq', '/uploads/foto_perfil/1759968055964-asteroid.png', '/uploads/banners/1763990447336-WIN_20251107_08_47_31_Pro.jpg', 'escuro', NULL, NULL, 'este usuário não possui descrição', 0, '2025-06-26 01:21:52', 1, '2026-04-05 16:11:32', 'Ativo', 'padrao', 'Admin', '563887', '2026-03-31 10:56:23'),
+(9, 'Otávio', 'tectonicroom356@gmail.com', '$2b$10$EHAWkhmwv8MyWtnBfG/6yujRyiSJGZOM7TciIFNvkAasnFSikFgoq', '/uploads/foto_perfil/1759968055964-asteroid.png', '/uploads/banners/1763990447336-WIN_20251107_08_47_31_Pro.jpg', 'escuro', NULL, NULL, 'este usuário não possui descrição', 0, '2025-06-26 01:21:52', 1, '2026-04-08 20:49:51', 'Ativo', 'padrao', 'Admin', '563887', '2026-03-31 10:56:23'),
 (10, 'testE', '3rwfrgtrhytjuyi@gmail.com', '$2b$10$GZsIzdtonQlQ0AycbW4UkerdIKgDHtFIIKawevfQG7SUOFEijFua2', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-26 01:27:17', 0, NULL, 'Ativo', NULL, 'Padrão', NULL, NULL),
 (11, 'felipe', 'fellipe@mail.com', '$2b$10$VT.ofVWpRSlLxWiN01L9dulNuWwrpNs9yeiCTF1De.CWEIGy7UBC.', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-26 17:19:10', 1, NULL, 'Ativo', 'padrao', 'Padrão', '959579', '2025-11-01 18:26:48'),
 (12, 'Luiz Gustavo', 'luiz@gmail.com', '$2b$10$KozHbUufQSQVaKo4oq1P3eb.wHaaBTqRJjWjA.CHbCfVE8Tc2ZDbW', '/uploads/fotopadraousuario.png', NULL, 'claro', NULL, NULL, 'este usuário não possui descrição', 1, '2025-06-26 17:31:54', 1, NULL, 'Ativo', 'padrao', 'Padrão', '245296', '2025-11-01 18:32:21'),
@@ -503,7 +543,8 @@ ALTER TABLE `categorias_posts`
 ALTER TABLE `comentarios`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_comentario_post` (`post_id`),
-  ADD KEY `fk_comentario_user` (`user_id`);
+  ADD KEY `fk_comentario_user` (`user_id`),
+  ADD KEY `comentario_pai_id` (`comentario_pai_id`);
 
 --
 -- Índices de tabela `cursos`
@@ -520,6 +561,16 @@ ALTER TABLE `likes_posts`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `user_post_like` (`user_id`,`post_id`),
   ADD KEY `post_id` (`post_id`);
+
+--
+-- Índices de tabela `notificacoes`
+--
+ALTER TABLE `notificacoes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `destinatario_id` (`destinatario_id`),
+  ADD KEY `remetente_id` (`remetente_id`),
+  ADD KEY `post_id` (`post_id`),
+  ADD KEY `comentario_id` (`comentario_id`);
 
 --
 -- Índices de tabela `perfis_empresa`
@@ -600,7 +651,7 @@ ALTER TABLE `categorias_posts`
 -- AUTO_INCREMENT de tabela `comentarios`
 --
 ALTER TABLE `comentarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de tabela `cursos`
@@ -612,7 +663,13 @@ ALTER TABLE `cursos`
 -- AUTO_INCREMENT de tabela `likes_posts`
 --
 ALTER TABLE `likes_posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+
+--
+-- AUTO_INCREMENT de tabela `notificacoes`
+--
+ALTER TABLE `notificacoes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `posts`
@@ -630,19 +687,19 @@ ALTER TABLE `post_imagens`
 -- AUTO_INCREMENT de tabela `preferencias_notificacoes`
 --
 ALTER TABLE `preferencias_notificacoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=284;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=320;
 
 --
 -- AUTO_INCREMENT de tabela `preferencias_privacidade`
 --
 ALTER TABLE `preferencias_privacidade`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=242;
 
 --
 -- AUTO_INCREMENT de tabela `seguidores`
 --
 ALTER TABLE `seguidores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
@@ -658,6 +715,7 @@ ALTER TABLE `usuarios`
 -- Restrições para tabelas `comentarios`
 --
 ALTER TABLE `comentarios`
+  ADD CONSTRAINT `comentarios_ibfk_1` FOREIGN KEY (`comentario_pai_id`) REFERENCES `comentarios` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_comentario_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_comentario_user` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
 
@@ -674,6 +732,15 @@ ALTER TABLE `cursos`
 ALTER TABLE `likes_posts`
   ADD CONSTRAINT `likes_posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`),
   ADD CONSTRAINT `likes_posts_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`);
+
+--
+-- Restrições para tabelas `notificacoes`
+--
+ALTER TABLE `notificacoes`
+  ADD CONSTRAINT `notificacoes_ibfk_1` FOREIGN KEY (`destinatario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `notificacoes_ibfk_2` FOREIGN KEY (`remetente_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `notificacoes_ibfk_3` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `notificacoes_ibfk_4` FOREIGN KEY (`comentario_id`) REFERENCES `comentarios` (`id`) ON DELETE CASCADE;
 
 --
 -- Restrições para tabelas `perfis_empresa`
