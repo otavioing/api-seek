@@ -22,7 +22,22 @@ const UsuariosController = {
     try {
       const id = request.params.id;
       const data = await model.GetById(id);
-      response.status(200).send(data);
+
+      const resultado = Array.isArray(data)
+        ? data.map(user => ({
+          ...user,
+          foto: montarUrl(request, user.foto),
+          banner: montarUrl(request, user.banner)
+        }))
+        : data
+          ? {
+            ...data,
+            foto: montarUrl(request, data.foto),
+            banner: montarUrl(request, data.banner)
+          }
+          : data;
+
+      response.status(200).json(resultado);
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
       response.status(401).send({ message: "Falha ao executar a ação!" });
