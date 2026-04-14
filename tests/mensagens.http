@@ -1,0 +1,81 @@
+### Teste de criacao de conversa
+### Descricao: Cria uma nova conversa com participantes
+POST http://localhost:4500/mensagens/conversas
+Content-Type: application/json
+
+{
+  "foto": "/uploads/banners/chat-grupo.png",
+  "participantes": [3, 9]
+}
+
+### Teste de criacao de conversa com multipart
+### Descricao: Cria conversa enviando foto e participantes no mesmo request
+POST http://localhost:4500/mensagens/conversas
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="foto"; filename="chat.jpg"
+Content-Type: image/jpeg
+
+< ./foto.jpg
+--MyBoundary
+Content-Disposition: form-data; name="participantes"
+
+[3,9]
+--MyBoundary--
+
+### Teste de update de foto da conversa
+### Descricao: Atualiza a foto da conversa 1 via multipart/form-data
+PUT http://localhost:4500/mensagens/conversas/1/foto
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="foto"; filename="chat.jpg"
+Content-Type: image/jpeg
+
+< ./foto.jpg
+--MyBoundary--
+
+### Teste de listagem de conversas por usuario
+### Descricao: Lista todas as conversas do usuario com ultima mensagem e nome do remetente
+GET http://localhost:4500/mensagens/usuarios/3/conversas
+
+### Teste de criacao de mensagem
+### Descricao: Cria uma mensagem na conversa 1 (mensagem sera salva criptografada)
+POST http://localhost:4500/mensagens/conversas/3/mensagens
+Content-Type: application/json
+
+{
+  "remetente_id": 9,
+  "mensagem": "Ola pessoal, vamos iniciar a reuniao as 14h."
+}
+
+### Teste de listagem de mensagens da conversa
+### Descricao: Lista todas as mensagens da conversa 1 ja descriptografadas
+GET http://localhost:4500/mensagens/conversas/3/mensagens?usuario_id=3
+
+### Teste de adicionar participantes na conversa
+### Descricao: Adiciona novos membros a conversa 1
+POST http://localhost:4500/mensagens/conversas/3/participantes
+Content-Type: application/json
+
+{
+  "usuario_ids": [9]
+}
+
+### Teste de remover participante da conversa
+### Descricao: Remove o usuario 5 da conversa 1
+DELETE http://localhost:4500/mensagens/conversas/1/participantes/5
+
+### Teste de marcar mensagens como lidas
+### Descricao: Marca como lidas as mensagens recebidas na conversa 1 para o usuario 2
+PUT http://localhost:4500/mensagens/conversas/1/lidas
+Content-Type: application/json
+
+{
+  "usuario_id": 2
+}
+
+### Teste de contagem de mensagens nao lidas
+### Descricao: Conta o total de mensagens nao lidas para o usuario 2
+GET http://localhost:4500/mensagens/usuarios/2/nao-lidas
