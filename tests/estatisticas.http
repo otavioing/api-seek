@@ -1,0 +1,5 @@
+### Categorias mais usadas por usuario
+GET http://localhost:4500/estatisticas/categoriasusadasporusuario/3
+
+### Media de likes por usuario
+GET http://localhost:4500/estatisticas/medialikesporusuario/3

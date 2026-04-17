@@ -1,0 +1,33 @@
+### Criar notificacao manualmente
+POST http://localhost:4500/notificacoes
+Content-Type: application/json
+
+{
+  "destinatario_id": 3,
+  "remetente_id": 2,
+  "tipo": "like",
+  "post_id": 5,
+  "comentario_id": null
+}
+
+### Listar notificacoes por destinatario
+GET http://localhost:4500/notificacoes/3
+
+### Marcar notificacao como lida
+PUT http://localhost:4500/notificacoes/15/lida
+Content-Type: application/json
+
+{
+  "destinatario_id": 3
+}
+
+### Excluir todas as notificacoes de um destinatario
+DELETE http://localhost:4500/notificacoes/usuario/3
+
+### Excluir uma notificacao especifica
+DELETE http://localhost:4500/notificacoes/15
+Content-Type: application/json
+
+{
+  "destinatario_id": 3
+}

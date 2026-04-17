@@ -1,0 +1,67 @@
+### Listar cursos
+GET http://localhost:4500/postscursos
+
+### Listar curso por ID
+GET http://localhost:4500/postscursos/1
+
+### Listar cursos por categoria
+GET http://localhost:4500/postscursos/listarporcategoria/2
+
+### Listar cursos por idioma
+GET http://localhost:4500/postscursos/listarporidioma/pt-BR
+
+### Listar cursos por status de pagamento
+GET http://localhost:4500/postscursos/listarporpagamento/pago
+
+### Listar cursos por usuario
+GET http://localhost:4500/postscursos/listarporusuario/3
+
+### Criar curso com imagem
+POST http://localhost:4500/postscursos
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="imagem_curso"; filename="curso.jpg"
+Content-Type: image/jpeg
+
+< ./foto.jpg
+--MyBoundary
+Content-Disposition: form-data; name="id_user"
+
+3
+--MyBoundary
+Content-Disposition: form-data; name="nome_curso"
+
+Illustration Basics
+--MyBoundary
+Content-Disposition: form-data; name="nivel_curso"
+
+iniciante
+--MyBoundary
+Content-Disposition: form-data; name="valor_curso"
+
+99.90
+--MyBoundary
+Content-Disposition: form-data; name="quantidade_vagas"
+
+20
+--MyBoundary
+Content-Disposition: form-data; name="id_categoria"
+
+2
+--MyBoundary
+Content-Disposition: form-data; name="descricao_curso"
+
+Curso introdutorio sobre fundamentos de ilustracao digital.
+--MyBoundary
+Content-Disposition: form-data; name="audio_curso"
+
+https://example.com/audio.mp3
+--MyBoundary
+Content-Disposition: form-data; name="legenda_curso"
+
+Primeira turma disponivel.
+--MyBoundary--
+
+### Apagar curso
+DELETE http://localhost:4500/postscursos/1

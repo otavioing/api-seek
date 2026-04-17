@@ -1,0 +1,2 @@
+### Health check da API
+GET http://localhost:4500/

@@ -1,0 +1,7 @@
+### Perguntar a IA do site
+POST http://localhost:4500/openai/ia
+Content-Type: application/json
+
+{
+  "pergunta": "Como eu faco uma postagem na plataforma?"
+}

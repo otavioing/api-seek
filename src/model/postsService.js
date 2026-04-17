@@ -188,5 +188,39 @@ const verificalike = async (userId, postId) => {
   }
 };
 
+const DeletarPost = async (postId) => {
+  try {
+    const [result] = await banco.query(
+      "DELETE FROM posts WHERE posts.id = ?",
+      [postId]
+    );
 
-module.exports = { CriarPost, ListarPosts, ListarPostsPorUsuario, listarpostdequemousersegue, insertlike, ListarLikesPorPost, verificalike };
+    return result;
+  } catch (err) {
+    console.error("Erro ao deletar post:", err.message);
+    throw new Error("Erro interno");
+  }
+};
+
+const AtualizarPost = async (postId, legenda, titulo, id_categoria) => {
+  try {
+    const [result] = await banco.query(
+      `
+      UPDATE posts
+      SET legenda = COALESCE(?, legenda),
+          titulo = COALESCE(?, titulo),
+          id_categoria = COALESCE(?, id_categoria)
+      WHERE posts.id = ?
+      `,
+      [legenda, titulo, id_categoria, postId]
+    );
+
+    return result;
+  } catch (err) {
+    console.error("Erro ao atualizar post:", err.message);
+    throw new Error("Erro interno");
+  }
+};
+
+
+module.exports = { CriarPost, ListarPosts, ListarPostsPorUsuario, listarpostdequemousersegue, insertlike, ListarLikesPorPost, verificalike, DeletarPost, AtualizarPost };
