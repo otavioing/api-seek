@@ -1,0 +1,5 @@
+### Listar tendencias gerais
+GET http://localhost:4500/tendencias
+
+### Listar posts de uma categoria em tendencia
+GET http://localhost:4500/tendencias/2

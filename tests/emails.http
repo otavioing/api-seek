@@ -1,29 +1,39 @@
-### Testa o email de criação de conta
-### Descrição: Envia um email de criação de conta para o usuário com ID 5
+### Fluxos de email
+
+### Solicitar criacao de conta
 POST http://localhost:4500/usuarios/solicitar-criacao
 Content-Type: application/json
 
 {
-    "nome": "João Silva",
-    "email": "otaviodominguessilva@gmail.com",
-    "senha": "senha123"
+  "nome": "Joao Silva",
+  "email": "joao.silva@example.com",
+  "senha": "senha123"
 }
 
-### Testa o email de recuperação de senha
-### Descrição: Envia um email de recuperação de senha para o usuário com ID 5
-POST http://localhost:4500/usuarios/recuperar-senha
-Content-Type: application/json
-
-{
-    "email": "otaviodominguessilva@gmail.com"
-}
-
-### Testa o email de confirmação de exclusão de conta
-### Descrição: Envia um email de confirmação de exclusão de conta para o usuário com
-
+### Solicitar exclusao de conta
 POST http://localhost:4500/usuarios/solicitar-exclusao
 Content-Type: application/json
 
 {
-    "email": "otaviodominguessilva@gmail.com"
+  "nome": "Joao Silva",
+  "email": "joao.silva@example.com",
+  "senha": "senha123"
+}
+
+### Criar codigo de recuperacao de senha
+POST http://localhost:4500/usuarios/criar-codigo-verificacao
+Content-Type: application/json
+
+{
+  "email": "joao.silva@example.com"
+}
+
+### Atualizar senha com codigo
+POST http://localhost:4500/usuarios/atualizar-senha
+Content-Type: application/json
+
+{
+  "email": "joao.silva@example.com",
+  "codigo": "123456",
+  "novaSenha": "novaSenha123"
 }
