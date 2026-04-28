@@ -1,57 +1,19 @@
-### API de posts
+### Teste de obtenção de posts
+### Descrição: Obtém os posts do usuário com ID 5
 
-### Listar posts
 GET http://localhost:4500/posts
 
-### Listar posts de um usuario
-GET http://localhost:4500/posts/usuario/3
+### Teste de obtenção de posts por usuário
+### Descrição: Obtém os posts do usuário com ID 8
+GET http://localhost:4500/posts/usuario/9
 
-### Listar posts de usuarios seguidos
-GET http://localhost:4500/posts/posts-seguidos/3
-
-### Verificar like em um post
-GET http://localhost:4500/posts/verifica-like/3/10
-
-### Listar likes de um post
-GET http://localhost:4500/posts/likes/10
-
-### Curtir ou descurtir post
-POST http://localhost:4500/posts/like
+### Teste de criação de post
+### Descrição: Cria um novo post com o título "Meu Post" e o conteúdo "Conteúdo do meu post"
+POST http://localhost:4500/posts
 Content-Type: application/json
 
 {
-  "user_id": 3,
-  "post_id": 10
+  "userId": 5,
+  "imagem": "url_da_imagem",
+  "legenda": "Legenda do meu post"
 }
-
-### Criar post com imagens
-POST http://localhost:4500/posts
-Content-Type: multipart/form-data; boundary=MyBoundary
-
---MyBoundary
-Content-Disposition: form-data; name="imagens"; filename="post-1.jpg"
-Content-Type: image/jpeg
-
-< ./foto.jpg
---MyBoundary
-Content-Disposition: form-data; name="imagens"; filename="post-2.jpg"
-Content-Type: image/jpeg
-
-< ./foto.jpg
---MyBoundary
-Content-Disposition: form-data; name="user_id"
-
-3
---MyBoundary
-Content-Disposition: form-data; name="legenda"
-
-Legenda do post de teste
---MyBoundary
-Content-Disposition: form-data; name="titulo"
-
-Post de teste
---MyBoundary
-Content-Disposition: form-data; name="id_categoria"
-
-2
---MyBoundary--

@@ -1,5 +1,4 @@
 const model = require("../model/postsService");
-const notificacoesModel = require("../model/notificacoesService");
 
 function agruparPosts(data, baseUrl) {
   const posts = [];
@@ -134,14 +133,6 @@ const PostsServiceController = {
       }
 
       const data = await model.insertlike(uId, pId);
-
-      if (data.liked === true) {
-        await notificacoesModel.criarNotificacaoLikePost({
-          remetente_id: uId,
-          post_id: pId,
-        });
-      }
-
       // dependendo do model, pode retornar insertId ou objeto
       return response.status(201).json(data);
     } catch (error) {
@@ -169,57 +160,6 @@ const PostsServiceController = {
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
       response.status(401).send({ message: "Falha ao executar a ação!" });
-    }
-  },
-
-  DeletarPost: async (request, response) => {
-    try {
-      const postId = request.params.id;
-
-      if (!postId) {
-        return response.status(400).send({ message: "id do post é obrigatório" });
-      }
-
-      const data = await model.DeletarPost(postId);
-
-      if (data.affectedRows === 0) {
-        return response.status(404).send({ message: "Post não encontrado" });
-      }
-
-      return response.status(200).send({ message: "Post deletado com sucesso" });
-    } catch (error) {
-      console.error("Erro ao deletar post:", error.message);
-      return response.status(500).send({ message: "Erro interno ao deletar post." });
-    }
-  },
-
-  AtualizarPost: async (request, response) => {
-    try {
-      const postId = request.params.id;
-      const legenda = request.body.legenda ?? request.body.descricao ?? null;
-      const titulo = request.body.titulo ?? null;
-      const id_categoria = request.body.id_categoria ?? null;
-
-      if (!postId) {
-        return response.status(400).send({ message: "id do post é obrigatório" });
-      }
-
-      if (legenda === null && titulo === null && id_categoria === null) {
-        return response.status(400).send({
-          message: "Informe ao menos um campo para atualizar: legenda/descricao, titulo ou id_categoria"
-        });
-      }
-
-      const data = await model.AtualizarPost(postId, legenda, titulo, id_categoria);
-
-      if (data.affectedRows === 0) {
-        return response.status(404).send({ message: "Post não encontrado" });
-      }
-
-      return response.status(200).send({ message: "Post atualizado com sucesso" });
-    } catch (error) {
-      console.error("Erro ao atualizar post:", error.message);
-      return response.status(500).send({ message: "Erro interno ao atualizar post." });
     }
   },
 

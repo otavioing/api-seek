@@ -1,5 +1,4 @@
 const model = require("../model/usuariosService");
-const notificacoesModel = require("../model/notificacoesService");
 const bcrypt = require("bcrypt");
 
 const montarUrl = (req, caminho) => {
@@ -22,22 +21,7 @@ const UsuariosController = {
     try {
       const id = request.params.id;
       const data = await model.GetById(id);
-
-      const resultado = Array.isArray(data)
-        ? data.map(user => ({
-          ...user,
-          foto: montarUrl(request, user.foto),
-          banner: montarUrl(request, user.banner)
-        }))
-        : data
-          ? {
-            ...data,
-            foto: montarUrl(request, data.foto),
-            banner: montarUrl(request, data.banner)
-          }
-          : data;
-
-      response.status(200).json(resultado);
+      response.status(200).send(data);
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
       response.status(401).send({ message: "Falha ao executar a ação!" });
@@ -129,14 +113,6 @@ const UsuariosController = {
       const seguidorId = request.params.seguidorId;
       const seguidoId = request.params.seguidoId;
       const data = await model.Seguirusuario(seguidorId, seguidoId);
-
-      if (data.seguindo === true) {
-        await notificacoesModel.criarNotificacaoSeguindo({
-          remetente_id: seguidorId,
-          destinatario_id: seguidoId,
-        });
-      }
-
       response.status(200).send(data);
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);

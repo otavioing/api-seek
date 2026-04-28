@@ -13,7 +13,5 @@ rota.get("/posts-seguidos/:id", myController.listarpostdequemousersegue);
 rota.post("/like", myController.insertlike);
 rota.get("/likes/:id", myController.ListarLikesPorPost);
 rota.get("/verifica-like/:userId/:postId", myController.verificalike);
-rota.put("/:id", myController.AtualizarPost);
-rota.delete("/:id", myController.DeletarPost);
 
 module.exports = rota;

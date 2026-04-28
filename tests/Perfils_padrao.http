@@ -1,32 +1,37 @@
-### API de perfis padrao
-
-### Listar perfis padrao
+### Teste de obtenção de perfil padrão
+### GET Perfil Padrão
 GET http://localhost:4500/padrao
 
-### Obter perfil padrao por usuario
+#### Teste de obtenção de perfil padrão por ID
+### Descrição: Obtém os detalhes do perfil padrão do usuário com ID 1
 GET http://localhost:4500/padrao/3
 
-### Criar perfil padrao
-POST http://localhost:4500/padrao/3
+### Teste de criação de perfil padrão
+### Descrição: Cria um novo perfil padrão para o usuário com ID 1
+
+POST http://localhost:4500/padrao/9
 Content-Type: application/json
 
 {
-  "profissao": "Ilustrador",
-  "nome_de_usuario": "joao.silva",
-  "descricao": "Perfil padrao de teste",
-  "certificados": "Certificado de Ilustracao"
+  "profissao": "Desenvolvedor",
+  "nome_de_usuario": "dev_user",
+  "descricao": "Desenvolvedor de software",
+  "certificados": "Certificado de Desenvolvimento Web"
 }
 
-### Atualizar perfil padrao
-PUT http://localhost:4500/padrao/3
+### Teste de atualização de perfil padrão
+### Descrição: Atualiza o perfil padrão do usuário com ID 1
+PUT http://localhost:4500/padrao/9
 Content-Type: application/json
 
 {
-  "profissao": "Designer",
-  "nome_de_usuario": "joao.designer",
-  "descricao": "Perfil padrao atualizado",
-  "certificados": "Certificado de Design"
+  "profissao": "Engenheiro de Software",
+  "nome_de_usuario": "eng_user",
+  "descricao": "Engenheiro de software com experiência em backend",
+  "certificados": "Certificado de Engenharia de Software"
 }
 
-### Excluir perfil padrao
-DELETE http://localhost:4500/padrao/3
+
+### Teste de exclusão de perfil padrão
+### Descrição: Exclui o perfil padrão do usuário com ID 1
+DELETE http://localhost:4500/padrao/9

@@ -1,216 +1,56 @@
-### API de usuarios
+### Teste de API para usuários
 
-### Listar usuarios
+### Teste de obtenção de usuário
+### Descrição: Obtém a lista de usuários cadastrados
 GET http://localhost:4500/usuarios
 
-### Obter usuario por ID
+### Teste de obtenção de usuário por ID
+### Descrição: Obtém os detalhes do usuário com ID 5
 GET http://localhost:4500/usuarios/3
-
-### Verificar se a caixa de completar cadastro esta ativa
-GET http://localhost:4500/usuarios/verificarcaixa/3
-
-### Buscar usuario por nome
-GET http://localhost:4500/usuarios/buscar-usuario-por-nome/joao
-
-### Verificar tipo de usuario
-GET http://localhost:4500/usuarios/verificartipo/3
-
-### Quantidade de seguindo
-GET http://localhost:4500/usuarios/seguindo/3
-
-### Quantidade de seguidores
-GET http://localhost:4500/usuarios/seguidores/3
-
-### Verificar se segue outro usuario
-GET http://localhost:4500/usuarios/verificarsesegue/3/9
-
-### Lista de seguindo
-GET http://localhost:4500/usuarios/lista-seguindo/3
-
-### Lista de seguidores
-GET http://localhost:4500/usuarios/lista-seguidores/3
-
-### Preferencias de notificacao do usuario
-GET http://localhost:4500/usuarios/preferencias-notificacoes/3
-
-### Preferencias de privacidade do usuario
-GET http://localhost:4500/usuarios/preferencias-privacidade/3
-
-### Foto de perfil do usuario
-GET http://localhost:4500/usuarios/foto-perfil/3
-
-### Banner do usuario
-GET http://localhost:4500/usuarios/foto-banner/3
-
-### Numero de posts, seguidores e likes
-GET http://localhost:4500/usuarios/numero-posts-seguidores-likes/3
-
-### Atualizar usuario
-PUT http://localhost:4500/usuarios/3
 Content-Type: application/json
 
 {
-  "nome": "Joao Silva Atualizado",
-  "email": "joao.atualizado@example.com",
-  "tema": "claro",
-  "descricao": "Perfil atualizado via teste HTTP"
+  "token": ""
 }
 
-### Definir tipo de usuario
-PUT http://localhost:4500/usuarios/atualizar-tipo/3
-Content-Type: application/json
-
-{
-  "tipo": 1
-}
-
-### Marcar cadastro como completo
-PUT http://localhost:4500/usuarios/completarcoluna-cadastro/3
-
-### Atualizar preferencias de notificacao
-PUT http://localhost:4500/usuarios/preferencias-notificacoes/3
-Content-Type: application/json
-
-{
-  "nome_notificacao": "receber_login",
-  "preferencia": 1
-}
-
-### Atualizar preferencias de privacidade
-PUT http://localhost:4500/usuarios/preferencias-privacidade/3
-Content-Type: application/json
-
-{
-  "nome_privacidade": "exibir_na_busca",
-  "preferencia": 1
-}
-
-### Atualizar foto de perfil
-PUT http://localhost:4500/usuarios/update-foto/3
-Content-Type: multipart/form-data; boundary=MyBoundary
-
---MyBoundary
-Content-Disposition: form-data; name="foto"; filename="foto.jpg"
-Content-Type: image/jpeg
-
-< ./foto.jpg
---MyBoundary--
-
-### Atualizar banner
-PUT http://localhost:4500/usuarios/update-fotobanner/3
-Content-Type: multipart/form-data; boundary=MyBoundary
-
---MyBoundary
-Content-Disposition: form-data; name="foto"; filename="banner.jpg"
-Content-Type: image/jpeg
-
-< ./foto.jpg
---MyBoundary--
-
-### Criar usuario
+### Teste de criação de usuário
+### Descrição: Cria um novo usuário com os dados fornecidos
 POST http://localhost:4500/usuarios
 Content-Type: application/json
 
 {
-  "nome": "Joao Silva",
-  "email": "joao.silva@example.com",
-  "senha": "senha123"
+  "nome": "João Silvad",
+  "email": "fewfwfw@hbrhbv4",
+  "senha": "senha1234"
 }
 
-### Completar cadastro de perfil padrao
-POST http://localhost:4500/usuarios/completar-cadastro-padrao
+### Teste de atualização de usuário
+### Descrição: Atualiza os dados do usuário com ID 5
+PUT http://localhost:4500/usuarios/5
 Content-Type: application/json
 
 {
-  "usuario_id": 3,
-  "nome_de_usuario": "joao.silva",
-  "profissao": "Ilustrador",
-  "descricao": "Descricao do perfil padrao"
+  "nome": "João Silva Atualizado",
+  "email": "fewfwfw@hbrhbv atualizado",
+  "senha": "senha1234"
 }
 
-### Login
-POST http://localhost:4500/usuarios/login
-Content-Type: application/json
+### Teste de exclusão de usuário
+### Descrição: Exclui o usuário com ID 5
+DELETE http://localhost:4500/usuarios/15
 
-{
-  "email": "joao.silva@example.com",
-  "senha": "senha123"
-}
+###virificar se a caixa de completar cadastro está funcionando
+### Descrição: Verifica se a caixa de completar cadastro está funcionando para o usuário com ID 5
+GET http://localhost:4500/usuarios/verificarcaixa/7
 
-### Criar codigo de recuperacao de senha
-POST http://localhost:4500/usuarios/criar-codigo-verificacao
-Content-Type: application/json
+### verificar tipo de usuario
+### Descrição: Verifica o tipo de usuário do usuário com ID 5
+GET http://localhost:4500/usuarios/verificartipo/7
 
-{
-  "email": "joao.silva@example.com"
-}
+### Teste de update de foto de perfil
+### Descrição: Atualiza a foto de perfil do usuário com ID 5
 
-### Atualizar senha
-POST http://localhost:4500/usuarios/atualizar-senha
-Content-Type: application/json
-
-{
-  "email": "joao.silva@example.com",
-  "codigo": "123456",
-  "novaSenha": "novaSenha123"
-}
-
-### Solicitar criacao de conta
-POST http://localhost:4500/usuarios/solicitar-criacao
-Content-Type: application/json
-
-{
-  "nome": "Joao Silva",
-  "email": "joao.silva@example.com",
-  "senha": "senha123"
-}
-
-### Solicitar exclusao de conta
-POST http://localhost:4500/usuarios/solicitar-exclusao
-Content-Type: application/json
-
-{
-  "nome": "Joao Silva",
-  "email": "joao.silva@example.com",
-  "senha": "senha123"
-}
-
-### Atualizar tema
-POST http://localhost:4500/usuarios/atualizar-tema
-Content-Type: application/json
-
-{
-  "id": 3,
-  "tema": "escuro"
-}
-
-### Atualizar acessibilidade
-POST http://localhost:4500/usuarios/atualizar-acessibilidade
-Content-Type: application/json
-
-{
-  "id": 3,
-  "acessibilidade_ativa": 1
-}
-
-### Completar cadastro de empresa
-POST http://localhost:4500/usuarios/completar-cadastro-empresa
-Content-Type: application/json
-
-{
-  "usuario_id": 3,
-  "razao_social": "Empresa Exemplo LTDA",
-  "nome_fantasia": "Empresa Exemplo",
-  "cnpj": "12.345.678/0001-90",
-  "telefone_comercial": "+55 11 91234-5678",
-  "categoria_negocio": "Tecnologia",
-  "numero_funcionarios": 50,
-  "endereco_completo": "Rua Exemplo, 123",
-  "descricao": "Empresa de exemplo para testes"
-}
-
-### Enviar foto de perfil
-POST http://localhost:4500/usuarios/enviar-foto-perfil/3
+PUT http://localhost:4500/usuarios/update-foto/5
 Content-Type: multipart/form-data; boundary=MyBoundary
 
 --MyBoundary
@@ -220,14 +60,111 @@ Content-Type: image/jpeg
 < ./foto.jpg
 --MyBoundary--
 
-### Obter perfil padrao consolidado
-GET http://localhost:4500/usuarios/padrao/3
+### Teste de update banner de perfil
+### Descrição: Atualiza o banner de perfil do usuário com ID 5
 
-### Obter perfil de empresa consolidado
-GET http://localhost:4500/usuarios/empresas/3
+PUT http://localhost:4500/usuarios/update-fotobanner/5
+Content-Type: multipart/form-data; boundary=MyBoundary
 
-### Seguir ou deixar de seguir usuario
-POST http://localhost:4500/usuarios/seguir-usuario/3/9
+--MyBoundary
+Content-Disposition: form-data; name="banner"; filename="banner.jpg"
+Content-Type: image/jpeg
 
-### Excluir usuario
-DELETE http://localhost:4500/usuarios/3
+< ./foto.jpg
+--MyBoundary--
+
+### Teste updete completar cadastro padrao
+### Descrição: Atualiza o completar cadastro padrão do usuário com ID 5
+PUT http://localhost:4500/usuarios/completar-cadastro-padrao
+Content-Type: application/json
+
+{
+  "nome_de_usuario": "joao_silva",
+  "profissao": "Desenvolvedor",
+  "descricao": "Desenvolvedor de software com experiência em várias linguagens.", 
+  "usuario_id": 5
+}
+
+### Teste update completar cadastro empresa
+### Descrição: Atualiza o completar cadastro de empresa do usuário com ID 5
+
+PUT http://localhost:4500/usuarios/completar-cadastro-empresa
+Content-Type: application/json
+
+{
+    "usuario_id": 5,
+    "razao_social": "Empresa Exemplo LTDA",
+    "nome_fantasia": "Empresa Exemplo",
+    "cnpj": "12.345.678/0001-90",
+    "telefone_comercial": "+55 11 91234-5678",
+    "categoria_negocio": "Tecnologia",
+    "numero_funcionarios": 50,
+    "endereco_completo": "Rua Exemplo, 123, Bairro Exemplo, Cidade Exemplo, Estado Exemplo, 12345-678",
+    "descricao": "Empresa especializada em desenvolvimento de software e soluções tecnológicas."
+}
+
+### Teste login de usuário
+### Descrição: Realiza o login do usuário com email e senha fornecidos
+
+POST http://localhost:4500/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "tectonicroom356@gmail.com",
+  "senha": "Otavio2006"
+}
+
+### Teste recuperação de senha
+### Descrição: Solicita a recuperação de senha para o usuário com email fornecido
+
+POST http://localhost:4500/usuarios/recuperar-senha
+
+
+### Teste atualização de senha
+###Descrição: Atualiza a senha do usuário com email fornecido
+
+POST http://localhost:4500/usuarios/atualizar-senha
+Content-Type: application/json
+
+{
+  "email": "thais@email.com",
+  "novaSenha": "novaSenha123"
+}
+
+### Teste atualização de tema
+### Descrição: Atualiza o tema do usuário com ID 5 para "claro"
+POST http://localhost:4500/usuarios/atualizar-tema
+Content-Type: application/json
+
+{
+  "tema": "claro",
+  "id": 5
+}
+
+### Teste atualização de acessibilidade
+### Descrição: Atualiza as configurações de acessibilidade do usuário com ID 5
+POST http://localhost:4500/usuarios/atualizar-acessibilidade
+Content-Type: application/json
+
+{
+    "acessibilidade_ativa": 1,
+    "id": 5
+}
+
+### Teste atualização de tipo de usuário
+### Descrição: Atualiza o tipo de usuário do usuário com ID 5 para "padrao
+PUT http://localhost:4500/usuarios/atualizar-tipo/3
+Content-Type: application/json
+
+{
+    "tipo": "padrao"
+}
+
+### Teste de obtenção de perfil padrão por ID 
+### Descrição: Obtém os detalhes do perfil padrão do usuário com ID 2
+GET http://localhost:4500/usuarios/padrao/2
+
+
+### Teste de obtenção de perfil de empresa por ID
+### Descrição: Obtém os detalhes do perfil de empresa do usuário com ID 2
+GET http://localhost:4500/usuarios/empresas/2
