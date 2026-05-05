@@ -1,5 +1,5 @@
 const express = require('express');
-const { checkConnection } = require("./src/model/database");
+const { checkConnection, initDatabase } = require("./src/model/database");
 const cors = require('cors');
 const path = require('path');
 const app = express();
@@ -38,6 +38,15 @@ app.use("/comentarios", rotasComentarios);
 app.use("/estatisticas", rotasEstatisticas);
 app.use("/openai", rotasapiopenia);
 
-app.listen(Port, () => {
-    console.log(`Servidor rodando na porta: ${Port}`);
-});
+// Inicializa o banco (cria database/tabelas se necessário) e depois sobe o servidor
+(async () => {
+    try {
+        await initDatabase();
+    } catch (err) {
+        console.log('Erro na inicialização do banco:', err.message);
+    }
+
+    app.listen(Port, () => {
+        console.log(`Servidor rodando na porta: ${Port}`);
+    });
+})();
