@@ -13,6 +13,8 @@ const rotasperfilsempresa = require("./src/routers/perfils_empresaRouters");
 const rotasComentarios = require("./src/routers/comentariosRouters");
 const rotasEstatisticas = require("./src/routers/estatisticasRouters");
 const rotasapiopenia = require("./src/routers/apiOpeniaRouters");
+const rotasMensagens = require("./src/routers/mensagensRouters");
+const rotasNotificacoes = require("./src/routers/notificacoesRouters");
 const dotenv = require("dotenv");
 dotenv.config();
 const Port = process.env.APP_PORT;
@@ -36,6 +38,8 @@ app.use("/padrao", rotasperfilspadrao);
 app.use("/empresa", rotasperfilsempresa);
 app.use("/comentarios", rotasComentarios);
 app.use("/estatisticas", rotasEstatisticas);
+app.use("/mensagens", rotasMensagens);
+app.use("/notificacoes", rotasNotificacoes);
 app.use("/openai", rotasapiopenia);
 
 // Inicializa o banco (cria database/tabelas se necessário) e depois sobe o servidor
