@@ -81,6 +81,13 @@ const UsuariosController = {
   Create: async (request, response) => {
     try {
       const { nome, email, senha } = request.body;
+      
+      // Verifica se o email já existe
+      const emailExistente = await model.VerificarEmailExistente(email);
+      if (emailExistente) {
+        return response.status(409).send({ message: "Este email já está cadastrado!" });
+      }
+      
       // gera o hash da senha
       const saltRounds = 10;
       const senhaHash = await bcrypt.hash(senha, saltRounds);

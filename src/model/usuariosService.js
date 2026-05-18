@@ -395,6 +395,19 @@ const Solicitarexclusao = async (request, response) => {
   }
 };
 
+const VerificarEmailExistente = async (email) => {
+  try {
+    const [rows] = await banco.query(
+      "SELECT id FROM usuarios WHERE email = ? LIMIT 1",
+      [email]
+    );
+    return rows.length > 0;
+  } catch (error) {
+    console.log("Erro ao verificar email: ", error.message);
+    throw new Error("Erro ao verificar email");
+  }
+};
+
 const Create = async (nome, email, senhaHash) => {
   try {
     const data = await banco.query(
@@ -848,6 +861,7 @@ module.exports = {
   GetAll,
   GetById,
   Erase,
+  VerificarEmailExistente,
   Create,
   Update,
   Login,
