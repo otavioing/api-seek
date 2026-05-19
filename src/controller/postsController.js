@@ -1,4 +1,5 @@
 const model = require("../model/postsService");
+const notificacoes = require("../model/notificacoesService");
 
 function agruparPosts(data, baseUrl) {
   const posts = [];
@@ -133,7 +134,16 @@ const PostsServiceController = {
       }
 
       const data = await model.insertlike(uId, pId);
-      // dependendo do model, pode retornar insertId ou objeto
+
+      // Se o like foi adicionado (toggle on), cria a notificação
+      if (data && data.liked) {
+        try {
+          await notificacoes.criarNotificacaoLikePost({ remetente_id: uId, post_id: pId });
+        } catch (err) {
+          console.error("Erro ao criar notificacao de like:", err.message);
+        }
+      }
+
       return response.status(201).json(data);
     } catch (error) {
       console.error("Erro ao inserir like:", error.message);

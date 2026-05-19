@@ -318,6 +318,19 @@ const GetAllbyidEmpresas = async (id) => {
   }
 };
 
+const GetBasicById = async (id) => {
+  try {
+    const [rows] = await banco.query(
+      "SELECT nome, nome_de_usuario, descricao, foto, banner FROM usuarios WHERE id = ?",
+      [id]
+    );
+    return rows[0] || null;
+  } catch (error) {
+    console.error("Erro ao buscar dados básicos:", error.message);
+    throw new Error("Erro interno");
+  }
+};
+
 const numerodepostseguidreselikes = async (id) => {
   try {
     const [rows] = await banco.query(`SELECT 
@@ -422,14 +435,13 @@ const Create = async (nome, email, senhaHash) => {
   }
 };
 
-const Update = async (request, response) => {
+const Update = async (id, dados) => {
   try {
-    const id = request.params.id;
-
-    // Campos vindos do body
+    // Campos vindos do JSON
     const {
       nome,
       email,
+      foto,
       senha,
       tema,
       cidade_pais,
@@ -443,19 +455,14 @@ const Update = async (request, response) => {
       status,
       tipo,
       permissao
-    } = request.body;
-
-    // Se o usuário enviou uma nova foto
-    const foto = request.file
-      ? `/uploads/foto_perfil/${request.file.filename}`
-      : undefined;
+    } = dados;
 
     // Objeto com todos os possíveis campos atualizáveis
     const campos = {
       nome,
       email,
-      senha,
       foto,
+      senha,
       tema,
       cidade_pais,
       cargo,
@@ -477,7 +484,7 @@ const Update = async (request, response) => {
 
     // Se não tiver nada pra atualizar
     if (chaves.length === 0) {
-      return response.status(400).send({ message: "Nenhum campo enviado para atualização!" });
+      return { message: "Nenhum campo enviado para atualização!", alterados: [] };
     }
 
     // Monta a query dinamicamente (ex: "nome=?, email=?, tema=?")
@@ -491,15 +498,15 @@ const Update = async (request, response) => {
     const sql = `UPDATE usuarios SET ${setClause} WHERE id=?`;
     const [result] = await banco.query(sql, values);
 
-    response.status(200).send({
+    return {
       message: "Usuário atualizado com sucesso!",
       alterados: chaves,
       resultado: result
-    });
+    };
 
   } catch (error) {
     console.error("Erro ao atualizar usuário:", error.message);
-    response.status(500).send({ message: "Erro ao atualizar usuário!" });
+    throw new Error("Erro ao atualizar usuário!");
   }
 };
 
@@ -760,9 +767,7 @@ const CriarCodigoVerificacao = async (req, res) => {
 };
 
 
-const AtualizarSenha = async (req, res) => {
-  const { email, codigo, novaSenha } = req.body;
-
+const buscarCodigoRecuperacaoPorEmail = async (email) => {
   try {
     const [result] = await banco.query(
       "SELECT codigo_recuperacao, expira_em FROM usuarios WHERE email = ?",
@@ -770,38 +775,27 @@ const AtualizarSenha = async (req, res) => {
     );
 
     if (result.length === 0) {
-      return res.status(404).send({ message: "Email não encontrado" });
+      return null;
     }
 
-    const usuario = result[0];
-    const agora = new Date();
+    return result[0];
+  } catch (error) {
+    console.error("Erro ao buscar código de recuperação:", error.message);
+    throw new Error("Erro interno no servidor");
+  }
+};
 
-    if (!usuario.codigo_recuperacao || !usuario.expira_em) {
-      return res.status(400).send({ message: "Nenhum código foi solicitado." });
-    }
-
-    if (agora > new Date(usuario.expira_em)) {
-      return res.status(400).send({ message: "O código expirou. Solicite um novo." });
-    }
-
-    if (usuario.codigo_recuperacao !== codigo) {
-      return res.status(400).send({ message: "Código incorreto." });
-    }
-
-    // Criptografa a nova senha antes de salvar
-    const hash = await bcrypt.hash(novaSenha, 10);
-
-    // Atualiza a senha e limpa o código de recuperação
-    await banco.query(
+const atualizarSenhaPorEmail = async (email, hash) => {
+  try {
+    const [result] = await banco.query(
       "UPDATE usuarios SET senha = ?, codigo_recuperacao = NULL, expira_em = NULL WHERE email = ?",
       [hash, email]
     );
 
-    res.status(200).send({ message: "Senha atualizada com sucesso!" });
-
-  } catch (err) {
-    console.error("Erro ao atualizar senha:", err.message);
-    res.status(500).send({ message: "Erro interno" });
+    return result;
+  } catch (error) {
+    console.error("Erro ao atualizar senha:", error.message);
+    throw new Error("Erro interno no servidor");
   }
 };
 
@@ -865,8 +859,10 @@ module.exports = {
   Create,
   Update,
   Login,
+  GetBasicById,
   CriarCodigoVerificacao,
-  AtualizarSenha,
+  buscarCodigoRecuperacaoPorEmail,
+  atualizarSenhaPorEmail,
   SolicitarCriacao,
   Solicitarexclusao,
   Atualizartema,

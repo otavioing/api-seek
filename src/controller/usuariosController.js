@@ -1,5 +1,7 @@
 const model = require("../model/usuariosService");
+const notificacoes = require("../model/notificacoesService");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const montarUrl = (req, caminho) => {
   if (!caminho) return null;
@@ -56,6 +58,26 @@ const UsuariosController = {
     }
   },
 
+  GetBasic: async (request, response) => {
+    try {
+      const id = request.params.id;
+      const data = await model.GetBasicById(id);
+      if (!data) {
+        return response.status(404).send({ message: "Usuário não encontrado" });
+      }
+      const resultado = {
+        ...data,
+        foto: montarUrl(request, data.foto),
+        banner: montarUrl(request, data.banner)
+      };
+
+      response.status(200).send(resultado);
+    } catch (error) {
+      console.error("Erro ao buscar dados básicos:", error.message);
+      response.status(500).send({ message: "Falha ao executar a ação!" });
+    }
+  },
+
   verificartipo: async (request, response) => {
     try {
       const id = request.params.id;
@@ -99,6 +121,119 @@ const UsuariosController = {
     }
   },
 
+  VerificarCodigoRecuperacao: async (request, response) => {
+    const { email, codigo } = request.body;
+
+    try {
+      const usuario = await model.buscarCodigoRecuperacaoPorEmail(email);
+
+      if (!usuario) {
+        return response.status(404).send({ message: "Email não encontrado" });
+      }
+
+      const agora = new Date();
+
+      if (!usuario.codigo_recuperacao || !usuario.expira_em) {
+        return response.status(400).send({ message: "Nenhum código foi solicitado." });
+      }
+
+      if (agora > new Date(usuario.expira_em)) {
+        return response.status(400).send({ message: "O código expirou. Solicite um novo." });
+      }
+
+      if (String(usuario.codigo_recuperacao) !== String(codigo)) {
+        return response.status(400).send({ message: "Código incorreto." });
+      }
+
+      const tokenRecuperacao = jwt.sign(
+        { email, codigoVerificado: true },
+        process.env.JWT_SECRET,
+        { expiresIn: "10m" }
+      );
+
+      return response.status(200).send({
+        message: "Código verificado com sucesso!",
+        tokenRecuperacao,
+      });
+    } catch (error) {
+      console.error("Erro ao verificar código:", error.message);
+      return response.status(500).send({ message: "Erro interno" });
+    }
+  },
+
+  AtualizarSenha: async (request, response) => {
+    const { tokenRecuperacao, novaSenha } = request.body;
+
+    try {
+      if (!tokenRecuperacao || !novaSenha) {
+        return response.status(400).send({ message: "tokenRecuperacao e novaSenha são obrigatórios." });
+      }
+
+      let payload;
+
+      try {
+        payload = jwt.verify(tokenRecuperacao, process.env.JWT_SECRET);
+      } catch (error) {
+        return response.status(400).send({ message: "Token de recuperação inválido ou expirado." });
+      }
+
+      if (!payload?.email || payload.codigoVerificado !== true) {
+        return response.status(400).send({ message: "Token de recuperação inválido." });
+      }
+
+      const usuario = await model.buscarCodigoRecuperacaoPorEmail(payload.email);
+
+      if (!usuario) {
+        return response.status(404).send({ message: "Email não encontrado" });
+      }
+
+      const agora = new Date();
+
+      if (!usuario.codigo_recuperacao || !usuario.expira_em) {
+        return response.status(400).send({ message: "Nenhum código foi solicitado." });
+      }
+
+      if (agora > new Date(usuario.expira_em)) {
+        return response.status(400).send({ message: "O código expirou. Solicite um novo." });
+      }
+
+      const hash = await bcrypt.hash(novaSenha, 10);
+      await model.atualizarSenhaPorEmail(payload.email, hash);
+
+      return response.status(200).send({ message: "Senha atualizada com sucesso!" });
+    } catch (error) {
+      console.error("Erro ao atualizar senha:", error.message);
+      return response.status(500).send({ message: "Erro interno" });
+    }
+  },
+
+  Update: async (request, response) => {
+    try {
+      const id = request.params.id;
+      const arquivoFoto = request.files?.foto?.[0];
+      const arquivoBanner = request.files?.banner?.[0];
+
+      if (arquivoFoto) {
+        request.body.foto = `/uploads/foto_perfil/${arquivoFoto.filename}`;
+      }
+
+      if (arquivoBanner) {
+        request.body.banner = `/uploads/banners/${arquivoBanner.filename}`;
+      }
+
+      const data = await model.Update(id, request.body);
+
+      if (data.alterados.length === 0) {
+        return response.status(400).send({ message: data.message });
+      }
+
+      response.status(200).send(data);
+    } catch (error) {
+      console.error("Erro ao atualizar usuário:", error.message);
+      response.status(500).send({ message: "Erro ao atualizar usuário!" });
+    }
+  },
+
   getseguindoporusuario: async (request, response) => {
     try {
       const id = request.params.id;
@@ -126,6 +261,16 @@ const UsuariosController = {
       const seguidorId = request.params.seguidorId;
       const seguidoId = request.params.seguidoId;
       const data = await model.Seguirusuario(seguidorId, seguidoId);
+
+      // Se passou a seguir (toggle on), cria notificação
+      if (data && data.seguindo) {
+        try {
+          await notificacoes.criarNotificacaoSeguindo({ remetente_id: seguidorId, destinatario_id: seguidoId });
+        } catch (err) {
+          console.error("Erro ao criar notificacao de seguindo:", err.message);
+        }
+      }
+
       response.status(200).send(data);
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
