@@ -160,11 +160,6 @@ Content-Type: application/json
     "tipo": "padrao"
 }
 
-### Teste de obtenção de perfil padrão por ID 
-### Descrição: Obtém os detalhes do perfil padrão do usuário com ID 2
-GET http://localhost:4500/usuarios/padrao/2
-
-
-### Teste de obtenção de perfil de empresa por ID
-### Descrição: Obtém os detalhes do perfil de empresa do usuário com ID 2
-GET http://localhost:4500/usuarios/empresas/2
+### Teste de obtenção de perfil por ID 
+### Descrição: Obtém os detalhes do perfil do usuário com ID 2, seja padrão ou empresa
+GET http://localhost:4500/usuarios/perfil/2

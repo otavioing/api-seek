@@ -8,6 +8,12 @@ const montarUrl = (req, caminho) => {
   return `${req.protocol}://${req.get("host")}${caminho}`;
 };
 
+const montarRespostaPerfil = (request, data) => ({
+  ...data,
+  foto: montarUrl(request, data.foto),
+  banner: montarUrl(request, data.banner)
+});
+
 const UsuariosController = {
   GetAll: async (request, response) => {
     try {
@@ -416,44 +422,28 @@ const UsuariosController = {
     }
   },
 
-  GetAllbyidPadrao: async (request, response) => {
+  GetAllbyidPerfil: async (request, response) => {
     try {
       const id = request.params.id;
-      const data = await model.GetAllbyidPadrao(id);
-      if (!data) {
+      const tipoData = await model.verificartipo(id);
+      const tipo = tipoData?.[0]?.tipo;
+
+      if (!tipo) {
         return response.status(404).send({ message: "Usuário não encontrado" });
       }
 
-
-      const resultado = {
-        ...data,
-        foto: montarUrl(request, data.foto),
-        banner: montarUrl(request, data.banner)
-      };
-
-      response.status(200).json(resultado);
-
-    } catch (error) {
-      console.error("Erro ao conectar ao banco de dados:", error.message);
-      response.status(500).send({ message: "Falha ao executar a ação!" });
-    }
-  },
-
-  GetAllbyidEmpresas: async (request, response) => {
-    try {
-      const id = request.params.id;
-      const data = await model.GetAllbyidEmpresas(id);
+      const data = tipo === "empresa"
+        ? await model.GetAllbyidEmpresas(id)
+        : tipo === "padrao"
+          ? await model.GetAllbyidPadrao(id)
+          : null;
 
       if (!data) {
         return response.status(404).send({ message: "Usuário não encontrado" });
       }
 
-      const resultado = {
-        ...data,
-        foto: montarUrl(request, data.foto),
-        banner: montarUrl(request, data.banner)
-      };
-
+      const resultado = montarRespostaPerfil(request, data);
+      resultado.tipo = tipo;
       response.status(200).json(resultado);
 
     } catch (error) {
