@@ -3,6 +3,39 @@ const notificacoes = require("../model/notificacoesService");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const consultarCnpj = async (request, response) => {
+  try {
+    const cnpjBruto = request.params.cnpj || request.params[0] || "";
+    const cnpj = String(cnpjBruto).replace(/\D/g, "");
+
+    if (cnpj.length !== 14) {
+      return response.status(400).json({ message: "CNPJ inválido." });
+    }
+
+    const apiResponse = await fetch(`https://api.opencnpj.org/${cnpj}`);
+    const contentType = apiResponse.headers.get("content-type") || "";
+
+    let data;
+    if (contentType.includes("application/json")) {
+      data = await apiResponse.json();
+    } else {
+      data = await apiResponse.text();
+    }
+
+    if (!apiResponse.ok) {
+      return response.status(apiResponse.status).json({
+        message: "Erro ao consultar CNPJ.",
+        details: data,
+      });
+    }
+
+    return response.status(200).json(data);
+  } catch (error) {
+    console.error("Erro ao consultar CNPJ:", error.message);
+    return response.status(500).json({ message: "Erro interno ao consultar CNPJ." });
+  }
+};
+
 const montarUrl = (req, caminho) => {
   if (!caminho) return null;
   return `${req.protocol}://${req.get("host")}${caminho}`;
@@ -124,6 +157,34 @@ const UsuariosController = {
     } catch (error) {
       console.error("Erro ao conectar ao banco de dados:", error.message);
       response.status(500).send({ message: "Falha ao criar usuário!" });
+    }
+  },
+
+  CreateEmpresa: async (request, response) => {
+    try {
+      const { nome, email, senha, cnpj, descricao } = request.body;
+
+      if (descricao !== undefined) {
+        return response.status(400).send({ message: "descricao não é permitida nesta rota." });
+      }
+
+      if (!nome || !email || !senha || !cnpj) {
+        return response.status(400).send({ message: "nome, email, senha e cnpj são obrigatórios." });
+      }
+
+      const emailExistente = await model.VerificarEmailExistente(email);
+      if (emailExistente) {
+        return response.status(409).send({ message: "Este email já está cadastrado!" });
+      }
+
+      const saltRounds = 10;
+      const senhaHash = await bcrypt.hash(senha, saltRounds);
+      const data = await model.CreateEmpresa(nome, email, senhaHash, cnpj);
+
+      return response.status(201).send(data);
+    } catch (error) {
+      console.error("Erro ao criar conta empresa:", error.message);
+      return response.status(500).send({ message: error.message || "Falha ao criar conta empresa!" });
     }
   },
 
@@ -462,6 +523,8 @@ const UsuariosController = {
       response.status(500).send({ message: "Falha ao executar a ação!" });
     }
     },
+
+  consultarCnpj,
 
 };
 

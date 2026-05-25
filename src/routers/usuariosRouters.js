@@ -10,6 +10,7 @@ const uploadFotoBannerUpdate = require('../config/upload_foto_banner_update');
 
 const rota = Router()
 
+rota.get(/^\/cnpj\/(.+)$/, myController.consultarCnpj);
 rota.get("/", myController.GetAll);
 rota.get("/:id", myController.GetById);
 // rota.get("/:id", myController.GetById);
@@ -41,6 +42,7 @@ rota.put("/update-foto/:id", uploadfotoperfil.single("foto"), Updatefoto);
 rota.put("/update-fotobanner/:id", uploadfotobanner.single("foto"), Updatefotobanner);
 rota.post("/", myController.Create);
 rota.post("/", uploadfotoperfil.single("foto"), Create);
+rota.post("/criar-conta-empresa", myController.CreateEmpresa);
 rota.post("/completar-cadastro-padrao", updatecompletarcadastropadrao);
 rota.post("/login", Login)
 rota.post("/criar-codigo-verificacao", CriarCodigoVerificacao);

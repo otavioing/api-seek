@@ -435,6 +435,132 @@ const Create = async (nome, email, senhaHash) => {
   }
 };
 
+const normalizarCnpj = (valor) => String(valor || "").replace(/\D/g, "");
+
+const formatarEndereco = (dados) => {
+  const partes = [
+    dados.logradouro,
+    dados.numero,
+    dados.complemento,
+    dados.bairro,
+    dados.municipio || dados.cidade,
+    dados.uf,
+    dados.cep,
+  ].filter((parte) => parte && String(parte).trim());
+
+  return partes.join(", ");
+};
+
+const mapearDadosEmpresaPorCnpj = async (cnpjInput) => {
+  const cnpj = normalizarCnpj(cnpjInput);
+
+  if (cnpj.length !== 14) {
+    throw new Error("CNPJ inválido");
+  }
+
+  const response = await fetch(`https://api.opencnpj.org/${cnpj}`);
+
+  let dados = null;
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    dados = await response.json();
+  } else {
+    const texto = await response.text();
+    try {
+      dados = JSON.parse(texto);
+    } catch {
+      dados = { raw: texto };
+    }
+  }
+
+  if (!response.ok) {
+    const mensagem = typeof dados === "object" && dados !== null
+      ? dados.message || dados.error || "Erro ao consultar CNPJ"
+      : "Erro ao consultar CNPJ";
+    throw new Error(mensagem);
+  }
+
+  const razaoSocial = dados.razao_social || dados.nome_empresarial || dados.nome || dados.razao || "";
+  const nomeFantasia = dados.nome_fantasia || dados.fantasia || razaoSocial;
+  const telefoneComercial = dados.ddd_telefone_1 || dados.telefone || dados.ddd_telefone || null;
+  const categoriaNegocio = dados.atividade_principal?.[0]?.text || dados.cnae_fiscal_descricao || dados.atividade_principal || null;
+  const enderecoCompleto = formatarEndereco(dados);
+
+  return {
+    cnpj,
+    razao_social: razaoSocial,
+    nome_fantasia: nomeFantasia,
+    telefone_comercial: telefoneComercial,
+    categoria_negocio: categoriaNegocio,
+    endereco_completo: enderecoCompleto || null,
+  };
+};
+
+const CreateEmpresa = async (nome, email, senhaHash, cnpjInput) => {
+  let connection;
+
+  try {
+    if (await VerificarEmailExistente(email)) {
+      throw new Error("Este email já está cadastrado!");
+    }
+
+    const dadosEmpresa = await mapearDadosEmpresaPorCnpj(cnpjInput);
+    connection = await banco.getConnection();
+    await connection.beginTransaction();
+
+    const [resultadoUsuario] = await connection.query(
+      "INSERT INTO usuarios (nome, email, senha, tipo, cadastro_completo) VALUES (?, ?, ?, 'empresa', 1)",
+      [nome, email, senhaHash]
+    );
+
+    const usuarioId = resultadoUsuario.insertId;
+
+    await connection.query(
+      `INSERT INTO perfis_empresa (
+        usuario_id,
+        razao_social,
+        nome_fantasia,
+        cnpj,
+        telefone_comercial,
+        categoria_negocio,
+        numero_funcionarios,
+        endereco_completo,
+        descricao
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        usuarioId,
+        dadosEmpresa.razao_social,
+        dadosEmpresa.nome_fantasia,
+        dadosEmpresa.cnpj,
+        dadosEmpresa.telefone_comercial,
+        dadosEmpresa.categoria_negocio,
+        0,
+        dadosEmpresa.endereco_completo,
+        null,
+      ]
+    );
+
+    await connection.commit();
+
+    return {
+      message: "Conta de empresa criada com sucesso!",
+      usuario_id: usuarioId,
+      cnpj: dadosEmpresa.cnpj,
+    };
+  } catch (error) {
+    if (connection) {
+      await connection.rollback();
+    }
+    console.log("Erro ao criar conta empresa:", error.message);
+    throw new Error(error.message || "Falha ao executar a ação!");
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+};
+
 const Update = async (id, dados) => {
   try {
     // Campos vindos do JSON
@@ -857,6 +983,7 @@ module.exports = {
   Erase,
   VerificarEmailExistente,
   Create,
+  CreateEmpresa,
   Update,
   Login,
   GetBasicById,

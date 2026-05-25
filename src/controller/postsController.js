@@ -72,12 +72,23 @@ const PostsServiceController = {
 
   CriarPost: async (request, response) => {
     try {
-      const userId = request.body.user_id;
+      const userId = request.body.user_id ?? request.body.userId;
       const legenda = request.body.legenda || "";
       const titulo = request.body.titulo || "";
-      const id_categoria = request.body.id_categoria || "";
+      const categoria =
+        request.body.id_categoria ??
+        request.body.idCategoria ??
+        request.body.nome_categoria ??
+        request.body.nomeCategoria ??
+        request.body.categoria ??
+        request.body.categoriaInput ??
+        null;
 
       const imagens = request.files; // 👈 mudou aqui
+
+      if (!userId) {
+        return response.status(400).send({ message: "user_id é obrigatório" });
+      }
 
       if (!imagens || imagens.length === 0) {
         return response.status(400).send({ message: "Pelo menos uma imagem é obrigatória" });
@@ -88,7 +99,7 @@ const PostsServiceController = {
         imagens,
         legenda,
         titulo,
-        id_categoria
+        categoria
       );
       response.status(201).send(data);
 

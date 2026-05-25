@@ -1,5 +1,44 @@
 const { banco } = require("./database");
 
+const resolverCategoriaPost = async (conn, categoriaInput) => {
+  if (categoriaInput === undefined || categoriaInput === null) {
+    return null;
+  }
+
+  const categoriaTexto = String(categoriaInput).trim();
+  if (!categoriaTexto) {
+    return null;
+  }
+
+  const categoriaNumero = Number(categoriaTexto);
+  if (Number.isInteger(categoriaNumero)) {
+    const [categoriaExistentePorId] = await conn.query(
+      "SELECT id_categoria FROM categorias_posts WHERE id_categoria = ? LIMIT 1",
+      [categoriaNumero]
+    );
+
+    if (categoriaExistentePorId.length > 0) {
+      return categoriaExistentePorId[0].id_categoria;
+    }
+  }
+
+  const [categoriaExistentePorNome] = await conn.query(
+    "SELECT id_categoria FROM categorias_posts WHERE LOWER(nome_categoria) = LOWER(?) LIMIT 1",
+    [categoriaTexto]
+  );
+
+  if (categoriaExistentePorNome.length > 0) {
+    return categoriaExistentePorNome[0].id_categoria;
+  }
+
+  const [novaCategoria] = await conn.query(
+    "INSERT INTO categorias_posts (nome_categoria) VALUES (?)",
+    [categoriaTexto]
+  );
+
+  return novaCategoria.insertId;
+};
+
 // const CriarPost = async (userId, imagem, legenda, titulo, id_categoria) => {
 //   try {
 //     const [posts] = await banco.query(
@@ -14,10 +53,17 @@ const { banco } = require("./database");
 //   }
 // };
 
-const CriarPost = async (userId, imagens, legenda, titulo, id_categoria) => {
+const CriarPost = async (userId, imagens, legenda, titulo, categoriaInput) => {
+  let conn;
+
   try {
+    conn = await banco.getConnection();
+    await conn.beginTransaction();
+
+    const id_categoria = await resolverCategoriaPost(conn, categoriaInput);
+
     // cria post
-    const [postResult] = await banco.query(
+    const [postResult] = await conn.query(
       "INSERT INTO posts (user_id, legenda, titulo, id_categoria) VALUES (?, ?, ?, ?)",
       [userId, legenda, titulo, id_categoria]
     );
@@ -26,17 +72,26 @@ const CriarPost = async (userId, imagens, legenda, titulo, id_categoria) => {
 
     // salva imagens (uma por vez)
     for (const file of imagens) {
-      await banco.query(
+      await conn.query(
         "INSERT INTO post_imagens (post_id, imagem) VALUES (?, ?)",
         [postId, `/uploads/posts/${file.filename}`]
       );
     }
 
+    await conn.commit();
+
     return { message: "Post criado com múltiplas imagens!" };
 
   } catch (err) {
+    if (conn) {
+      await conn.rollback();
+    }
     console.error("Erro ao criar post:", err.message);
     throw new Error("Erro interno");
+  } finally {
+    if (conn) {
+      conn.release();
+    }
   }
 };
 
