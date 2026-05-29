@@ -1,5 +1,4 @@
-const model = require("../model/postsService");
-// const { CriarPostvaga } = require("../model/postvagaService");
+const model = require("../model/postvagaService");
 
 const PostsServiceController = {
   ListarPostsvaga: async (request, response) => {
@@ -22,29 +21,67 @@ const PostsServiceController = {
     }
   },
 
-CriarPostvaga: async (request, response) => {
-  try {
-    const userId = request.body.user_id;
-    const titulo = request.body.titulo;
-    const vaga = request.body.vaga;
-    const descricao_vaga = request.body.descricao_vaga;
-    const datapost_vaga = request.body.datapost_vaga;
-    const tipovaga_post = request.body.tipovaga_post;
-    const localizacao_vaga = request.body.localizacao_vaga;
-    const imagem = request.file ? `/uploads/posts/${request.file.filename}` : null;
+  CriarPostvaga: async (request, response) => {
+    try {
+      const userId =
+        request.user?.id ||
+        request.user?.userId ||
+        request.body.idUsuario ||
+        request.body.id_usuario ||
+        request.body.user_id;
 
-    if (!imagem) {
-      return response.status(400).send({ message: "Imagem é obrigatória" });
+      const idCategoria =
+        request.body.idCategoria ||
+        request.body.id_categoria ||
+        request.body.categoria;
+
+      const url = request.body.url || request.body.link_vaga || request.body.link;
+      const descricao = request.body.descricao || request.body.descricao_vaga;
+
+      if (!userId) {
+        return response.status(400).send({ message: "Usuário não informado" });
+      }
+
+      if (!idCategoria) {
+        return response.status(400).send({ message: "Categoria é obrigatória" });
+      }
+
+      if (!url) {
+        return response.status(400).send({ message: "Link da vaga é obrigatório" });
+      }
+
+      const data = await model.CriarPostvaga(userId, idCategoria, url, descricao);
+      response.status(201).send(data);
+    } catch (error) {
+      console.error("Erro ao criar vaga:", error.message);
+      response.status(500).send({ message: "Erro interno ao criar vaga." });
     }
+  },
+  BuscarVagaLinkedin: async (request, response) => {
+    try {
+      const url = request.body.url || request.body.link_vaga || request.body.link;
 
-    const data = await model.CriarPostvaga(userId, imagem, titulo, vaga, descricao_vaga, datapost_vaga, tipovaga_post, localizacao_vaga);
-    response.status(201).send(data); // ou data[0] se necessário
-  } catch (error) {
-    console.error("Erro ao criar post de vaga:", error.message);
-    response.status(500).send({ message: "Erro interno ao criar post de vaga." });
-  }
-},
+      if (!url) {
+        return response.status(400).send({
+          message: "URL da vaga é obrigatória",
+        });
+      }
 
+      const data = await model.BuscarVagaLinkedin(url);
+
+      response.status(200).json(data);
+
+    } catch (error) {
+      console.error(
+        "Erro ao buscar vaga:",
+        error.message
+      );
+
+      response.status(500).send({
+        message: "Falha ao executar a ação!",
+      });
+    }
+  },
 
 };
 
